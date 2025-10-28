@@ -14,6 +14,13 @@ const GlobalStyle = createGlobalStyle`
   font-optical-sizing: auto;
   }
 
+  h1{
+    font-size: 2.5rem;
+  }
+  p{
+    font-size: 1.1rem;
+  }
+
 `;
 
 export default GlobalStyle;

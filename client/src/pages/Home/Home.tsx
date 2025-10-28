@@ -1,7 +1,8 @@
+import Opening from "./Opening/Opening"
 
 const Home = () => {
   return (
-    <div>Start</div>
+    <div><Opening/></div>
   )
 }
 
