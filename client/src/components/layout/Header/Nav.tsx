@@ -7,8 +7,11 @@ const NAV = styled.nav`
   gap: 1rem;
   align-items: center;
   flex-direction: column;
+  width: 500px;
+  margin:0 1rem;
   @media ${device.laptop} {
     flex-direction: row;
+    margin:0;
   }
   ul {
     list-style: none;
@@ -27,7 +30,8 @@ const NAV = styled.nav`
 `;
 
 const ContactBtn = styled.div`
-  color: white;
+  background-color: white;
+  color: #322683;
   background-color: #7f73e0;
   padding: 0.7rem 0.9rem;
   border-radius: 40px;
@@ -35,6 +39,15 @@ const ContactBtn = styled.div`
   transition: all 200ms;
   border: 2px solid #7f73e0;
   cursor: pointer;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  @media ${device.laptop} {
+    color: white;
+    background-color: #7f73e0;
+    width: auto;
+  }
   &:hover {
     background-color: white;
     color: #322683;

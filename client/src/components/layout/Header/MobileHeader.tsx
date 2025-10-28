@@ -86,6 +86,7 @@ const NavContainer = styled(motion.div)`
   justify-content: center;
   align-items: center;
 `;
+
 const MobileHeader = () => {
 
       const [showNav, setShowNav] = useState(false);
@@ -108,7 +109,7 @@ const MobileHeader = () => {
       <AnimatePresence>
         {showNav && (
           <NavContainer initial={{ y: "-100vh" }} animate={{ y: 0 }} exit={{y:"-100vh"}}>
-            <Nav />
+            <Nav/>
           </NavContainer>
         )}
       </AnimatePresence>

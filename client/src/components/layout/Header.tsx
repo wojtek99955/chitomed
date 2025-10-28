@@ -13,7 +13,7 @@ const Header = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  return <>{windowWidth < 1000 ? <MobileHeader /> : <DesktopHeader />}</>;
+  return <>{windowWidth <= 1024 ? <MobileHeader /> : <DesktopHeader />}</>;
 };
 
 export default Header;
