@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import img from "./img.webp";
+import { device } from "../../../assets/device";
 const Container = styled.section`
   background-image: url(${img});
   width: 100%;
@@ -16,20 +17,22 @@ const Container = styled.section`
 
 const Main = styled.div`
   background-color: #332a85;
-  margin: auto;
   display: block;
   max-width: 500px;
-  padding:2rem;
-  opacity:0.9;
+  padding: 2rem;
+  opacity: 0.9;
+  margin: 0 1rem;
   position: relative;
   z-index: 0;
-  h1{
-    color:white;
+  @media ${device.laptop} {
+    margin: auto;
   }
-  p{
-    color:white;
+  h1 {
+    color: white;
   }
-
+  p {
+    color: white;
+  }
 `;
 
 const Btn = styled.button`

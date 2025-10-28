@@ -12,6 +12,7 @@ const NAV = styled.nav`
   @media ${device.laptop} {
     flex-direction: row;
     margin:0;
+    width: auto;
   }
   ul {
     list-style: none;
