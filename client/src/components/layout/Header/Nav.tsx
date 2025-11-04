@@ -82,7 +82,7 @@ const Nav = () => {
         <li>FAQ</li>
         <li>About</li>
       </ul> */}
-      <SigninBtn to="/"><UserIcon/> Sign in</SigninBtn>
+      <SigninBtn to="/sign-in"><UserIcon/> Sign in</SigninBtn>
       {/* <ContactBtn>Contact</ContactBtn> */}
       <LanguageChangeDropdown />
     </NAV>

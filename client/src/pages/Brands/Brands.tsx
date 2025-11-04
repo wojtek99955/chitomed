@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { device } from "../../assets/device";
-
+import regcare from "../../assets/icons/regcare.png"
+import novaoss from "../../assets/icons/novaoss.png"
 const Container = styled.section`
   padding: 1rem;
   h2 {
@@ -35,7 +36,6 @@ const Boxes = styled.div`
 `;
 
 const Name = styled.div`
-  font-size: 1.6rem;
   color: #34136c;
   background-color: white;
   padding: 0.5rem;
@@ -44,7 +44,18 @@ const Name = styled.div`
   width: fit-content;
   font-weight: 500;
   margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
 `;
+
+const Logo = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+img{
+    width: 9rem;
+}
+`
 const Brands = () => {
   const brands = [
     {
@@ -54,6 +65,7 @@ const Brands = () => {
     {
       name: "NovaOss",
       text: "Thermosensitive chitosan matrix hydrogel with biomaterials for cancellous bone tissue regeneration.",
+      logo:novaoss
     },
     {
       name: "Implants4Kids",
@@ -69,6 +81,7 @@ const Brands = () => {
     },
     {
       name: "RegCare",
+      logo:regcare,
       text: "Regenerative dermocosmetics based on chitosan.",
     },
   ];
@@ -80,7 +93,13 @@ const Brands = () => {
           {brands.map((brand: any) => {
             return (
               <Box key={brand.name}>
-                <Name>{brand.name}</Name>
+                <Name>
+                  <Logo>
+                    {brand.logo?                     <img src={brand.logo} alt="" />
+:brand.name}
+                  </Logo>
+                </Name>
+
                 <p>{brand.text}</p>
               </Box>
             );
