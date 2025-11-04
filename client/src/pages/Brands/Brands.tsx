@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device } from "../../assets/device";
 
 const Container = styled.section`
   padding: 1rem;
@@ -25,10 +26,13 @@ const Box = styled.div`
 `;
 
 const Boxes = styled.div`
-display: grid;
-gap:1rem;
-grid-template-columns: 1fr 1fr 1fr;
-`
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  @media ${device.tablet} {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+`;
 
 const Name = styled.div`
   font-size: 1.6rem;

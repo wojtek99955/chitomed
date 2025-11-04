@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device } from "../../assets/device";
 
 const Container = styled.section`
   padding: 1rem;
@@ -13,14 +14,18 @@ const Wrapper = styled.div`
 `;
 
 const Block = styled.div`
-display: flex;
-align-items: center;
-gap:2rem;
-img{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  @media ${device.tablet} {
+    flex-direction: row;
+  }
+  gap: 2rem;
+  img {
     width: 50%;
     border-radius: 12px;
-}
-`
+  }
+`;
 const Chitosan = () => {
   return (
     <Container>

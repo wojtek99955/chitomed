@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { device } from "../../assets/device"
 
 const Container = styled.section`
 padding:1rem;
@@ -12,9 +13,14 @@ max-width: 1100px;
 margin: auto;
 display: flex;
 align-items: center;
+flex-direction: column;
 gap:2rem;
+@media ${device.tablet}{
+    flex-direction: row;
+}
 img{
     border-radius:12px;
+    width: 100%;
 }
 `
 

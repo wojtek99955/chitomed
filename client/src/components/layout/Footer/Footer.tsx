@@ -2,6 +2,7 @@ import styled from "styled-components"
 import { IoMdPin } from "react-icons/io";
 import { IoMdMail } from "react-icons/io";
 import { FaLinkedin } from "react-icons/fa6";
+import { device } from "../../../assets/device";
 
 const FooterContainer = styled.footer`
   background-color: #34136c;
@@ -15,6 +16,7 @@ max-width: 1100px;
 margin: auto;
 display: flex;
 justify-content: space-between;
+flex-direction: column;
 `
 
 const Pin = styled(IoMdPin)`
@@ -33,6 +35,10 @@ const CompanyData = styled.div`
 color:white;
 display: flex;
 gap:.5rem;
+margin-bottom: 2rem;
+@media ${device.tablet}{
+    margin-bottom: 0;
+}
 `
 
 const Data = styled.div`

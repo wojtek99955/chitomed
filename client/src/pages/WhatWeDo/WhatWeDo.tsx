@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device } from "../../assets/device";
 
 const Container = styled.section`
   padding: 1rem;
@@ -12,11 +13,14 @@ max-width: 1100px;
 margin: auto;
 `
 
-const BoxesWrapper  = styled.div`
-display: grid;
-grid-template-columns: 1fr 1fr 1fr;
-gap:1rem;
-`
+const BoxesWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  @media ${device.tablet} {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+`;
 
 const Box = styled.div`
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;

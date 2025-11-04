@@ -2,9 +2,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import styled from "styled-components";
 import Nav from "./Nav";
+import Logo from "../../../assets/icons/Logo";
 
 const Header = styled.div`
-  background-color: #4339a2;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  background-color: white;
   position: fixed;
   width: 100%;
   z-index: 1;
@@ -41,7 +45,7 @@ const Hamburger = styled.div<any>`
     border-radius: 4px;
     left: 15px;
     transition-duration: 0.5s;
-    background: ${({ showNav }) => (showNav ? "transparent" : "white")};
+    background: ${({ showNav }) => (showNav ? "transparent" : "#34136c")};
 
     &:before {
       border-radius: 4px;
@@ -49,7 +53,7 @@ const Hamburger = styled.div<any>`
       position: absolute;
       width: 30px;
       height: 4px;
-      background-color: white;
+      background-color: #34136c;
       content: "";
       top: -10px;
       transform: ${({ showNav }) =>
@@ -64,7 +68,7 @@ const Hamburger = styled.div<any>`
       position: absolute;
       width: 30px;
       height: 4px;
-      background-color: white;
+      background-color: #34136c;
       content: "";
       top: 10px;
       transform: ${({ showNav }) =>
@@ -72,17 +76,13 @@ const Hamburger = styled.div<any>`
     }
   }
 `;
-const Logo = styled.div`
-color:white;
-font-weight: 500;
-`
 
 const NavContainer = styled(motion.div)`
   height: 100%;
   position: fixed;
   top: 0;
   width: 100%;
-  background-color: #4339a2;
+  background-color: white;
   z-index: 10;
   display: flex;
   justify-content: center;
@@ -99,7 +99,7 @@ const MobileHeader = () => {
   return (
     <Header>
       <Wrapper>
-        <Logo>Logo</Logo>
+        <Logo/>
         <Hamburger
           className="menu btn15"
           data-menu="15"
