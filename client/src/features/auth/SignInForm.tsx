@@ -109,11 +109,11 @@ const SignInForm = () => {
         }}>
         {({ errors, touched, isSubmitting }) => (
           <Form>
-            <Label htmlFor="email">E-mail</Label>
+            <Label htmlFor="email">Email</Label>
             <Input
               type="email"
               name="email"
-              placeholder="Type e-mail"
+              placeholder="Type email"
               id="email"
               $error={touched.email && !!errors.email}
             />

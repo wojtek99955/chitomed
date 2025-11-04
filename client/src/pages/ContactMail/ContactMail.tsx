@@ -194,15 +194,17 @@ const ContactMail = () => {
                   type="text"
                   name="name"
                   placeholder="Name / company"
+                  id="name"
                   $error={touched.name && !!errors.name}
                 />
                 <ErrorMessage name="name" component={ErrorText} />
 
-                <Label htmlFor="email">E-mail</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input
                   type="email"
                   name="email"
-                  placeholder="E-mail"
+                  placeholder="Email"
+                  id="email"
                   $error={touched.email && !!errors.email}
                 />
                 <ErrorMessage name="email" component={ErrorText} />
@@ -213,6 +215,7 @@ const ContactMail = () => {
                   rows={4}
                   placeholder="Message.."
                   autocomplete="off"
+                  id="message"
                   $error={touched.message && !!errors.message}
                 />
                 <ErrorMessage name="message" component={ErrorText} />
