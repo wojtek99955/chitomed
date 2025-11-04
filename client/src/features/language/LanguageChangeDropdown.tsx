@@ -54,6 +54,9 @@ const LanguagesList = styled(motion.div)`
   z-index: 0;
   width: 100%;
   box-shadow: rgba(100, 100, 111, 0.35) 0px 7px 29px 0px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  overflow: hidden;
 `;
 
 const Language = styled.div`
@@ -65,6 +68,7 @@ const Language = styled.div`
   padding: 1rem 0;
   cursor: pointer;
   transition: all 200ms;
+  cursor: pointer;
   &:hover {
     background-color: #f3f2fa;
   }
