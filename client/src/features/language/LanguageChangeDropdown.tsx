@@ -20,7 +20,7 @@ const CurrentLanguage = styled.div<any>`
   color: white;
   position: relative;
   z-index: 1;
-  background-color: #4339a2;
+  background-color: #34186e;
 
   /* &:hover {
     color: #322683;
@@ -35,14 +35,14 @@ const CurrentLanguage = styled.div<any>`
   ${(props) =>
     props.showList &&
     `
-    color: #322683;
+    color: #34186E;
     background-color: white;
     border-color: white;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    border-bottom: 1px solid #4339a2;
+    border-bottom: 1px solid #34186E;
   `}
 `;
 
