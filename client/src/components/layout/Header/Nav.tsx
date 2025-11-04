@@ -2,6 +2,7 @@ import styled from "styled-components";
 import LanguageChangeDropdown from "../../../features/language/LanguageChangeDropdown";
 import { device } from "../../../assets/device";
 import { Link } from "react-router-dom";
+import { FaRegUserCircle } from "react-icons/fa";
 
 const NAV = styled.nav`
   display: flex;
@@ -31,39 +32,48 @@ const NAV = styled.nav`
   }
 `;
 
-const ContactBtn = styled.div`
-  background-color: white;
-  color: #322683;
-  background-color: #7f73e0;
-  padding: 0.7rem 0.9rem;
-  border-radius: 40px;
-  font-weight: 500;
-  transition: all 200ms;
-  border: 2px solid #7f73e0;
-  cursor: pointer;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  background-color: white;
-  @media ${device.laptop} {
-    color: white;
-    background-color: #7f73e0;
-    width: auto;
-  }
-  &:hover {
-    background-color: white;
-    color: #322683;
-    border-color: white;
-  }
-`;
+// const ContactBtn = styled.div`
+//   background-color: white;
+//   color: #322683;
+//   background-color: #7f73e0;
+//   padding: 0.7rem 0.9rem;
+//   border-radius: 40px;
+//   font-weight: 500;
+//   transition: all 200ms;
+//   border: 2px solid #7f73e0;
+//   cursor: pointer;
+//   width: 100%;
+//   display: flex;
+//   justify-content: center;
+//   background-color: white;
+//   @media ${device.laptop} {
+//     color: white;
+//     background-color: #7f73e0;
+//     width: auto;
+//   }
+//   &:hover {
+//     background-color: white;
+//     color: #322683;
+//     border-color: white;
+//   }
+// `;
 
 const SigninBtn = styled(Link)`
   border: 2px solid #34186e;
   border-radius: 40px;
   padding: 0.7rem 1.8rem;
   text-decoration: none;
-  color:unset;
+  color: unset;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #34186e;
+`;
+
+const UserIcon = styled(FaRegUserCircle)`
+  font-size: 1.4rem;
+  color: #34186e;
 `;
 const Nav = () => {
   return (
@@ -72,7 +82,7 @@ const Nav = () => {
         <li>FAQ</li>
         <li>About</li>
       </ul> */}
-      <SigninBtn to="/">Sign in</SigninBtn>
+      <SigninBtn to="/"><UserIcon/> Sign in</SigninBtn>
       {/* <ContactBtn>Contact</ContactBtn> */}
       <LanguageChangeDropdown />
     </NAV>
