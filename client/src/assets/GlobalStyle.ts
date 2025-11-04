@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import { device } from "./device";
 
 const GlobalStyle = createGlobalStyle`
   /* Reset / Normalize */
@@ -19,10 +20,14 @@ const GlobalStyle = createGlobalStyle`
     color:#444444;
   }
   h2{
-    font-size: 2.2rem;
+    font-size: 2rem;
     margin-bottom: 2rem;
     color:#444444;
     text-transform: uppercase;
+
+    @media ${device.tablet}{
+      font-size: 2.2rem;
+    }
   }
   p{
     font-size: 1.2rem;
