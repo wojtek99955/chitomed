@@ -20,6 +20,7 @@ li{
     margin-bottom: .9rem;
     display: flex;
     gap:.5rem;
+    color:#444444;
 }
 `
 
