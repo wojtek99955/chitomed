@@ -8,7 +8,10 @@ const FooterContainer = styled.footer`
   background-color: #34136c;
   border-top-right-radius: 12px;
   border-top-left-radius: 12px;
-  padding:3rem 0
+  padding:3rem 1rem;
+  @media ${device.tablet}{
+    padding:3rem 0;
+  }
 `;
 
 const Wrapper = styled.div`
