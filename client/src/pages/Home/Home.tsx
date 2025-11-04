@@ -4,6 +4,7 @@ import About from "../About/About";
 import Advantages from "../Advantages/Advantages";
 import Brands from "../Brands/Brands";
 import Chitosan from "../Chitosan/Chitosan";
+import ContactMail from "../ContactMail/ContactMail";
 import WhatWeDo from "../WhatWeDo/WhatWeDo";
 import Opening from "./Opening/Opening";
 
@@ -25,6 +26,11 @@ const Home = () => {
       <br />
       <br />
       <Advantages />
+      <br />
+      <br />
+      <ContactMail/>
+      <br />
+      <br />
       <Footer />
     </div>
   );
