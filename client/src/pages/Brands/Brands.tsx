@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 
 const Box = styled.div`
   background-color: #34136c;
-  padding: 1rem;
+  padding: 2rem;
   border-radius: 12px;
   color:white;
 
@@ -29,9 +29,11 @@ const Box = styled.div`
 const Boxes = styled.div`
   display: grid;
   gap: 1rem;
+  max-width: 800px;
+  margin: auto;
   grid-template-columns: 1fr;
   @media ${device.tablet} {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 `;
 
@@ -58,27 +60,27 @@ img{
 `
 const Brands = () => {
   const brands = [
-    {
-      name: "Cyberbone",
-      text: "Personalized, bioresorbable implants 3D printed with bone-forming biomaterials for solid bone tissue regeneration.",
-    },
+    // {
+    //   name: "Cyberbone",
+    //   text: "Personalized, bioresorbable implants 3D printed with bone-forming biomaterials for solid bone tissue regeneration.",
+    // },
     {
       name: "NovaOss",
       text: "Thermosensitive chitosan matrix hydrogel with biomaterials for cancellous bone tissue regeneration.",
       logo:novaoss
     },
-    {
-      name: "Implants4Kids",
-      text: "Adaptive, bioresorbable, personalized 3D printed implant with bone-forming biomaterials for regeneration of cranial defects in children.",
-    },
-    {
-      name: "HybridOss",
-      text: "Personalized, bioresorbable 3D printed implants from bone-forming biomaterials with thermosensitive chitosan hydrogel content for complex bone regeneration in the most demanding surgical procedures and with metal components (e.g. dental implant screws) for procedures in maxillofacial surgery.",
-    },
-    {
-      name: "StrongOss",
-      text: "Personalized, bioresorbable implants 3D printed from bone-forming biomaterials for solid bone tissue regeneration with enhanced strength (CFF printing technology).",
-    },
+    // {
+    //   name: "Implants4Kids",
+    //   text: "Adaptive, bioresorbable, personalized 3D printed implant with bone-forming biomaterials for regeneration of cranial defects in children.",
+    // },
+    // {
+    //   name: "HybridOss",
+    //   text: "Personalized, bioresorbable 3D printed implants from bone-forming biomaterials with thermosensitive chitosan hydrogel content for complex bone regeneration in the most demanding surgical procedures and with metal components (e.g. dental implant screws) for procedures in maxillofacial surgery.",
+    // },
+    // {
+    //   name: "StrongOss",
+    //   text: "Personalized, bioresorbable implants 3D printed from bone-forming biomaterials for solid bone tissue regeneration with enhanced strength (CFF printing technology).",
+    // },
     {
       name: "RegCare",
       logo:regcare,
