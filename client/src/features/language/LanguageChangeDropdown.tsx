@@ -42,7 +42,7 @@ const CurrentLanguage = styled.div<any>`
     border-top-right-radius: 20px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    border-bottom: 1px solid #34186E;
+    border: 2px solid #34186E;
   `}
 `;
 
@@ -53,6 +53,7 @@ const LanguagesList = styled(motion.div)`
   position: absolute;
   z-index: 0;
   width: 100%;
+  box-shadow: rgba(100, 100, 111, 0.35) 0px 7px 29px 0px;
 `;
 
 const Language = styled.div`
@@ -78,6 +79,12 @@ const Flag = styled.div`
 
 const LanguageChangeDropdown = () => {
   const [showList, setShowList] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState("PL");
+
+    const handleLanguageChange = (lang: string) => {
+      setCurrentLanguage(lang);
+      setShowList(false);
+    };
 
   return (
     <Container>
@@ -85,7 +92,7 @@ const LanguageChangeDropdown = () => {
         showList={showList}
         onMouseEnter={() => setShowList(true)}
         onMouseLeave={() => setShowList(false)}>
-        PL
+        {currentLanguage}
       </CurrentLanguage>
       <AnimatePresence>
         {showList && (
@@ -96,13 +103,13 @@ const LanguageChangeDropdown = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2, delay: 0.03 }}>
-            <Language>
+            <Language onClick={() => handleLanguageChange("PL")}>
               <Flag>{PlFlag}</Flag>PL
             </Language>
-            <Language>
+            <Language onClick={() => handleLanguageChange("EN")}>
               <Flag>{UsaFlag}</Flag>EN
             </Language>
-            <Language>
+            <Language onClick={() => handleLanguageChange("FR")}>
               <Flag>{FrFlag}</Flag>FR
             </Language>
           </LanguagesList>
