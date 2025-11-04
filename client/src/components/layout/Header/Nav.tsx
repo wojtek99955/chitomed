@@ -69,11 +69,17 @@ const SigninBtn = styled(Link)`
   align-items: center;
   gap: 0.5rem;
   color: #34186e;
+  transition: all 200ms;
+  &:hover {
+    background-color: #dcd1f5;
+  }
 `;
 
 const UserIcon = styled(FaRegUserCircle)`
   font-size: 1.4rem;
   color: #34186e;
+
+
 `;
 const Nav = () => {
   return (

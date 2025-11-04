@@ -13,9 +13,17 @@ const Home = () => {
       <Header />
       <Opening />
       <About />
+      <br />
+      <br />
       <WhatWeDo />
+      <br />
+      <br />
       <Chitosan />
+      <br />
+      <br />
       <Brands />
+      <br />
+      <br />
       <Advantages />
       <Footer />
     </div>
