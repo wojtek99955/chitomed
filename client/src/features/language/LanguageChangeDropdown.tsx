@@ -3,7 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { PlFlag } from "../../assets/icons/PlFlag";
 import { UsaFlag } from "../../assets/icons/UsaFlag";
-import { DeFlag } from "../../assets/icons/DeFlag";
+import { FrFlag } from "../../assets/icons/FrFlag";
 
 const Container = styled.div`
   position: relative;
@@ -103,7 +103,7 @@ const LanguageChangeDropdown = () => {
               <Flag>{UsaFlag}</Flag>EN
             </Language>
             <Language>
-              <Flag>{DeFlag}</Flag>DE
+              <Flag>{FrFlag}</Flag>FR
             </Language>
           </LanguagesList>
         )}
