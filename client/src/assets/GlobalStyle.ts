@@ -16,9 +16,17 @@ const GlobalStyle = createGlobalStyle`
 
   h1{
     font-size: 2.5rem;
+    color:#444444;
+  }
+  h2{
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    color:#444444;
+    text-transform: uppercase;
   }
   p{
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    color:#444444;
   }
 
 `;

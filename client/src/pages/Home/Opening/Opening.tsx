@@ -19,6 +19,7 @@ const Main = styled.div`
   background-color: #332a85;
   display: block;
   max-width: 500px;
+  border-radius: 12px;
   padding: 2rem;
   opacity: 0.9;
   margin: 0 1rem;
@@ -53,18 +54,10 @@ const Opening = () => {
   return (
     <Container>
       <Main>
-        <h1>Lorem, ipsum dolor.</h1>
+        <h1>No limits biomaterials for bone regeneration</h1>
         <br />
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam minus
-          optio commodi? Obcaecati quibusdam cupiditate iusto voluptas, incidunt
-          magni iure maxime perferendis corporis fuga tempora molestiae, sit
-          odit unde nemo.
-        </p>
+        <p>Especially for medical and pharmaceutical applications</p>
         <br />
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, optio!
-        </p>
         <br />
         <Btn>Learn more</Btn>
       </Main>

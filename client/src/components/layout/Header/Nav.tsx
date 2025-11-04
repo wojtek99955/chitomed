@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import LanguageChangeDropdown from "../../../features/language/LanguageChangeDropdown";
 import { device } from "../../../assets/device";
+import { Link } from "react-router-dom";
 
 const NAV = styled.nav`
   display: flex;
@@ -55,14 +56,24 @@ const ContactBtn = styled.div`
     border-color: white;
   }
 `;
+
+const SigninBtn = styled(Link)`
+  border: 2px solid #34186e;
+  border-radius: 40px;
+  padding: 0.7rem 1.8rem;
+  text-decoration: none;
+  color:unset;
+  font-weight: 500;
+`;
 const Nav = () => {
   return (
     <NAV>
-      <ul>
+      {/* <ul>
         <li>FAQ</li>
         <li>About</li>
-      </ul>
-      <ContactBtn>Contact</ContactBtn>
+      </ul> */}
+      <SigninBtn to="/">Sign in</SigninBtn>
+      {/* <ContactBtn>Contact</ContactBtn> */}
       <LanguageChangeDropdown />
     </NAV>
   );
