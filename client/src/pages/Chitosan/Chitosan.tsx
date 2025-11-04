@@ -47,16 +47,18 @@ const Chitosan = () => {
           <img src="https://chitomed.com/index_files/_2.jpg" alt="" />
           <div>
             <p>
-              In addition, it has the following properties: biocompatibility,
-              ability to activate macrophages and neutrophils, stimulation of
-              cellular activity, uptake of growth factors, stimulation of
-              cytokine production, promotion of angiogenesis processes and
-              hydrophilicity.
+              In addition, it has the following properties:{" "}
+              <b>
+                biocompatibility, ability to activate macrophages and
+                neutrophils, stimulation of cellular activity, uptake of growth
+                factors, stimulation of cytokine production, promotion of
+                angiogenesis processes and hydrophilicity.
+              </b>
             </p>
             <br />
             <p>
-              Chitosan exhibits biocompatibility, has been approved by the Food
-              and Drug Administration (FDA) for use in dressings for
+              Chitosan exhibits biocompatibility, has been approved by the{" "}
+              <b>Food and Drug Administration (FDA)</b> for use in dressings for
               hard-to-heal wounds, and is a suitable material for constructing
               bioscaffolds used for the reconstruction of human organs and
               tissues.

@@ -31,23 +31,28 @@ const WhatWeDo = () => {
         <BoxesWrapper>
           <Box>
             <p>
-              Implementation of 3D printing technology using biomaterials for
-              implantology applications.
+              Implementation of 3D printing technology using{" "}
+              <b>biomaterials for implantology applications.</b>
             </p>
           </Box>
           <Box>
             <p>
-              Development of a complete series of medical devices and
-              regenerative dermocosmetics with chitosan for the effective
-              treatment of civilization diseases such as androgenetic alopecia.
+              Development of a{" "}
+              <b>
+                complete series of medical devices and regenerative
+                dermocosmetics with chitosan
+              </b>{" "}
+              for the effective treatment of civilization diseases such as
+              androgenetic alopecia.
             </p>
           </Box>
           <Box>
             <p>
-              Implementation of technology for the processing of chitosan into
-              multifunctional hydrogels of high purity (including
-              thermosensitive), which are used in medicine (implants, dressings,
-              drug carriers) and in specialized microbiological applications.
+              Implementation of technology for the processing of{" "}
+              <b>chitosan into multifunctional hydrogels of high purity</b>{" "}
+              (including thermosensitive), <b>which are used in medicine</b>{" "}
+              (implants, dressings, drug carriers) and in specialized
+              microbiological applications.
             </p>
           </Box>
         </BoxesWrapper>
