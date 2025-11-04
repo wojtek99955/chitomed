@@ -90,7 +90,7 @@ const Footer = () => {
             </a>
           </MailSection>
           <LinkedInSection>
-            <a href="/">
+            <a href="https://pl.linkedin.com/company/novaoss">
               <LinkedIn />
               Chitomed on LinkedIn
             </a>
