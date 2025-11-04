@@ -212,6 +212,7 @@ const ContactMail = () => {
                   name="message"
                   rows={4}
                   placeholder="Message.."
+                  autocomplete="off"
                   $error={touched.message && !!errors.message}
                 />
                 <ErrorMessage name="message" component={ErrorText} />
