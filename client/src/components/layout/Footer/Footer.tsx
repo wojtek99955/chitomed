@@ -8,7 +8,7 @@ const FooterContainer = styled.footer`
   background-color: #34136c;
   border-top-right-radius: 12px;
   border-top-left-radius: 12px;
-  padding:1rem;
+  padding:3rem 0
 `;
 
 const Wrapper = styled.div`
@@ -17,6 +17,9 @@ margin: auto;
 display: flex;
 justify-content: space-between;
 flex-direction: column;
+@media ${device.tablet}{
+    flex-direction: row;
+}
 `
 
 const Pin = styled(IoMdPin)`
@@ -46,7 +49,7 @@ const Data = styled.div`
 `
 
 const MailSection = styled.div`
-
+margin-bottom: .5rem;
 `
 
 const LinkedInSection = styled.div`
