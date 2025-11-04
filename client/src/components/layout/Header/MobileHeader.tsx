@@ -99,7 +99,7 @@ const MobileHeader = () => {
   return (
     <Header>
       <Wrapper>
-        <Logo/>
+        <Logo />
         <Hamburger
           className="menu btn15"
           data-menu="15"
@@ -110,8 +110,14 @@ const MobileHeader = () => {
       </Wrapper>
       <AnimatePresence>
         {showNav && (
-          <NavContainer initial={{ y: "-100vh" }} animate={{ y: 0 }} exit={{y:"-100vh"}}>
-            <Nav/>
+          <NavContainer
+            initial={{ y: "-100vh" }}
+            animate={{ y: 0, transition: { duration: 0.4, ease: "easeInOut" } }}
+            exit={{
+              y: "-100vh",
+              transition: { duration: 0.4, ease: "easeInOut" },
+            }}>
+            <Nav />
           </NavContainer>
         )}
       </AnimatePresence>
