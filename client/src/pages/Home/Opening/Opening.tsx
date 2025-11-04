@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import img from "./img.webp";
 import { device } from "../../../assets/device";
+import { useRef } from "react";
 const Container = styled.section`
   background-image: url(${img});
   width: 100%;
@@ -36,7 +37,7 @@ const Main = styled.div`
   }
 `;
 
-const Btn = styled.button`
+const Btn = styled.a`
   font-weight: 600;
   border: 2px solid white;
   transition: all 200ms;
@@ -51,15 +52,30 @@ const Btn = styled.button`
   }
 `;
 const Opening = () => {
+
+  const containerRef = useRef<any>(null);
+
+  const handleScroll = () => {
+    if (containerRef.current) {
+      const sectionBottom =
+        containerRef.current.offsetTop + containerRef.current.offsetHeight;
+
+      window.scrollTo({
+        top: sectionBottom -100,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
-    <Container>
+    <Container ref={containerRef}>
       <Main>
         <h1>No limits biomaterials for bone regeneration</h1>
         <br />
         <p>Especially for medical and pharmaceutical applications</p>
         <br />
         <br />
-        <Btn>Learn more</Btn>
+        <Btn onClick={handleScroll}>Learn more</Btn>
       </Main>
     </Container>
   );

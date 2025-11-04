@@ -32,7 +32,7 @@ const About = () => {
     <Container>
       <h2>About Chitomed</h2>
       <Wrapper>
-        <Text>
+        <Text id="about">
           <p>
             We develop and implement innovative technological solutions based on
             biomaterials for the pharmaceutical, medical, and cosmetics
