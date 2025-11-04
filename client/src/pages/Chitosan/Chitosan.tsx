@@ -22,8 +22,11 @@ const Block = styled.div`
   }
   gap: 2rem;
   img {
-    width: 50%;
+    width: 80%;
     border-radius: 12px;
+    @media ${device.tablet} {
+      width: 50%;
+    }
   }
 `;
 const Chitosan = () => {
