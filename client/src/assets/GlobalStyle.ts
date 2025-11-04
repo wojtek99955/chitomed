@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
     color:#444444;
   }
   h2{
-    font-size: 2rem;
+    font-size: 1.8rem;
     margin-bottom: 2rem;
     color:#444444;
     text-transform: uppercase;
