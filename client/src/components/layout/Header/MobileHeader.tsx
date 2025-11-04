@@ -7,7 +7,7 @@ import Logo from "../../../assets/icons/Logo";
 const Header = styled.div`
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: rgba(149, 157, 165, 0.4) 0px 8px 24px;
   background-color: white;
   position: fixed;
   width: 100%;

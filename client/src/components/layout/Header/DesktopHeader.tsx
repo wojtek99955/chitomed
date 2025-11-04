@@ -10,7 +10,7 @@ const HeaderContainer = styled.header`
   z-index: 1;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
-  box-shadow: rgba(149, 157, 165, 0.35) 0px 8px 24px;
+  box-shadow: rgba(149, 157, 165, 0.4) 0px 8px 24px;
 `;
 
 const Wrapper = styled.div`
