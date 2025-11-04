@@ -16,8 +16,11 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h1{
-    font-size: 2.5rem;
+    font-size: 2.1rem;
     color:#444444;
+    @media ${device.desktop}{
+      font-size: 2.5rem;
+    }
   }
   h2{
     font-size: 1.8rem;
