@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import SignInForm from "../../features/auth/SignInForm"
 
 const Container = styled.section`
 min-height: 100vh;
@@ -10,7 +11,7 @@ align-items: center;
 
 const SignIn = () => {
   return (
-    <Container>SignIn</Container>
+    <Container><SignInForm/></Container>
   )
 }
 
