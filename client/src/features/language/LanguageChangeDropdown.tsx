@@ -72,6 +72,9 @@ const Language = styled.div`
   &:hover {
     background-color: #f3f2fa;
   }
+  &:active {
+    background-color: #e9e7f6;
+  }
 `;
 
 const Flag = styled.div`
