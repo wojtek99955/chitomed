@@ -62,11 +62,11 @@ const ErrorText = styled.div`
 // --- walidacja Yup ---
 const SignInSchema = Yup.object().shape({
   email: Yup.string()
-    .email("Nieprawidłowy adres e-mail")
-    .required("Email jest wymagany"),
+    .email("Invalid email address")
+    .required("Email is required"),
   password: Yup.string()
-    .min(6, "Hasło musi mieć co najmniej 6 znaków")
-    .required("Hasło jest wymagane"),
+    .min(6, "Password must be at least 6 characters long")
+    .required("Password is required"),
 });
 
 const LogoContainer = styled.div`
@@ -83,25 +83,21 @@ const SignInForm = () => {
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={SignInSchema}
-        onSubmit={(values:any, { setSubmitting }:any) => {
+        onSubmit={(values:any) => {
           console.log("Dane logowania:", values);
-          setTimeout(() => {
-            setSubmitting(false);
-            alert(`Zalogowano jako: ${values.email}`);
-          }, 1000);
         }}>
         {({ isSubmitting }:any) => (
           <Form>
-            <Label htmlFor="email">Email</Label>
-            <Input type="email" name="email" placeholder="Wpisz email" />
+            <Label htmlFor="email">E-mail</Label>
+            <Input type="email" name="email" placeholder="Type e-mail" />
             <ErrorMessage name="email" component={ErrorText} />
 
-            <Label htmlFor="password">Hasło</Label>
-            <Input type="password" name="password" placeholder="Wpisz hasło" />
+            <Label htmlFor="password">Password</Label>
+            <Input type="password" name="password" placeholder="Type password" />
             <ErrorMessage name="password" component={ErrorText} />
 
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Logowanie..." : "Zaloguj się"}
+              {isSubmitting ? "Signing in..." : "Sign in"}
             </Button>
           </Form>
         )}
