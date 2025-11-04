@@ -29,12 +29,12 @@ const Pin = styled(IoMdPin)`
 font-size: 1.8rem;
 `
 const Mail = styled(IoMdMail)`
-  font-size: 1.8rem;
+  font-size: 1.7rem;
   color:white;
 `;
 
 const LinkedIn = styled(FaLinkedin)`
-  font-size: 1.8rem;
+  font-size: 1.7rem;
   color: white;
 `;
 const CompanyData = styled.div`
