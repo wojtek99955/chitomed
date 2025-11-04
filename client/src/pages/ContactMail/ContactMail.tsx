@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import styled from "styled-components";
 import { IoMdMail, IoMdPin } from "react-icons/io";
 import { HiPhone } from "react-icons/hi2";
+import { device } from "../../assets/device";
 
 // Styled components
 const FormContainer = styled.div`
@@ -107,6 +108,10 @@ const Wrapper = styled.div`
 display: flex;
 gap:2rem;
 align-items: center;
+flex-direction: column;
+@media ${device.tablet}{
+    flex-direction: row;
+}
 `
 
 const ContactInfo = styled.div`
