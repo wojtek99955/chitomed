@@ -47,7 +47,7 @@ const NAV = styled.nav`
         background-color: #efe8fb;
       }
       @media ${device.laptop} {
-        padding: 0.5rem;
+        padding: 0.6rem;
         font-size: 1rem;
       }
     }
@@ -66,6 +66,7 @@ const SigninBtn = styled.a`
   gap: 0.5rem;
   color: #34186e;
   transition: all 200ms;
+  font-size: 1rem;
   &:hover {
     background-color: #f4effc;
   }
