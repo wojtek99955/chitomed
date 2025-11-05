@@ -29,11 +29,11 @@ const Box = styled.div`
 const Boxes = styled.div`
   display: grid;
   gap: 1rem;
-  max-width: 800px;
+  max-width: 1100px;
   margin: auto;
   grid-template-columns: 1fr;
   @media ${device.tablet} {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
   }
 `;
 
@@ -85,6 +85,10 @@ const Brands = () => {
       name: "RegCare",
       logo: regcare,
       text: "Regenerative dermocosmetics based on chitosan.",
+    },
+    {
+      name: "NovaHemo",
+      text:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Saepe, pariatur",
     },
   ];
   return (
