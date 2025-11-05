@@ -154,7 +154,7 @@ const ContactFormSchema = Yup.object().shape({
 
 const ContactMail = () => {
   return (
-    <Section>
+    <Section id="contact">
       <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>
         Get in Touch
       </h2>

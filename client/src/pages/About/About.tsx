@@ -29,10 +29,10 @@ const Text = styled.div`
 `
 const About = () => {
   return (
-    <Container>
+    <Container id="about">
       <h2>About Chitomed</h2>
       <Wrapper>
-        <Text id="about">
+        <Text>
           <p>
             We develop and implement innovative technological solutions based on
             biomaterials for the pharmaceutical, medical, and cosmetics

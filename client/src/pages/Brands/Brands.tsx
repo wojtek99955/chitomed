@@ -92,7 +92,7 @@ const Brands = () => {
     },
   ];
   return (
-    <Container>
+    <Container id="brands">
       <h2>Chitomed brands</h2>
       <Wrapper>
         <Boxes>

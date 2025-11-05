@@ -117,7 +117,7 @@ const MobileHeader = () => {
               y: "-100vh",
               transition: { duration: 0.4, ease: "easeInOut" },
             }}>
-            <Nav />
+            <Nav setShowNav={setShowNav}/>
           </NavContainer>
         )}
       </AnimatePresence>

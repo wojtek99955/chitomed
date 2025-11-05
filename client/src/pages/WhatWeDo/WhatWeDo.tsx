@@ -29,7 +29,7 @@ const Box = styled.div`
 `;
 const WhatWeDo = () => {
   return (
-    <Container>
+    <Container id="solutions">
       <Wrapper>
         <h2>We are involved in</h2>
         <BoxesWrapper>

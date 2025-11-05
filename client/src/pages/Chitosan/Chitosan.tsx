@@ -31,7 +31,7 @@ const Block = styled.div`
 `;
 const Chitosan = () => {
   return (
-    <Container>
+    <Container id="chitosan">
       <Wrapper>
         <h2>WHAT IS CHITOSAN MICROCRYSTALLINE?</h2>
         <Block>
