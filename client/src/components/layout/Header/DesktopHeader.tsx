@@ -28,13 +28,26 @@ const Wrapper = styled.div`
 //   font-weight: 500;
 // `;
 
+const LogoButton = styled.div`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+`;
 
 const DesktopHeader = () => {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
     <HeaderContainer>
       <Wrapper>
-        <Logo/>
-        <Nav/>
+        <LogoButton onClick={scrollToTop}>
+          <Logo />
+        </LogoButton>{" "}
+        <Nav />
       </Wrapper>
     </HeaderContainer>
   );
