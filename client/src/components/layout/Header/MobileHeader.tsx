@@ -45,7 +45,7 @@ const Hamburger = styled.div<any>`
     border-radius: 4px;
     left: 15px;
     transition-duration: 0.5s;
-    background: ${({ showNav }) => (showNav ? "transparent" : "#34136c")};
+    background: ${({ showNav }) => (showNav ? "transparent" : "#58585A")};
 
     &:before {
       border-radius: 4px;
@@ -54,6 +54,7 @@ const Hamburger = styled.div<any>`
       width: 30px;
       height: 4px;
       background-color: #34136c;
+      background-color: #58585a;
       content: "";
       top: -10px;
       transform: ${({ showNav }) =>
@@ -69,6 +70,7 @@ const Hamburger = styled.div<any>`
       width: 30px;
       height: 4px;
       background-color: #34136c;
+      background-color: #58585a;
       content: "";
       top: 10px;
       transform: ${({ showNav }) =>
