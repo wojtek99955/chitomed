@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { device } from "../../assets/device";
 import regcare from "../../assets/icons/regcare.png";
 import novaoss from "../../assets/icons/novaoss.png";
+import novahemo from "../../assets/icons/novahemo.png"
 const Container = styled.section`
   padding: 1rem;
   h2 {
@@ -89,6 +90,7 @@ const Brands = () => {
     },
     {
       name: "NovaHemo",
+      logo:novahemo,
       text:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Saepe, pariatur",
     },
   ];
