@@ -56,6 +56,7 @@ const NAV = styled.nav`
 
 const SigninBtn = styled.a`
   border: 2px solid #34186e;
+  border:2px solid #58585A;
   border-radius: 40px;
   padding: 0.7rem 1.8rem;
   text-decoration: none;
@@ -65,6 +66,7 @@ const SigninBtn = styled.a`
   align-items: center;
   gap: 0.5rem;
   color: #34186e;
+  color:#58585A;
   transition: all 200ms;
   font-size: 1rem;
   &:hover {
@@ -78,6 +80,7 @@ const SigninBtn = styled.a`
 const UserIcon = styled(FaRegUserCircle)`
   font-size: 1.4rem;
   color: #34186e;
+  color: #58585a;
 `;
 
 const Nav = ({ setShowNav }: any) => {

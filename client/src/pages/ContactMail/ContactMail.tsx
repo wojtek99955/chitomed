@@ -80,6 +80,7 @@ const Button = styled.button`
   width: 100%;
   padding: 0.9rem;
   background-color: #5d2fbd;
+  background-color: #58585a;
   color: white;
   border: none;
   border-radius: 8px;
@@ -132,15 +133,18 @@ span{
 const Pin = styled(IoMdPin)`
   font-size: 1.8rem;
   color: #34136c;
+  color: #58585a;
 `;
 const Mail = styled(IoMdMail)`
   font-size: 1.7rem;
   color: #34136c;
+  color: #58585a;
 `;
 
 const Phone = styled(HiPhone)`
   font-size: 1.7rem;
   color: #34136c;
+  color: #58585a;
 `;
 
 // --- walidacja Yup ---

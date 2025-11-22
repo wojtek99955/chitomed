@@ -15,7 +15,7 @@ exports.sendPassword = asyncHandler(async (req, res) => {
   const mailOptions = {
     from: process.env.MAIL_USER,
     to: email,
-    subject: "Twoje wygenerowane hasło",
+    subject: "Chitomed: ",
     text: `Oto Twoje hasło: ${password}`,
   };
 

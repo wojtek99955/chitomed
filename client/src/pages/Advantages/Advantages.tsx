@@ -27,6 +27,7 @@ li{
 const Checkmark = styled(IoIosCheckmarkCircle)`
   font-size: 2.2rem;
   color: #34136c;
+  color: #58585a;
 `;
 
 const Advantages = () => {

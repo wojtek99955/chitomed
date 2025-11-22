@@ -18,6 +18,7 @@ const Container = styled.section`
 
 const Main = styled.div`
   background-color: #332a85;
+  background-color: #58585a;
   display: block;
   max-width: 500px;
   border-radius: 12px;

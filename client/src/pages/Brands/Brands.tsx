@@ -17,6 +17,7 @@ const Wrapper = styled.div`
 
 const Box = styled.div`
   background-color: #34136c;
+  background-color: #58585a;
   padding: 2rem;
   border-radius: 12px;
   color: white;

@@ -21,6 +21,7 @@ const CurrentLanguage = styled.div<any>`
   position: relative;
   z-index: 1;
   background-color: #34186e;
+  background-color: #58585a;
 
   /* &:hover {
     color: #322683;
@@ -43,6 +44,7 @@ const CurrentLanguage = styled.div<any>`
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     border: 2px solid #34186E;
+    border: 2px solid #58585A;
   `}
 `;
 
