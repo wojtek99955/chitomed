@@ -56,16 +56,9 @@ const Logo = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 3rem;
-  padding:1.5rem;
-  @media ${device.laptop}{
-    padding:2rem;
-  }
   img {
-    width: 80%;
-@media ${device.laptop}{
-  width: 90%;
-}
+    width: 100%;
+    max-width: 10rem;
   }
 `;
 const Brands = () => {
