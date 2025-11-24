@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { IoMdPin } from "react-icons/io";
 import { IoMdMail } from "react-icons/io";
-import { FaLinkedin } from "react-icons/fa6";
+import { FaLinkedin, FaYoutube } from "react-icons/fa6";
 import { device } from "../../../assets/device";
 
 const FooterContainer = styled.footer`
@@ -57,6 +57,15 @@ margin-bottom: .5rem;
 `
 
 const LinkedInSection = styled.div`
+  margin-bottom: 0.5rem;
+`;
+
+const Youtube = styled.div`
+`;
+
+const YoutubeIcon = styled(FaYoutube)`
+font-size: 1.7rem;
+color:white;
 `
 
 const Row = styled.div`
@@ -96,6 +105,12 @@ const Footer = () => {
               Chitomed on LinkedIn
             </a>
           </LinkedInSection>
+          <Youtube>
+            <a href="https://www.youtube.com/@Chitomed-gn8ld">
+              <YoutubeIcon />
+              Chitomed on Youtube
+            </a>
+          </Youtube>
         </Row>
       </Wrapper>
     </FooterContainer>
