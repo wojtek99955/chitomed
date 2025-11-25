@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { device } from "../../assets/device";
+import { ScrollReveal } from "../../animations/ScrollReveal";
 
 const Container = styled.section`
   padding: 1rem;
@@ -25,7 +26,7 @@ const Block = styled.div`
     width: 80%;
     border-radius: 12px;
     @media ${device.tablet} {
-      width: 50%;
+      width: 100%;
     }
   }
 `;
@@ -33,45 +34,56 @@ const Chitosan = () => {
   return (
     <Container id="chitosan">
       <Wrapper>
-        <h2>WHAT IS CHITOSAN MICROCRYSTALLINE?</h2>
+        <ScrollReveal>
+          <h2>WHAT IS CHITOSAN MICROCRYSTALLINE?</h2>
+        </ScrollReveal>
         <Block>
-          <div>
-            <p>
-              Chitosan is a biopolymer with unique properties, whose potential
-              for specialized applications is very broad.
-            </p>
-            <br />
-            <p>
-              <b>This biopolymer exhibits antibacterial activity</b> against
-              gram-positive and gram-negative bacterial strains, which has been
-              proven in studies on many strains of bacteria, fungi and yeast.
-            </p>
-          </div>
-          <img src="https://chitomed.com/index_files/details-2.png" alt="" />
+          <ScrollReveal style={{width:"100%"}}>
+            <div>
+              <p>
+                Chitosan is a biopolymer with unique properties, whose potential
+                for specialized applications is very broad.
+              </p>
+              <br />
+              <p>
+                <b>This biopolymer exhibits antibacterial activity</b> against
+                gram-positive and gram-negative bacterial strains, which has
+                been proven in studies on many strains of bacteria, fungi and
+                yeast.
+              </p>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal>
+            <img src="https://chitomed.com/index_files/details-2.png" alt="" />
+          </ScrollReveal>
         </Block>
         <br />
         <br />
         <Block>
-          <img src="https://chitomed.com/index_files/_2.jpg" alt="" />
-          <div>
-            <p>
-              In addition, it has the following properties:{" "}
-              <b>
-                biocompatibility, ability to activate macrophages and
-                neutrophils, stimulation of cellular activity, uptake of growth
-                factors, stimulation of cytokine production, promotion of
-                angiogenesis processes and hydrophilicity.
-              </b>
-            </p>
-            <br />
-            <p>
-              Chitosan exhibits biocompatibility, has been approved by the{" "}
-              <b>Food and Drug Administration (FDA)</b> for use in dressings for
-              hard-to-heal wounds, and is a suitable material for constructing
-              bioscaffolds used for the reconstruction of human organs and
-              tissues.
-            </p>
-          </div>
+          <ScrollReveal>
+            <img src="https://chitomed.com/index_files/_2.jpg" alt="" />
+          </ScrollReveal>
+          <ScrollReveal style={{ width: "100%" }}>
+            <div>
+              <p>
+                In addition, it has the following properties:{" "}
+                <b>
+                  biocompatibility, ability to activate macrophages and
+                  neutrophils, stimulation of cellular activity, uptake of
+                  growth factors, stimulation of cytokine production, promotion
+                  of angiogenesis processes and hydrophilicity.
+                </b>
+              </p>
+              <br />
+              <p>
+                Chitosan exhibits biocompatibility, has been approved by the{" "}
+                <b>Food and Drug Administration (FDA)</b> for use in dressings
+                for hard-to-heal wounds, and is a suitable material for
+                constructing bioscaffolds used for the reconstruction of human
+                organs and tissues.
+              </p>
+            </div>
+          </ScrollReveal>
         </Block>
       </Wrapper>
     </Container>

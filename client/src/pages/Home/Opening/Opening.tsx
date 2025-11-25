@@ -2,6 +2,7 @@ import styled from "styled-components";
 import img from "./img.webp";
 import { device } from "../../../assets/device";
 import { useRef } from "react";
+import { ScrollReveal } from "../../../animations/ScrollReveal";
 const Container = styled.section`
   background-image: url(${img});
   width: 100%;
@@ -70,14 +71,16 @@ const Opening = () => {
 
   return (
     <Container ref={containerRef}>
-      <Main>
-        <h1>No limits biomaterials for bone regeneration</h1>
-        <br />
-        <p>Especially for medical and pharmaceutical applications</p>
-        <br />
-        <br />
-        <Btn onClick={handleScroll}>Learn more</Btn>
-      </Main>
+      <ScrollReveal style={{height:"100%"}}>
+        <Main>
+          <h1>No limits biomaterials for bone regeneration</h1>
+          <br />
+          <p>Especially for medical and pharmaceutical applications</p>
+          <br />
+          <br />
+          <Btn onClick={handleScroll}>Learn more</Btn>
+        </Main>
+      </ScrollReveal>
     </Container>
   );
 };

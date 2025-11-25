@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { IoMdMail, IoMdPin } from "react-icons/io";
 import { HiPhone } from "react-icons/hi2";
 import { device } from "../../assets/device";
+import { ScrollReveal } from "../../animations/ScrollReveal";
 
 // Styled components
 const FormContainer = styled.div`
@@ -160,78 +161,84 @@ const ContactFormSchema = Yup.object().shape({
 const ContactMail = () => {
   return (
     <Section id="contact">
-      <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>
-        Get in Touch
-      </h2>
+      <ScrollReveal>
+        <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>
+          Get in Touch
+        </h2>
+      </ScrollReveal>
       <Wrapper>
-        <ContactInfo>
-          <ContactInfoEl>
-            <Phone />{" "}
-            <strong>
-              Call us <span>+48 444 444 444</span>
-            </strong>
-          </ContactInfoEl>
-          <ContactInfoEl>
-            <Mail />{" "}
-            <strong>
-              Email us <span>office@chitomed.com</span>
-            </strong>
-          </ContactInfoEl>
-          <ContactInfoEl>
-            <Pin />{" "}
-            <strong>
-              Address <span>J.H. Dąbrowskiego 77/A</span>
-            </strong>
-          </ContactInfoEl>
-        </ContactInfo>
-        <FormContainer>
-          <Formik
-            initialValues={{ name: "", email: "", message: "" }}
-            validationSchema={ContactFormSchema}
-            onSubmit={(values) => {
-              console.log("Wiadomość kontaktowa:", values);
-              // Możesz dodać logikę wysyłania wiadomości do serwera
-            }}>
-            {({ errors, touched, isSubmitting }) => (
-              <Form>
-                <Label htmlFor="name">Name / company</Label>
-                <Input
-                  type="text"
-                  name="name"
-                  placeholder="Name / company"
-                  id="name"
-                  $error={touched.name && !!errors.name}
-                />
-                <ErrorMessage name="name" component={ErrorText} />
+        <ScrollReveal>
+          <ContactInfo>
+            <ContactInfoEl>
+              <Phone />{" "}
+              <strong>
+                Call us <span>+48 444 444 444</span>
+              </strong>
+            </ContactInfoEl>
+            <ContactInfoEl>
+              <Mail />{" "}
+              <strong>
+                Email us <span>office@chitomed.com</span>
+              </strong>
+            </ContactInfoEl>
+            <ContactInfoEl>
+              <Pin />{" "}
+              <strong>
+                Address <span>J.H. Dąbrowskiego 77/A</span>
+              </strong>
+            </ContactInfoEl>
+          </ContactInfo>
+        </ScrollReveal>
+        <ScrollReveal style={{width:"100%"}}>
+          <FormContainer>
+            <Formik
+              initialValues={{ name: "", email: "", message: "" }}
+              validationSchema={ContactFormSchema}
+              onSubmit={(values) => {
+                console.log("Wiadomość kontaktowa:", values);
+                // Możesz dodać logikę wysyłania wiadomości do serwera
+              }}>
+              {({ errors, touched, isSubmitting }) => (
+                <Form>
+                  <Label htmlFor="name">Name / company</Label>
+                  <Input
+                    type="text"
+                    name="name"
+                    placeholder="Name / company"
+                    id="name"
+                    $error={touched.name && !!errors.name}
+                  />
+                  <ErrorMessage name="name" component={ErrorText} />
 
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  id="email"
-                  $error={touched.email && !!errors.email}
-                />
-                <ErrorMessage name="email" component={ErrorText} />
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    id="email"
+                    $error={touched.email && !!errors.email}
+                  />
+                  <ErrorMessage name="email" component={ErrorText} />
 
-                <Label htmlFor="message">Message</Label>
-                <TextArea
-                  name="message"
-                  rows={4}
-                  placeholder="Message.."
-                  autocomplete="off"
-                  id="message"
-                  $error={touched.message && !!errors.message}
-                />
-                <ErrorMessage name="message" component={ErrorText} />
+                  <Label htmlFor="message">Message</Label>
+                  <TextArea
+                    name="message"
+                    rows={4}
+                    placeholder="Message.."
+                    autocomplete="off"
+                    id="message"
+                    $error={touched.message && !!errors.message}
+                  />
+                  <ErrorMessage name="message" component={ErrorText} />
 
-                <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Sending..." : "Send message"}
-                </Button>
-              </Form>
-            )}
-          </Formik>
-        </FormContainer>
+                  <Button type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? "Sending..." : "Send message"}
+                  </Button>
+                </Form>
+              )}
+            </Formik>
+          </FormContainer>
+        </ScrollReveal>
       </Wrapper>
     </Section>
   );

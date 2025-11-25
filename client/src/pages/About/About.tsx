@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { device } from "../../assets/device"
+import { ScrollReveal } from "../../animations/ScrollReveal"
 
 const Container = styled.section`
 padding:1rem;
@@ -30,25 +31,27 @@ const Text = styled.div`
 const About = () => {
   return (
     <Container id="about">
-      <h2>About Chitomed</h2>
-      <Wrapper>
-        <Text>
-          <p>
-            We develop and implement innovative technological solutions based on
-            biomaterials for the pharmaceutical, medical, and cosmetics
-            industries.
-          </p>
-          <br />
-          <p>We specialize in chitosan and microcrystalline chitosan.</p>
-          <br />
-          <p>
-            We cooperate with scientists who have studied chitosan and its
-            processing technologies in detail for many years.
-          </p>
-        </Text>
-        <img src="https://chitomed.com/index_files/_1.jpg" alt="" />
-      </Wrapper>
-      <br />
+      <ScrollReveal>
+        <h2>About Chitomed</h2>
+        <Wrapper>
+          <Text>
+            <p>
+              We develop and implement innovative technological solutions based
+              on biomaterials for the pharmaceutical, medical, and cosmetics
+              industries.
+            </p>
+            <br />
+            <p>We specialize in chitosan and microcrystalline chitosan.</p>
+            <br />
+            <p>
+              We cooperate with scientists who have studied chitosan and its
+              processing technologies in detail for many years.
+            </p>
+          </Text>
+          <img src="https://chitomed.com/index_files/_1.jpg" alt="" />
+        </Wrapper>
+        <br />
+      </ScrollReveal>
     </Container>
   );
 }

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { IoIosCheckmarkCircle } from "react-icons/io";
+import { ScrollReveal } from "../../animations/ScrollReveal";
 
 const Container = styled.section`
   padding: 1rem;
@@ -41,16 +42,22 @@ const Advantages = () => {
   return (
     <Container>
       <Wrapper>
-        <h2>COMPETITIVE ADVANTAGES OF CHITOMED</h2>
+        <ScrollReveal>
+          <h2>COMPETITIVE ADVANTAGES OF CHITOMED</h2>
+        </ScrollReveal>
         <Content>
-          <ul>
-            {advantages.map((item, index) => (
-              <li key={index}>
-                <div><Checkmark/></div>
-                {item}
-              </li>
-            ))}
-          </ul>
+          <ScrollReveal>
+            <ul>
+              {advantages.map((item, index) => (
+                <li key={index}>
+                  <div>
+                    <Checkmark />
+                  </div>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </ScrollReveal>
         </Content>
       </Wrapper>
     </Container>

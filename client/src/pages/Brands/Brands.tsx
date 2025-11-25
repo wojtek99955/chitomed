@@ -3,6 +3,7 @@ import { device } from "../../assets/device";
 import regcare from "../../assets/icons/regcare.png";
 import novaoss from "../../assets/icons/novaoss.png";
 import novahemo from "../../assets/icons/novahemo.png"
+import { ScrollReveal } from "../../animations/ScrollReveal";
 const Container = styled.section`
   padding: 1rem;
   h2 {
@@ -22,6 +23,7 @@ const Box = styled.div`
   padding: 2rem;
   border-radius: 12px;
   color: white;
+  height: 100%;
 
   p {
     color: white;
@@ -97,20 +99,28 @@ const Brands = () => {
   ];
   return (
     <Container id="brands">
-      <h2>Chitomed brands</h2>
+      <ScrollReveal>
+        <h2>Chitomed brands</h2>
+      </ScrollReveal>
       <Wrapper>
         <Boxes>
           {brands.map((brand: any) => {
             return (
-              <Box key={brand.name}>
-                <Name>
-                  <Logo>
-                    {brand.logo ? <img src={brand.logo} alt="" /> : brand.name}
-                  </Logo>
-                </Name>
+              <ScrollReveal>
+                <Box key={brand.name}>
+                  <Name>
+                    <Logo>
+                      {brand.logo ? (
+                        <img src={brand.logo} alt="" />
+                      ) : (
+                        brand.name
+                      )}
+                    </Logo>
+                  </Name>
 
-                <p>{brand.text}</p>
-              </Box>
+                  <p>{brand.text}</p>
+                </Box>
+              </ScrollReveal>
             );
           })}
         </Boxes>

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { device } from "../../assets/device";
+import { ScrollReveal } from "../../animations/ScrollReveal";
 
 const Container = styled.section`
   padding: 1rem;
@@ -9,9 +10,9 @@ const Container = styled.section`
 `;
 
 const Wrapper = styled.div`
-max-width: 1100px;
-margin: auto;
-`
+  max-width: 1100px;
+  margin: auto;
+`;
 
 const BoxesWrapper = styled.div`
   display: grid;
@@ -24,41 +25,50 @@ const BoxesWrapper = styled.div`
 
 const Box = styled.div`
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  padding:1rem;
+  padding: 1rem;
   border-radius: 12px;
+  height: 100%;
 `;
 const WhatWeDo = () => {
   return (
     <Container id="solutions">
       <Wrapper>
-        <h2>We are involved in</h2>
+        <ScrollReveal>
+          <h2>We are involved in</h2>
+        </ScrollReveal>
         <BoxesWrapper>
-          <Box>
-            <p>
-              Implementation of 3D printing technology using{" "}
-              <b>biomaterials for implantology applications.</b>
-            </p>
-          </Box>
-          <Box>
-            <p>
-              Development of a{" "}
-              <b>
-                complete series of medical devices and regenerative
-                dermocosmetics with chitosan
-              </b>{" "}
-              for the effective treatment of civilization diseases such as
-              androgenetic alopecia.
-            </p>
-          </Box>
-          <Box>
-            <p>
-              Implementation of technology for the processing of{" "}
-              <b>chitosan into multifunctional hydrogels of high purity</b>{" "}
-              (including thermosensitive), <b>which are used in medicine</b>{" "}
-              (implants, dressings, drug carriers) and in specialized
-              microbiological applications.
-            </p>
-          </Box>
+          <ScrollReveal style={{ height: "100%" }}>
+            <Box>
+              <p>
+                Implementation of 3D printing technology using{" "}
+                <b>biomaterials for implantology applications.</b>
+              </p>
+            </Box>
+          </ScrollReveal>
+          <ScrollReveal style={{ height: "100%" }}>
+            <Box>
+              <p>
+                Development of a{" "}
+                <b>
+                  complete series of medical devices and regenerative
+                  dermocosmetics with chitosan
+                </b>{" "}
+                for the effective treatment of civilization diseases such as
+                androgenetic alopecia.
+              </p>
+            </Box>
+          </ScrollReveal>
+          <ScrollReveal style={{ height: "100%" }}>
+            <Box>
+              <p>
+                Implementation of technology for the processing of{" "}
+                <b>chitosan into multifunctional hydrogels of high purity</b>{" "}
+                (including thermosensitive), <b>which are used in medicine</b>{" "}
+                (implants, dressings, drug carriers) and in specialized
+                microbiological applications.
+              </p>
+            </Box>
+          </ScrollReveal>
         </BoxesWrapper>
       </Wrapper>
     </Container>
