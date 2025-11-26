@@ -5,6 +5,7 @@ import Advantages from "../Advantages/Advantages";
 import Brands from "../Brands/Brands";
 import Chitosan from "../Chitosan/Chitosan";
 import ContactMail from "../ContactMail/ContactMail";
+import Newsletter from "../Newsletter/Newsletter";
 import WhatWeDo from "../WhatWeDo/WhatWeDo";
 import Opening from "./Opening/Opening";
 
@@ -31,6 +32,7 @@ const Home = () => {
       <ContactMail/>
       <br />
       <br />
+      <Newsletter/>
       <Footer />
     </div>
   );
