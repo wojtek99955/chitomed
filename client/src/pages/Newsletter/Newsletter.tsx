@@ -5,6 +5,9 @@ import * as Yup from "yup";
 import { Link } from "react-router-dom";
 
 // Styled components
+const Wrapper = styled.div`
+  background-color: #f7f7f7;
+`;
 const Container = styled.section`
   padding: 4rem 1rem;
   max-width: 700px;
@@ -133,62 +136,66 @@ const validationSchema = Yup.object({
 
 const Newsletter: React.FC = () => {
   return (
-    <Container>
-      <Title>Subscribe to Our Newsletter</Title>
+    <Wrapper>
+      <Container>
+        <Title>Subscribe to Our Newsletter</Title>
 
-      <Formik
-        initialValues={{
-          email: "",
-          privacyPolicy: false,
-        }}
-        validationSchema={validationSchema}
-        onSubmit={(values, { setSubmitting, resetForm, setStatus }) => {
-          setTimeout(() => {
-            console.log("Subscribed:", values.email);
-            setStatus({ success: true });
-            resetForm();
-            setSubmitting(false);
+        <Formik
+          initialValues={{
+            email: "",
+            privacyPolicy: false,
+          }}
+          validationSchema={validationSchema}
+          onSubmit={(values, { setSubmitting, resetForm, setStatus }) => {
+            setTimeout(() => {
+              console.log("Subscribed:", values.email);
+              setStatus({ success: true });
+              resetForm();
+              setSubmitting(false);
 
-            // Auto-hide success message
-            setTimeout(() => setStatus({ success: false }), 5000);
-          }, 1000);
-        }}>
-        {({ isSubmitting, status }) => (
-          <StyledForm noValidate>
-            <InputWrapper>
-              <StyledInput
-                type="email"
-                name="email"
-                placeholder="Enter your email address"
-                autoComplete="email"
-              />
-              <ErrorMessage name="email" component={ErrorText} />
-            </InputWrapper>
+              // Auto-hide success message
+              setTimeout(() => setStatus({ success: false }), 5000);
+            }, 1000);
+          }}>
+          {({ isSubmitting, status }) => (
+            <StyledForm noValidate>
+              <InputWrapper>
+                <StyledInput
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email address"
+                  autoComplete="email"
+                />
+                <ErrorMessage name="email" component={ErrorText} />
+              </InputWrapper>
 
-            {/* Checkbox z akceptacją polityki prywatności */}
-            <div>
-              <CheckboxWrapper>
-                <StyledCheckbox type="checkbox" name="privacyPolicy" />
-                <span>
-                  By subscribing, I accept the{" "}
-                  <StyledLink to="/privacy-policy">Privacy Policy</StyledLink>{" "}
-                  and agree to receive newsletters.
-                </span>
-              </CheckboxWrapper>
-              <ErrorMessage name="privacyPolicy" component={ErrorText} />
-            </div>
+              {/* Checkbox z akceptacją polityki prywatności */}
+              <div>
+                <CheckboxWrapper>
+                  <StyledCheckbox type="checkbox" name="privacyPolicy" />
+                  <span>
+                    By subscribing, I accept the{" "}
+                    <StyledLink to="/privacy-policy">Privacy Policy</StyledLink>{" "}
+                    and agree to receive newsletters.
+                  </span>
+                </CheckboxWrapper>
+                <ErrorMessage name="privacyPolicy" component={ErrorText} />
+              </div>
 
-            <SubmitButton type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Subscribing..." : "Subscribe"}
-            </SubmitButton>
+              <SubmitButton type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Subscribing..." : "Subscribe"}
+              </SubmitButton>
 
-            {status?.success && (
-              <SuccessMessage>Thank you! You're now subscribed</SuccessMessage>
-            )}
-          </StyledForm>
-        )}
-      </Formik>
-    </Container>
+              {status?.success && (
+                <SuccessMessage>
+                  Thank you! You're now subscribed
+                </SuccessMessage>
+              )}
+            </StyledForm>
+          )}
+        </Formik>
+      </Container>
+    </Wrapper>
   );
 };
 
