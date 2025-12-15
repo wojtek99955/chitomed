@@ -2,6 +2,7 @@ import styled from "styled-components";
 import LanguageChangeDropdown from "../../../features/language/LanguageChangeDropdown";
 import { device } from "../../../assets/device";
 import { FaRegUserCircle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const NAV = styled.nav`
   display: flex;
@@ -54,7 +55,7 @@ const NAV = styled.nav`
   }
 `;
 
-const SigninBtn = styled.a`
+const SigninBtn = styled(Link)`
   border: 2px solid #34186e;
   border:2px solid #58585A;
   border-radius: 40px;
@@ -129,9 +130,11 @@ const Nav = ({ setShowNav }: any) => {
         </li>
       </ul>
       <SigninBtn
-        href="https://chitomed.onrender.com/sign-in"
-        target="_blank"
-        rel="noopener noreferrer">
+      to="/sign-in"
+        // href="https://chitomed.onrender.com/sign-in"
+        // target="_blank"
+        // rel="noopener noreferrer"
+        >
         <UserIcon /> Sign in
       </SigninBtn>
       <LanguageChangeDropdown />
