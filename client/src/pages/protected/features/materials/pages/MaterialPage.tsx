@@ -157,13 +157,13 @@ const MaterialPage = () => {
         <Title>{material.title}</Title>
 
         <TypeBadge type={material.type}>
-          {material.type === "film" ? <FaVideo /> : <FaBook />}
-          {material.type === "film" ? "VIDEO CONTENT" : "TEXT ARTICLE"}
+          {material.type === "video" ? <FaVideo /> : <FaBook />}
+          {material.type === "video" ? "VIDEO CONTENT" : "TEXT ARTICLE"}
         </TypeBadge>
 
         <ContentStyle>
           {/* Wyświetlanie tekstu */}
-          {material.type === "tekst" && material.text && (
+          {material.type === "text" && material.text && (
             <>
               <h3>Article Content:</h3>
               <p>{material.text}</p>
@@ -171,7 +171,7 @@ const MaterialPage = () => {
           )}
 
           {/* Wyświetlanie linku wideo */}
-          {material.type === "film" && material.videoUrl && (
+          {material.type === "video" && material.videoUrl && (
             <>
               <h3>Video Link:</h3>
               <a

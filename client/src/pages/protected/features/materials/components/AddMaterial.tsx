@@ -255,7 +255,7 @@ const AddMaterialModal = () => {
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}>
-                {({ values, setFieldValue }) => (
+                {({ values }) => (
                   <Form>
                     {/* 1. TITLE */}
                     <FormSection>

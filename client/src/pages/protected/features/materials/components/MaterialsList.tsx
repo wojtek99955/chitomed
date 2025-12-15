@@ -58,7 +58,7 @@ const MaterialsList = () => {
     );
   }
 
-  if (!materials || materials.length === 0) {
+  if (!materials) {
     return (
       <Container>
         <h3>Materials</h3>
@@ -71,11 +71,19 @@ const MaterialsList = () => {
 
   return (
     <Container>
-      <h3>Materials ({materials.length})</h3>
+      <h3>
+        Materials (
+        {Array.isArray(materials) ? materials.length : materials ? 1 : 0})
+      </h3>
+
       <ListContainer>
-        {materials.map((material) => (
-          <MaterialItem key={material._id} material={material} />
-        ))}
+        {Array.isArray(materials) ? (
+          materials.map((material) => (
+            <MaterialItem key={material._id} material={material} />
+          ))
+        ) : materials ? (
+          <MaterialItem key={materials._id} material={materials} />
+        ) : null}
       </ListContainer>
     </Container>
   );
