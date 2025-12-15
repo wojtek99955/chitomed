@@ -1,12 +1,12 @@
 const express = require("express");
 const cors = require("cors"); // <-- 1. Importowanie modułu cors
 const mongoose = require("mongoose");
-const corsOptions = require("./config/corsOptions")
+const corsOptions = require("./config/corsOptions");
 require("dotenv").config();
 const connectDB = require("./config/dbConn");
 const app = express();
 const PORT = 5000;
-connectDB()
+connectDB();
 
 // 🔥 2. Użycie middleware CORS jako pierwszego
 app.use(cors(corsOptions));
@@ -16,7 +16,6 @@ app.use(express.json());
 app.use("/user", require("./routes/userRoutes"));
 app.use("/auth", require("./routes/authRoutes"));
 app.use("/material", require("./routes/materialRoutes"));
-
 
 // 1. GŁÓWNY ENDPOINT
 app.get("/", (req, res) => {
@@ -35,7 +34,7 @@ app.get("/api/status", (req, res) => {
 });
 
 // 3. Nasłuchiwanie na porcie
-app.listen(PORT, "localhost", () => {
+app.listen(PORT, () => {
   console.log(`\n🚀 SERWER DZIAŁA na http://localhost:${PORT}`);
   console.log(`✅ CORS Aktywny: Dostęp tylko dla http://localhost:5173`);
   console.log(`🔍 Testowy endpoint JSON: http://localhost:${PORT}/api/status`);

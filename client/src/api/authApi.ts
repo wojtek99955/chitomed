@@ -19,21 +19,35 @@ export interface LogoutResponse {
   message: string;
 }
 
+// 1. Stwórz nową, skonfigurowaną instancję Axios
+const api = axios.create({
+  baseURL: "http://localhost:5000",
+  // KLUCZOWY DODATEK!
+  withCredentials: true,
+});
+
+// 2. Zaktualizuj swoje mutacje, aby używały tej instancji
 export const loginMutation = async (
   credentials: LoginCredentials
 ): Promise<LoginResponse> => {
-  const response = await axios.post<LoginResponse>(
-    "http://localhost:5000/auth/login",
+  const response = await api.post<LoginResponse>( // Użyj "api" zamiast "axios"
+    "/auth/login",
     credentials
-  ); // dostosuj ścieżkę jeśli inna
+  );
   return response.data;
 };
 
+// Tak samo dla logoutMutation oraz dla getMaterials
 export const logoutMutation = async (): Promise<LogoutResponse> => {
-  const response = await axios.post<LogoutResponse>(
-    "http://localhost:5000/auth/logout", 
+  const response = await api.post<LogoutResponse>( // Użyj "api" zamiast "axios"
+    "/auth/logout", 
     {} 
   );
-
   return response.data;
 };
+
+// Upewnij się, że getMaterials (które wywołuje błąd 403) też używa 'api'
+// const getMaterials = async () => {
+//     const response = await api.get('/material'); 
+//     return response.data;
+// }

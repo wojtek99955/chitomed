@@ -46,7 +46,7 @@ const Metadata = styled.div`
   gap: 1rem;
 `;
 
-const TypeBadge = styled.span<{ type: "film" | "tekst" }>`
+const TypeBadge = styled.span<{ type: "video" | "text" }>`
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
@@ -54,7 +54,7 @@ const TypeBadge = styled.span<{ type: "film" | "tekst" }>`
   border-radius: 4px;
   font-weight: 600;
   color: white;
-  background-color: ${({ type }) => (type === "film" ? "#ef4444" : "#059669")};
+  background-color: ${({ type }) => (type === "video" ? "#ef4444" : "#059669")};
 `;
 
 const Actions = styled.div`
@@ -78,23 +78,6 @@ const IconButton = styled.button`
   &:hover {
     background-color: #dde0e5;
   }
-`;
-
-const ActionBtn = styled.div``;
-
-const LoadingText = styled.p`
-  font-size: 1.1rem;
-  color: #3b82f6;
-  text-align: center;
-`;
-
-const ErrorContainer = styled.div`
-  padding: 1rem;
-  background-color: #fef2f2;
-  border: 1px solid #fca5a5;
-  color: #ef4444;
-  border-radius: 8px;
-  text-align: center;
 `;
 
 const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {

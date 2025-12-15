@@ -184,7 +184,6 @@ type MaterialType = {
 
 type EditMaterialProps = {
   material: MaterialType;
-  isOpen: boolean;
   setIsOpen: (open: boolean) => void;
 };
 
