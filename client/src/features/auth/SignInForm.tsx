@@ -100,7 +100,6 @@ const LogoContainer = styled.div`
   margin-bottom: 1rem;
 `;
 
-// Validation schema
 const SignInSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address")
@@ -125,9 +124,8 @@ const SignInForm = () => {
     },
     onError: (error: any) => {
       let message = "Login failed. Please try again.";
-      // Check for 404 status (no user with this email)
-      if (error.response?.status === 404) {
-        message = "No account found with this email.";
+      if (error.response?.status === 401) {
+        message = "Incorrect email or password";
       } else if (error.response?.data?.message) {
         message = error.response.data.message;
       } else if (error.message) {

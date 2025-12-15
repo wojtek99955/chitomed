@@ -1,20 +1,12 @@
 const express = require("express");
 const cors = require("cors"); // <-- 1. Importowanie modułu cors
 const mongoose = require("mongoose");
+const corsOptions = require("./config/corsOptions")
 require("dotenv").config();
 const connectDB = require("./config/dbConn");
-const userRoutes = require("./routes/userRoutes");
-const authRoutes = require("./routes/authRoutes");
 const app = express();
 const PORT = 5000;
 connectDB()
-// 💡 Konfiguracja CORS (Zezwalamy tylko na nasz frontend)
-const corsOptions = {
-  // Pamiętaj, aby ZAWSZE sprawdzić, na jakim porcie działa Twój klient (np. Vite/React)
-  origin: "http://localhost:5173",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true, // Ważne dla cookies i tokenów autoryzacyjnych
-};
 
 // 🔥 2. Użycie middleware CORS jako pierwszego
 app.use(cors(corsOptions));
@@ -23,6 +15,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/user", require("./routes/userRoutes"));
 app.use("/auth", require("./routes/authRoutes"));
+app.use("/material", require("./routes/materialRoutes"));
 
 
 // 1. GŁÓWNY ENDPOINT

@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaRegUser } from "react-icons/fa";
 import Logo from "../../../assets/icons/Logo";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { logoutMutation } from "../../../api/authApi";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.header`
   padding: 0.5rem 1rem;
@@ -27,7 +30,7 @@ const UserWrapper = styled.div`
 
 const UserIcon = styled(FaRegUser)`
   font-size: 1.2rem;
-  display: block; 
+  display: block;
 `;
 
 const DropdownContainer = styled(motion.div)`
@@ -55,21 +58,20 @@ const DropdownItem = styled.div`
   }
 `;
 
-
-const dropdownVariants :any = {
+const dropdownVariants: any = {
   hidden: {
     opacity: 0,
     height: 0,
     transition: {
-      when: "afterChildren", 
+      when: "afterChildren",
       duration: 0.2,
     },
   },
   visible: {
     opacity: 1,
-    height: "auto", 
+    height: "auto",
     transition: {
-      when: "beforeChildren", 
+      when: "beforeChildren",
       duration: 0.2,
       ease: "easeOut",
     },
@@ -78,19 +80,58 @@ const dropdownVariants :any = {
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const queryClient = useQueryClient();
+  let navigate = useNavigate();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const logoutMutationHook = useMutation({
+    mutationFn: logoutMutation,
+    onSuccess: () => {
+      queryClient.clear();
+      localStorage.removeItem("token");
+      navigate("/sign-in");
+    },
+    onError: (error) => {
+      console.error("Error:", error);
+      navigate("/login");
+    },
+  });
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
+  const logout = () => {
+    setIsDropdownOpen(false);
+    logoutMutationHook.mutate();
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isDropdownOpen &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
+  const goDashboard = () => {
+    navigate("/dashboard")
+  }
 
   return (
     <Container>
-      <Logo/>
-      <UserWrapper onClick={toggleDropdown}>
+      <div onClick={goDashboard}>
+        <Logo />
+      </div>
+      <UserWrapper ref={dropdownRef} onClick={toggleDropdown}>
         <UserIcon />
-
-        {/* AnimatePresence jest wymagane, aby animacja ukrywania działała poprawnie */}
         <AnimatePresence>
           {isDropdownOpen && (
             <DropdownContainer
@@ -99,7 +140,7 @@ const Header = () => {
               exit="hidden"
               variants={dropdownVariants}>
               <DropdownItem>Account</DropdownItem>
-              <DropdownItem>Log Out</DropdownItem>
+              <DropdownItem onClick={logout}>Log Out</DropdownItem>
             </DropdownContainer>
           )}
         </AnimatePresence>

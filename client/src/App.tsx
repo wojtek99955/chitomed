@@ -5,6 +5,8 @@ import SignIn from "./pages/SignIn/SignIn";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import Dashboard from "./pages/protected/Dashboard/Dashboard";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ProtectedRoute from "./features/auth/ProtectedRoute";
+import MaterialPage from "./pages/protected/features/materials/pages/MaterialPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -18,7 +20,10 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
             <Route path="/sign-in" element={<SignIn />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/material/:id" element={<MaterialPage />} />
+            </Route>
           </Routes>
         </Router>
       </QueryClientProvider>

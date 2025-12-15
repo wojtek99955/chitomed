@@ -1,39 +1,32 @@
 const asyncHandler = require("express-async-handler");
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
-// 🔹 Logowanie
 exports.login = asyncHandler(async (req, res) => {
-  console.log("COOOOO")
   const { email, password } = req.body;
-  console.log(password, "pass")
-console.log(email, "email")
   if (!email || !password) {
     res.status(400);
-    throw new Error("Email i hasło są wymagane.");
+    throw new Error("Email and password are required");
   }
 
   const user = await User.findOne({ email });
 
   if (!user) {
     res.status(401);
-    throw new Error("Nieprawidłowy email lub hasło.");
+    throw new Error("Incorrect email or password");
   }
 
-  // Sprawdzenie hasła
   const passwordMatch = password === user.password;
 
   if (!passwordMatch) {
     res.status(401);
-    throw new Error("Nieprawidłowy email lub hasło.");
+    throw new Error("Incorrect email or password");
   }
 
-  // Tworzenie tokenu JWT
   const token = jwt.sign(
     { id: user._id, email: user.email, role: user.role },
     process.env.JWT_SECRET,
-    { expiresIn: "7d" } // ważność tokenu 7 dni
+    { expiresIn: "7d" }
   );
 
   res.json({
@@ -43,11 +36,8 @@ console.log(email, "email")
   });
 });
 
-// 🔹 Wylogowywanie (po stronie klienta wystarczy usunąć token)
-// Ale jeśli chcesz można też "unieważnić" token w backendzie
 exports.logout = asyncHandler(async (req, res) => {
-  // Jeśli używasz cookies do JWT
   res.cookie("token", "", { httpOnly: true, expires: new Date(0) });
 
-  res.json({ message: "Wylogowano pomyślnie." });
+  res.json({ message: "Logout successfully" });
 });
