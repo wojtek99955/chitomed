@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import { api } from "../../../../../api/api";
 
 export interface EditMaterialData {
   _id: string;
@@ -11,8 +11,8 @@ export interface EditMaterialData {
 
 const editMaterial = async (data: EditMaterialData) => {
     console.log(data, "   iddd")
-  const response = await axios.patch(
-    `http://localhost:5000/material/${data._id}`,
+  const response = await api.patch(
+    `/material/${data._id}`,
     data
   );
   return response.data;

@@ -5,6 +5,8 @@ const materialController = require("../controllers/materialController");
 router
   .route("/")
   .get(materialController.getMaterials)
+  .post(materialController.createMaterial);
+
 router
   .route("/:id")
   .patch(materialController.updateMaterial)

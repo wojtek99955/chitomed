@@ -1,4 +1,4 @@
-import axios from "axios";
+import { api } from "./api";
 
 export interface LoginCredentials {
   email: string;
@@ -19,14 +19,7 @@ export interface LogoutResponse {
   message: string;
 }
 
-// 1. Stwórz nową, skonfigurowaną instancję Axios
-const api = axios.create({
-  baseURL: "http://localhost:5000",
-  // KLUCZOWY DODATEK!
-  withCredentials: true,
-});
 
-// 2. Zaktualizuj swoje mutacje, aby używały tej instancji
 export const loginMutation = async (
   credentials: LoginCredentials
 ): Promise<LoginResponse> => {
@@ -37,17 +30,11 @@ export const loginMutation = async (
   return response.data;
 };
 
-// Tak samo dla logoutMutation oraz dla getMaterials
 export const logoutMutation = async (): Promise<LogoutResponse> => {
-  const response = await api.post<LogoutResponse>( // Użyj "api" zamiast "axios"
+  const response = await api.post<LogoutResponse>( 
     "/auth/logout", 
     {} 
   );
   return response.data;
 };
 
-// Upewnij się, że getMaterials (które wywołuje błąd 403) też używa 'api'
-// const getMaterials = async () => {
-//     const response = await api.get('/material'); 
-//     return response.data;
-// }

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { api } from "../../../../../api/api";
 
 export interface Material {
   _id: string;
@@ -13,13 +13,11 @@ export interface Material {
 const getMaterials = async (
   materialId?: string
 ): Promise<Material | Material[]> => {
-  let url = "http://localhost:5000/material";
-console.log(materialId, " id")
+  let url = "/material";
   if (materialId) {
     url = `${url}?id=${materialId}`;
   }
-console.log(url, "urll")
-  const response = await axios.get(url);
+  const response = await api.get(url);
   return response.data;
 };
 

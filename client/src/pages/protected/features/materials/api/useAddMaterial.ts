@@ -1,6 +1,6 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import { api } from "../../../../../api/api";
 
 export interface MaterialData {
   title: string;
@@ -10,8 +10,7 @@ export interface MaterialData {
 }
 
 const addMaterial = async (data: MaterialData) => {
-  // Replace with your actual backend URL
-  const response = await axios.post("http://localhost:5000/material", data);
+  const response = await api.post("/material", data);
   return response.data;
 };
 
@@ -21,7 +20,6 @@ export const useAddMaterial = (onSuccessCallback: () => void) => {
   return useMutation({
     mutationFn: addMaterial,
     onSuccess: () => {
-      // Invalidate the materials list query to automatically refresh the list
       queryClient.invalidateQueries({ queryKey: ["materials"] });
       onSuccessCallback();
     },

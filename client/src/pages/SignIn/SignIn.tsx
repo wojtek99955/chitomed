@@ -18,7 +18,7 @@ const SignIn = () => {
     // Test CORS – wywołujemy endpoint /test-cors z backendu
     const testCors = async () => {
       try {
-        const response = await axios.get("http://localhost:5000");
+        const response = await axios.get("http://localhost:8080");
         console.log("✅ CORS działa!", response.data);
         // Przykład odpowiedzi: { message: "CORS działa! Jesteś z http://localhost:5173" }
       } catch (error: any) {

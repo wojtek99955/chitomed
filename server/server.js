@@ -5,13 +5,11 @@ const corsOptions = require("./config/corsOptions");
 require("dotenv").config();
 const connectDB = require("./config/dbConn");
 const app = express();
-const PORT = 5000;
+const PORT = 8080;
 connectDB();
 
-// 🔥 2. Użycie middleware CORS jako pierwszego
 app.use(cors(corsOptions));
 
-// Middleware do parsowania JSON (teraz jest po CORS)
 app.use(express.json());
 app.use("/user", require("./routes/userRoutes"));
 app.use("/auth", require("./routes/authRoutes"));
@@ -22,18 +20,6 @@ app.get("/", (req, res) => {
   res.send("Minimalny serwer Express działa!");
 });
 
-// 2. PRZYKŁADOWY ENDPOINT (zwracający JSON)
-app.get("/api/status", (req, res) => {
-  res.json({
-    status: "OK",
-    service: "Minimal Express Server",
-    // Dodajemy informację o pochodzeniu żądania - dla łatwiejszego debugowania
-    origin: req.headers.origin || "bez origin (bezpośrednio)",
-    time: new Date().toISOString(),
-  });
-});
-
-// 3. Nasłuchiwanie na porcie
 app.listen(PORT, () => {
   console.log(`\n🚀 SERWER DZIAŁA na http://localhost:${PORT}`);
   console.log(`✅ CORS Aktywny: Dostęp tylko dla http://localhost:5173`);
