@@ -5,8 +5,10 @@ const User = require("../models/User");
 
 // 🔹 Logowanie
 exports.login = asyncHandler(async (req, res) => {
+  console.log("COOOOO")
   const { email, password } = req.body;
-
+  console.log(password, "pass")
+console.log(email, "email")
   if (!email || !password) {
     res.status(400);
     throw new Error("Email i hasło są wymagane.");
@@ -20,7 +22,7 @@ exports.login = asyncHandler(async (req, res) => {
   }
 
   // Sprawdzenie hasła
-  const passwordMatch = await bcrypt.compare(password, user.password);
+  const passwordMatch = password === user.password;
 
   if (!passwordMatch) {
     res.status(401);

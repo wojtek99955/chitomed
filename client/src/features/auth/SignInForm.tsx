@@ -5,10 +5,14 @@ import { device } from "../../assets/device";
 import Logo from "../../assets/icons/Logo";
 import { useMutation } from "@tanstack/react-query";
 import {
-  loginMutation, type LoginCredentials, type LoginResponse
+  loginMutation,
+  type LoginCredentials,
+  type LoginResponse,
 } from "../../api/authApi";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const FormContainer = styled.div`
   width: 90%;
   margin: 2rem auto;
@@ -17,6 +21,7 @@ const FormContainer = styled.div`
   border-radius: 16px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   color: white;
+
   @media ${device.tablet} {
     width: 450px;
   }
@@ -95,40 +100,39 @@ const LogoContainer = styled.div`
   margin-bottom: 1rem;
 `;
 
-// Walidacja Yup
+// Validation schema
 const SignInSchema = Yup.object().shape({
   email: Yup.string()
-    .email("Nieprawidłowy adres email")
-    .required("Email jest wymagany"),
+    .email("Invalid email address")
+    .required("Email is required"),
   password: Yup.string()
-    .min(6, "Hasło musi mieć co najmniej 6 znaków")
-    .required("Hasło jest wymagane"),
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
 });
 
 const SignInForm = () => {
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  let navigate = useNavigate();
 
   const mutation = useMutation<LoginResponse, Error, LoginCredentials>({
     mutationFn: loginMutation,
     onSuccess: (data) => {
-      // Zapis tokenu i użytkownika
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
       setServerError(null);
-      setSuccessMessage("Zalogowano pomyślnie! Przekierowanie...");
-
-      // Tutaj możesz zrobić redirect, np.:
-      // window.location.href = "/dashboard";
-      // lub użyć react-router: navigate("/dashboard");
+      setSuccessMessage("Logged in successfully! Redirecting...");
+      navigate("/dashboard");
     },
     onError: (error: any) => {
-      // Błędy z backendu (np. 401)
-      const message =
-        error.response?.data?.message ||
-        error.message ||
-        "Błąd logowania. Spróbuj ponownie.";
+      let message = "Login failed. Please try again.";
+      // Check for 404 status (no user with this email)
+      if (error.response?.status === 404) {
+        message = "No account found with this email.";
+      } else if (error.response?.data?.message) {
+        message = error.response.data.message;
+      } else if (error.message) {
+        message = error.message;
+      }
       setServerError(message);
     },
   });
@@ -146,10 +150,9 @@ const SignInForm = () => {
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={SignInSchema}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={(values) => {
           setServerError(null);
           mutation.mutate(values);
-          setSubmitting(false); // React Query zarządza loadingiem
         }}>
         {({ errors, touched }) => (
           <Form>
@@ -157,24 +160,23 @@ const SignInForm = () => {
             <Input
               type="email"
               name="email"
-              placeholder="Wpisz email"
+              placeholder="Enter email"
               id="email"
               $error={touched.email && !!errors.email}
             />
             <ErrorMessage name="email" component={ErrorText} />
 
-            <Label htmlFor="password">Hasło</Label>
+            <Label htmlFor="password">Password</Label>
             <Input
               type="password"
               name="password"
-              placeholder="Wpisz hasło"
+              placeholder="Enter password"
               id="password"
               $error={touched.password && !!errors.password}
             />
             <ErrorMessage name="password" component={ErrorText} />
-
             <Button type="submit" $loading={mutation.isPending}>
-              {mutation.isPending ? "Logowanie..." : "Sign in"}
+              {mutation.isPending ? "Signing in..." : "Sign in"}
             </Button>
           </Form>
         )}

@@ -101,3 +101,22 @@ exports.deleteUser = asyncHandler(async (req, res) => {
     userId: user._id,
   });
 });
+
+exports.getAllUsers = asyncHandler(async (req, res) => {
+  // Pobieramy wszystkich użytkowników
+  // Możesz wybrać, które pola chcesz zwrócić (np. bez hasła!)
+  const users = await User.find({})
+    .select("-password") // ważne: nie zwracaj hasła (nawet zahashowanego)
+    .sort({ createdAt: -1 }); // opcjonalnie: najnowsi na górze
+
+  if (!users || users.length === 0) {
+    res.status(404);
+    throw new Error("Nie znaleziono żadnych użytkowników.");
+  }
+
+  res.json({
+    message: "Pobrano wszystkich użytkowników.",
+    count: users.length,
+    users,
+  });
+});

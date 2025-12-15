@@ -4,6 +4,8 @@ const mailController = require("../controllers/userController");
 
 router.post("/send-password", mailController.sendPassword);
 router.post("/resend-password", mailController.resendPassword);
-router.delete("/delete-user", mailController.deleteUser);
+router.delete("/", mailController.deleteUser);
+router.get("/", mailController.getAllUsers);
+
 
 module.exports = router;
