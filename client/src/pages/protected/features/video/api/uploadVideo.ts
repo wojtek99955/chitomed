@@ -1,10 +1,7 @@
-const CancelToken = axios.CancelToken;
-
 const accessKey = import.meta.env.VITE_BUNNY_ACCESS_KEY;
 
 import axios from "axios";
 
-let cancelUpload: any;
 
 const libraryId = "561988";
 
@@ -15,6 +12,7 @@ export const handleUpload = async (
   setIsSuccess: (loading: boolean) => void,
   setIsLoading: (loading: boolean) => void
 ) => {
+
   if (!selectedFile) {
     console.error("Brak pliku");
     return;
@@ -53,9 +51,6 @@ export const handleUpload = async (
           console.log(`Upload: ${percent}%`);
           setUploadPercentage(percent);
         },
-        cancelToken: new axios.CancelToken((c) => {
-          cancelUpload = c;
-        }),
       }
     );
 
