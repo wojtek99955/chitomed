@@ -15,7 +15,7 @@ const Container = styled.div`
 
 const Title = styled.h2`
   color: #1f2937;
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin-bottom: 1.5rem;
   border-bottom: 2px solid #e5e7eb;
   padding-bottom: 0.5rem;
