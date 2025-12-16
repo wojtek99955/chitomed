@@ -2,7 +2,6 @@ const accessKey = import.meta.env.VITE_BUNNY_ACCESS_KEY;
 
 import axios from "axios";
 
-
 const libraryId = "561988";
 
 export const handleUpload = async (
@@ -12,7 +11,6 @@ export const handleUpload = async (
   setIsSuccess: (loading: boolean) => void,
   setIsLoading: (loading: boolean) => void
 ) => {
-
   if (!selectedFile) {
     console.error("Brak pliku");
     return;
@@ -20,6 +18,7 @@ export const handleUpload = async (
 
   try {
     setIsLoading(true);
+    
     // 1️⃣ CREATE VIDEO
     const createVideoResponse = await axios.post(
       `https://video.bunnycdn.com/library/${libraryId}/videos`,
