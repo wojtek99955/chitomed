@@ -12,7 +12,7 @@ const materialSchema = mongoose.Schema(
     text: {
       type: String,
     },
-    videoUrl: {
+    video: {
       type: String,
     },
   },

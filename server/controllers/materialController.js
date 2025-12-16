@@ -17,7 +17,7 @@ const getMaterials = asyncHandler(async (req, res) => {
 });
 
 const createMaterial = asyncHandler(async (req, res) => {
-  const { title, type, text, videoUrl } = req.body;
+  const { title, type, text, video } = req.body;
   if (!title || !type) {
     res.status(400);
     throw new Error("Title or type are missing");
@@ -26,15 +26,15 @@ const createMaterial = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Text is missing");
   }
-  if (type === "video" && !videoUrl) {
+  if (type === "video" && !video) {
     res.status(400);
-    throw new Error("video url is missing");
+    throw new Error("video is missing");
   }
   const material = await Material.create({
     title,
     type,
     text: type === "text" ? text : undefined,
-    videoUrl: type === "video" ? videoUrl : undefined,
+    video: type === "video" ? video : undefined,
   });
 
   res.status(201).json(material);
@@ -66,7 +66,7 @@ const deleteMaterial = asyncHandler(async (req, res) => {
 
 const updateMaterial = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { title, type, text, videoUrl } = req.body;
+  const { title, type, text, video } = req.body;
   const material = await Material.findById(id);
 
   if (!material) {
@@ -83,19 +83,19 @@ const updateMaterial = asyncHandler(async (req, res) => {
 
   if (finalType === "text") {
     updateData.text = text !== undefined ? text : material.text;
-    updateData.videoUrl = undefined;
+    updateData.video = undefined;
 
     if (!updateData.text) {
       res.status(400);
       throw new Error('Dla typu "text" pole "text" nie może być puste.');
     }
   } else if (finalType === "video") {
-    updateData.videoUrl = videoUrl !== undefined ? videoUrl : material.videoUrl;
+    updateData.video = video !== undefined ? video : material.video;
     updateData.text = undefined;
 
-    if (!updateData.videoUrl) {
+    if (!updateData.video) {
       res.status(400);
-      throw new Error('Dla typu "video" pole "videoUrl" nie może być puste.');
+      throw new Error('Dla typu "video" pole "video" nie może być puste.');
     }
   }
 

@@ -9,6 +9,7 @@ import ProtectedRoute from "./features/auth/ProtectedRoute";
 import MaterialPage from "./pages/protected/features/materials/pages/MaterialPage";
 import UsersPage from "./pages/protected/features/users/pages/UsersPage";
 import User from "./pages/protected/features/users/pages/User";
+import AddVideoTest from "./pages/protected/features/video/components/AddVideoTest";
 
 function App() {
   const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ function App() {
               <Route path="/material/:id" element={<MaterialPage />} />
               <Route path="/users" element={<UsersPage />} />
               <Route path="/users/:id" element={<User />} />
+              <Route path="/videotest" element={<AddVideoTest />} />
             </Route>
           </Routes>
         </Router>

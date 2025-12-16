@@ -6,7 +6,7 @@ export interface Material {
   title: string;
   type: 'video' | 'text';
   text?: string;
-  videoUrl?: string;
+  video?: string;
   createdAt: string;
 }
 

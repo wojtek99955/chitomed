@@ -6,6 +6,7 @@ import { useAddMaterial } from "../api/useAddMaterial";
 import { FaPlus } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import { AnimatePresence, motion } from "framer-motion";
+import AddVideo from "../../video/components/AddVideo";
 
 const AddButton = styled.button`
   display: flex;
@@ -191,7 +192,7 @@ const initialValues = {
   title: "",
   type: "text" as "video" | "text",
   text: "",
-  videoUrl: "",
+  video: "",
 };
 
 const validationSchema = Yup.object().shape({
@@ -205,9 +206,9 @@ const validationSchema = Yup.object().shape({
     otherwise: (schema) => schema.optional(),
   }),
 
-  videoUrl: Yup.string().when("type", {
+  video: Yup.string().when("type", {
     is: "video",
-    then: (schema) => schema.url("Must be a valid URL").required("Uzupełnij"),
+    then: (schema) => schema.required("Uzupełnij"),
     otherwise: (schema) => schema.optional(),
   }),
 });
@@ -216,7 +217,7 @@ const validationSchema = Yup.object().shape({
 
 const AddMaterialModal = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [videoId, setVideoId] = useState<any>(null)
   const { mutate, isPending } = useAddMaterial(() => {
     // Callback after successful mutation
     setIsOpen(false);
@@ -228,7 +229,7 @@ const AddMaterialModal = () => {
       type: values.type,
       // Send only the relevant field based on type
       text: values.type === "text" ? values.text : undefined,
-      videoUrl: values.type === "video" ? values.videoUrl : undefined,
+      video: values.type === "video" ? videoId : undefined,
     } as any;
 
     mutate(dataToSend);
@@ -300,14 +301,11 @@ const AddMaterialModal = () => {
                     )}
 
                     {values.type === "video" && (
-                      <FormSection>
-                        <Label htmlFor="videoUrl">Video URL</Label>
-                        <Input
-                          name="videoUrl"
-                          placeholder="e.g., https://youtube.com/watch?v=12345"
-                        />
-                        <ErrorMessage name="videoUrl" component={ErrorText} />
-                      </FormSection>
+                      <AddVideo
+                        name="video"
+                        label="Prześlij wideo"
+                        setVideoId={setVideoId}
+                      />
                     )}
 
                     {/* SUBMIT BUTTON AND CONTROLS */}

@@ -15,7 +15,7 @@ const Container = styled.div`
   padding: 1rem;
   background-color: #f8f9fc;
   width: 100%;
-  padding-top:2.5rem;
+  padding-top: 2.5rem;
   height: calc(100vh - 4.5rem);
   overflow-y: scroll;
   position: relative;
@@ -104,7 +104,6 @@ const TypeBadge = styled.span<{ type: string }>`
 const Title = styled.h1`
   font-size: 2.5rem;
   color: #1f2937;
-  margin-bottom: 1rem;
 `;
 
 const ContentStyle = styled.div`
@@ -128,7 +127,7 @@ const MaterialPage = () => {
   const { id } = useParams<{ id: string }>();
 
   const { data, isLoading, isError, error } = useMaterials(id);
-
+  const libraryId = "561988";
   const material = data as Material | undefined;
   let content; // Zmienna do przechowywania warunkowo generowanego JSX
 
@@ -168,7 +167,14 @@ const MaterialPage = () => {
     content = (
       <ContentWrapper>
         <Title>{material.title}</Title>
-
+        <p
+          style={{
+            fontSize: "0.9rem",
+            color: "#9ca3af",
+          }}>
+          Created on: {new Date(material.createdAt).toLocaleDateString()}
+        </p>
+        <br />
         <TypeBadge type={material.type}>
           {material.type === "video" ? <FaVideo /> : <FaBook />}
           {material.type === "video" ? "VIDEO CONTENT" : "TEXT ARTICLE"}
@@ -184,7 +190,7 @@ const MaterialPage = () => {
           )}
 
           {/* Wyświetlanie linku wideo */}
-          {material.type === "video" && material.videoUrl && (
+          {material.type === "video" && material.video && (
             <>
               <div
                 style={{
@@ -197,7 +203,7 @@ const MaterialPage = () => {
                   overflow: "hidden",
                 }}>
                 <iframe
-                  src={material.videoUrl} // Użycie material.videoUrl
+                  src={`https://iframe.mediadelivery.net/embed/${libraryId}/${material.video}`}
                   title={material.title}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
@@ -212,26 +218,16 @@ const MaterialPage = () => {
               </div>
             </>
           )}
-
-          <p
-            style={{
-              marginTop: "2rem",
-              fontSize: "0.9rem",
-              color: "#9ca3af",
-            }}>
-            Created on: {new Date(material.createdAt).toLocaleDateString()}
-          </p>
         </ContentStyle>
       </ContentWrapper>
     );
   }
 
-  // Finalne renderowanie: Zawsze renderujemy Header i Container z wygenerowaną zawartością.
   return (
     <>
       <Header />
       <Section>
-        <Sidebar/>
+        <Sidebar />
         <Container>
           <Back to="/dashboard">
             <BackIcon /> Back
