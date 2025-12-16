@@ -11,7 +11,9 @@ const AddButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 1100px;
   width: 100%;
+  margin: auto;
   gap: 0.5rem;
   padding: 1rem 1.5rem;
   background: #10b981; /* Green */
@@ -77,6 +79,25 @@ const FormSection = styled.div`
       box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
     }
   }
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236B7280'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+    }
+  }
 `;
 
 const Label = styled.label`
@@ -99,15 +120,6 @@ const Input = styled(Field)`
     border-color: #3b82f6;
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
   }
-`;
-
-const Select = styled(Input).attrs({ as: "select" })`
-  /* Override default styling for select elements */
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236B7280'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 1em;
 `;
 
 const SubmitButton = styled.button`
@@ -267,13 +279,12 @@ const AddMaterialModal = () => {
                     {/* 2. TYPE SELECT */}
                     <FormSection>
                       <Label htmlFor="type">Typ materiału</Label>
-                      <Select name="type">
+                      <Field name="type" as="select">
                         <option value="text">Tekstowy</option>
                         <option value="video">Film</option>
-                      </Select>
+                      </Field>
                       <ErrorMessage name="type" component={ErrorText} />
                     </FormSection>
-
                     {/* 3. CONDITIONAL FIELDS */}
                     {values.type === "text" && (
                       <FormSection>

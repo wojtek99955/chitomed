@@ -1,21 +1,39 @@
-import styled from "styled-components"
-import Header from "./Header"
-import MaterialsPage from "../features/materials/pages/MaterialsPage"
+import styled from "styled-components";
+import Header from "./Header";
+import MaterialsPage from "../features/materials/pages/MaterialsPage";
+import Sidebar from "./Sidebar";
 
 const Wrapper = styled.div`
-max-width: 1100px;
-margin: auto;
-`
+  margin: 0 auto;
+  width: auto;
+  background-color: #f8f9fc;
+  width: 100%;
+  height: calc(100vh - 4.5rem);
+  position: relative;
+  top: 4.5rem;
+  bottom: 0;
+  border: 100%;
+  overflow-y: auto;
+  padding:1rem;
+  /* overflow: hidden; */
+`;
+
+const Section = styled.div`
+  display: flex;
+`;
 
 const Dashboard = () => {
   return (
     <>
       <Header />
-      <Wrapper>
-        <MaterialsPage />
-      </Wrapper>
+      <Section>
+        <Sidebar />
+        <Wrapper>
+          <MaterialsPage />
+        </Wrapper>
+      </Section>
     </>
   );
-}
+};
 
-export default Dashboard
+export default Dashboard;

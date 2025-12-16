@@ -10,10 +10,15 @@ import { useNavigate } from "react-router-dom";
 const Container = styled.header`
   padding: 0.5rem 1rem;
   display: flex;
+  position: fixed;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
   background-color: white;
-  box-shadow: rgba(149, 157, 165, 0.3) 0px 8px 24px;
+  /* box-shadow: rgba(149, 157, 165, 0.3) 0px 8px 24px; */
+  border-bottom: 1px solid #e9eaed;
+  height: 4.5rem;
+  z-index: 100;
 `;
 
 const UserWrapper = styled.div`
@@ -48,8 +53,8 @@ const DropdownContainer = styled(motion.div)`
 `;
 
 const DropdownItem = styled.div`
-  padding: 10px 15px;
-  font-size: 0.95rem;
+  padding: .9rem 1rem;
+  font-size: 1.1rem;
   color: #333;
   cursor: pointer;
 

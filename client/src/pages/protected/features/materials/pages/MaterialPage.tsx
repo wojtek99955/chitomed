@@ -9,11 +9,17 @@ import {
 import { useMaterials, type Material } from "../api/useMaterial";
 import Header from "../../../Dashboard/Header";
 import { FaChevronCircleLeft } from "react-icons/fa";
+import Sidebar from "../../../Dashboard/Sidebar";
 
 const Container = styled.div`
-  max-width: 1100px;
-  margin: auto;
   padding: 1rem;
+  background-color: #f8f9fc;
+  width: 100%;
+  padding-top:2.5rem;
+  height: calc(100vh - 4.5rem);
+  overflow-y: scroll;
+  position: relative;
+  top: 4.5rem;
 `;
 
 const Back = styled(Link)`
@@ -35,15 +41,18 @@ const Back = styled(Link)`
 `;
 
 const BackIcon = styled(FaChevronCircleLeft)`
-font-size: 1.2rem;
-color:white;`
+  font-size: 1.2rem;
+  color: white;
+`;
 
 const ContentWrapper = styled.div`
   padding: 2rem;
   background: white;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin-top: 2rem;
+  max-width: 900px;
+  margin: auto;
 `;
 
 const InfoBox = styled.div`
@@ -111,6 +120,10 @@ const ContentStyle = styled.div`
   }
 `;
 
+const Section = styled.div`
+  display: flex;
+`;
+
 const MaterialPage = () => {
   const { id } = useParams<{ id: string }>();
 
@@ -173,14 +186,30 @@ const MaterialPage = () => {
           {/* Wyświetlanie linku wideo */}
           {material.type === "video" && material.videoUrl && (
             <>
-              <h3>Video Link:</h3>
-              <a
-                href={material.videoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "#3b82f6", textDecoration: "underline" }}>
-                Watch Video Here
-              </a>
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  height: 0,
+                  paddingBottom: "56.25%", // Stosunek 16:9 dla responsywności
+                  marginBottom: "1.5rem",
+                  borderRadius: "8px",
+                  overflow: "hidden",
+                }}>
+                <iframe
+                  src={material.videoUrl} // Użycie material.videoUrl
+                  title={material.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    border: 0,
+                  }}></iframe>
+              </div>
             </>
           )}
 
@@ -201,7 +230,15 @@ const MaterialPage = () => {
   return (
     <>
       <Header />
-      <Container><Back to="/dashboard"><BackIcon/> Back</Back>{content}</Container>
+      <Section>
+        <Sidebar/>
+        <Container>
+          <Back to="/dashboard">
+            <BackIcon /> Back
+          </Back>
+          {content}
+        </Container>
+      </Section>
     </>
   );
 };

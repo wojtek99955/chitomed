@@ -105,10 +105,11 @@ exports.deleteUser = asyncHandler(async (req, res) => {
 exports.getAllUsers = asyncHandler(async (req, res) => {
   // Pobieramy wszystkich użytkowników
   // Możesz wybrać, które pola chcesz zwrócić (np. bez hasła!)
+  console.log("USERZXYYY")
   const users = await User.find({})
     .select("-password") // ważne: nie zwracaj hasła (nawet zahashowanego)
     .sort({ createdAt: -1 }); // opcjonalnie: najnowsi na górze
-
+console.log(users)
   if (!users || users.length === 0) {
     res.status(404);
     throw new Error("Nie znaleziono żadnych użytkowników.");
