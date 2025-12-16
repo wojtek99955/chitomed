@@ -5,6 +5,7 @@ import { api } from "../../../../../api/api";
 export interface User {
   _id: string;
   email: string;
+  createdAt:string;
   role: string; // Dodajemy pole role
   // Dodaj inne pola, jeśli backend je zwraca (np. createdAt)
 }
@@ -43,6 +44,8 @@ const getUsers = async (userId: string | undefined): Promise<User | User[]> => {
     _id: item._id,
     email: item.email,
     role: item.role,
+    createdAt: item.createdAt,
+
     // Dodaj inne mapowane pola, jeśli są w interfejsie User
   }));
 

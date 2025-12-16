@@ -12,6 +12,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.90.12",
     "axios": "^1.13.2",
+    "date-fns": "^4.1.0",
     "formik": "^2.4.6",
     "framer-motion": "^12.23.26",
     "react": "^19.1.1",

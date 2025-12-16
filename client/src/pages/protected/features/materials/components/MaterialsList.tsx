@@ -1,10 +1,15 @@
 import styled from "styled-components";
 import { useMaterials } from "../api/useMaterial";
 import MaterialItem from "./MaterialItem";
+import { device } from "../../../../../assets/device";
 
 const Container = styled.div`
   max-width: 1100px;
   margin: auto;
+  padding-bottom: 4rem;
+  @media ${device.laptop}{
+    padding-bottom: 0;
+  }
 
   h3 {
     text-align: left;

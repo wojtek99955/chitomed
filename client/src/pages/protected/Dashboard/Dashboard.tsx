@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Header from "./Header";
 import MaterialsPage from "../features/materials/pages/MaterialsPage";
 import Sidebar from "./Sidebar";
+import BottomNav from "../BottomNav";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -32,6 +33,7 @@ const Dashboard = () => {
           <MaterialsPage />
         </Wrapper>
       </Section>
+      <BottomNav />
     </>
   );
 };

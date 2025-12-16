@@ -10,6 +10,8 @@ import { useMaterials, type Material } from "../api/useMaterial";
 import Header from "../../../Dashboard/Header";
 import { FaChevronCircleLeft } from "react-icons/fa";
 import Sidebar from "../../../Dashboard/Sidebar";
+import BottomNav from "../../../BottomNav";
+import { device } from "../../../../../assets/device";
 
 const Container = styled.div`
   padding: 1rem;
@@ -20,6 +22,10 @@ const Container = styled.div`
   overflow-y: scroll;
   position: relative;
   top: 4.5rem;
+  padding-bottom: 6rem;
+  @media ${device.laptop}{
+    padding-bottom: 0;
+  }
 `;
 
 const Back = styled(Link)`
@@ -235,6 +241,7 @@ const MaterialPage = () => {
           {content}
         </Container>
       </Section>
+      <BottomNav/>
     </>
   );
 };

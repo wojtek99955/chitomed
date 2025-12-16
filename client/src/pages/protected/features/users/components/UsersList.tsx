@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { FaSpinner, FaExclamationTriangle, FaEnvelope } from "react-icons/fa";
 import { useUsers, type User } from "../api/useUser";
+import { format } from "date-fns";
 
 const Container = styled.div`
   padding: 2rem;
@@ -99,6 +100,15 @@ const TableData = styled.td`
     display: flex;
     align-items: center;
   }
+  &:last-child {
+    border-bottom: none;
+  }
+  &:nth-last-child(2) {
+    border-bottom: none;
+  }
+  &:nth-last-child(3) {
+    border-bottom: none;
+  }
 `;
 
 const EmailIcon = styled(FaEnvelope)`
@@ -110,7 +120,13 @@ const UsersList = () => {
   const { data, isLoading, isError, error } = useUsers();
 
   const users: User[] = Array.isArray(data) ? data : [];
+  console.log(users);
 
+  const formatDate = (date: string) => {
+    if (!date) return "";
+
+    return format(new Date(date), "dd.MM.yyyy HH:mm");
+  };
   if (isLoading) {
     return (
       <Container>
@@ -161,6 +177,7 @@ const UsersList = () => {
           <TableRow>
             <TableHeader>Lp.</TableHeader>
             <TableHeader>Adres E-mail</TableHeader>
+            <TableHeader>Dołączył</TableHeader>
           </TableRow>
         </TableHead>
         <tbody>
@@ -170,6 +187,9 @@ const UsersList = () => {
               <TableData>
                 <EmailIcon />
                 {user.email}
+              </TableData>
+              <TableData>
+                {formatDate(user.createdAt)}
               </TableData>
             </TableRow>
           ))}
