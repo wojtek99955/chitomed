@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaRegUser } from "react-icons/fa";
 import Logo from "../../../assets/icons/Logo";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { logoutMutation } from "../../../api/authApi";
+import { logoutMutation } from "../../../features/auth/api/authApi";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled.header`
@@ -132,7 +132,7 @@ const Header = () => {
 
   return (
     <Container>
-      <div onClick={goDashboard}>
+      <div onClick={goDashboard} style={{cursor:"pointer"}}>
         <Logo />
       </div>
       <UserWrapper ref={dropdownRef} onClick={toggleDropdown}>

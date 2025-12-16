@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import EditMaterial from "./EditMaterial";
 import { AnimatePresence } from "framer-motion";
+import { useDeleteMaterial } from "../api/useDeleteMaterial";
+import DeleteConfirmation from "./DeleteConfirmation";
 
 const MaterialItemContainer = styled.div`
   background: white;
@@ -81,19 +83,27 @@ const IconButton = styled.button`
 `;
 
 const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
-    const [isEditOpen, setIsEditOpen] = useState(false)
-  const handleEdit = (e:any) => {
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const handleEdit = (e: any) => {
     e.stopPropagation();
     setIsEditOpen(true);
     console.log(`Editing material: ${material._id}`);
   };
+  const { mutate } = useDeleteMaterial();
 
-  const handleDelete = () => {
-    if (
-      window.confirm(`Are you sure you want to delete "${material.title}"?`)
-    ) {
-      console.log(`Deleting material: ${material._id}`);
-    }
+  const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setIsDeleteModalOpen(true); 
+  };
+
+  const handleConfirmDelete = () => {
+    setIsDeleteModalOpen(false); 
+    mutate(material._id);
+  };
+
+  const handleCancelDelete = () => {
+    setIsDeleteModalOpen(false);
   };
 
   let navigate = useNavigate();
@@ -123,7 +133,7 @@ const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
           </IconButton>
           <IconButton
             className="delete-btn"
-            onClick={handleDelete}
+            onClick={(e) => handleDeleteClick(e)}
             aria-label="Delete Material">
             <FaTrashAlt />
           </IconButton>
@@ -132,6 +142,15 @@ const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
       <AnimatePresence>
         {isEditOpen && (
           <EditMaterial setIsOpen={setIsEditOpen} material={material} />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {isDeleteModalOpen && (
+          <DeleteConfirmation
+            itemName={material.title}
+            onConfirm={handleConfirmDelete}
+            onCancel={handleCancelDelete}
+          />
         )}
       </AnimatePresence>
     </>

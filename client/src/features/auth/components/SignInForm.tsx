@@ -1,17 +1,17 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
-import { device } from "../../assets/device";
-import Logo from "../../assets/icons/Logo";
+import { device } from "../../../assets/device";
+import Logo from "../../../assets/icons/Logo";
 import { useMutation } from "@tanstack/react-query";
 import {
   loginMutation,
   type LoginCredentials,
   type LoginResponse,
-} from "../../api/authApi";
+} from "../api/authApi";
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const FormContainer = styled.div`
   width: 90%;
@@ -100,6 +100,21 @@ const LogoContainer = styled.div`
   margin-bottom: 1rem;
 `;
 
+const SignUpLink = styled(Link)`
+  display: block;
+  margin-top: 1rem;
+  text-align: center;
+  color: #6542b3;
+  font-weight: 500;
+  text-decoration: none;
+  transition: 0.2s;
+
+  &:hover {
+    text-decoration: underline;
+    color: #43238b;
+  }
+`;
+
 const SignInSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address")
@@ -176,6 +191,9 @@ const SignInForm = () => {
             <Button type="submit" $loading={mutation.isPending}>
               {mutation.isPending ? "Signing in..." : "Sign in"}
             </Button>
+            <SignUpLink to="/sign-up">
+              Don’t have an account? Sign up
+            </SignUpLink>
           </Form>
         )}
       </Formik>

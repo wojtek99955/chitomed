@@ -98,11 +98,14 @@ const SubmitButton = styled.button`
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
   width: 100%;
 
   &:hover:not(:disabled) {
     background: #2563eb;
+  }
+  &:active {
+    transform: scale(0.98);
   }
 
   &:disabled {
@@ -113,9 +116,9 @@ const SubmitButton = styled.button`
 
 const CancelButton = styled.button`
   padding: 0.9rem 2rem;
-  background: #f3f4f6;
-  color: #4b5563;
-  border: none;
+  background-color: #e5e7eb;
+  color: #374151;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
@@ -123,9 +126,11 @@ const CancelButton = styled.button`
   transition: background 0.2s;
   width: 100%;
   margin-top: 10px;
-
   &:hover {
-    background: #e5e7eb;
+    background-color: #d1d5db;
+  }
+  &:active {
+    transform: scale(0.98);
   }
 `;
 

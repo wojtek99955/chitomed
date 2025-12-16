@@ -9,6 +9,7 @@ import ProtectedRoute from "./features/auth/ProtectedRoute";
 import MaterialPage from "./pages/protected/features/materials/pages/MaterialPage";
 import UsersPage from "./pages/protected/features/users/pages/UsersPage";
 import User from "./pages/protected/features/users/pages/User";
+import Signup from "./features/auth/components/Signup";
 
 function App() {
   const queryClient = new QueryClient();
@@ -22,6 +23,8 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
             <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/sign-up" element={<Signup />} />
+
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/material/:id" element={<MaterialPage />} />

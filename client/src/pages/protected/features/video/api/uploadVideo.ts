@@ -11,6 +11,7 @@ export const handleUpload = async (
   setIsSuccess: (loading: boolean) => void,
   setIsLoading: (loading: boolean) => void
 ) => {
+  console.log(accessKey, "aces")
   if (!selectedFile) {
     console.error("Brak pliku");
     return;
