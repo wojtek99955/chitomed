@@ -17,12 +17,12 @@ const Container = styled.div`
 `;
 
 const PeopleIcon = styled(MdOutlinePeopleOutline)`
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   color: #1f2937;
 `;
 
 const ContentIcon = styled(MdMovieEdit)`
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   color: #1f2937;
 `;
 
@@ -36,14 +36,15 @@ const Nav = styled.div`
   a {
     text-decoration: none;
     display: block;
-    padding: 0.7rem 0.6rem;
-    font-size: 1.1rem;
+    padding: 0.3rem 0.6rem;
+    font-size: .8rem;
     color: unset;
     transition: all 200ms;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.2rem;
     color: #1f2937;
     width: 100%;
     background-color: transparent;
@@ -82,7 +83,7 @@ const BottomNav = () => {
           to={usersPath}
           data-is-active={currentPath === usersPath ? "true" : "false"}>
           <PeopleIcon />
-          Uzytkownicy
+          Użytkownicy
         </Link>
       </Nav>
     </Container>

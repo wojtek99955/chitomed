@@ -94,7 +94,7 @@ const Sidebar = () => {
           to={usersPath}
           data-is-active={currentPath === usersPath ? "true" : "false"}>
           <PeopleIcon />
-          Uzytkownicy
+          Użytkownicy
         </Link>
       </Nav>
     </Container>
