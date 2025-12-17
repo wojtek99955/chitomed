@@ -24,7 +24,7 @@ interface AuthData {
  * Używa "Lazy Initializer" w useState, aby uniknąć migania interfejsu (isChecking: true).
  */
 export const useAuthData = () => {
-  const [auth, setAuth] = useState<AuthData>(() => {
+  const [auth, _setAuth] = useState<AuthData>(() => {
     // Sprawdzamy token już w momencie tworzenia stanu (inicjalizacja synchroniczna)
     const token = localStorage.getItem("token");
 
