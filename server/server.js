@@ -14,6 +14,8 @@ app.use(express.json());
 app.use("/user", require("./routes/userRoutes"));
 app.use("/auth", require("./routes/authRoutes"));
 app.use("/material", require("./routes/materialRoutes"));
+app.use("/newsletter", require("./routes/newsletterRoutes"));
+
 
 // 1. GŁÓWNY ENDPOINT
 app.get("/", (req, res) => {
