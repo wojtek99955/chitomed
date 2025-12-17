@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { MdMovieEdit } from "react-icons/md";
 import { MdOutlinePeopleOutline } from "react-icons/md";
 import { useAuthData } from "../../../features/auth/useAuthData";
-import React, { memo } from "react";
+import { memo } from "react";
 // Define the hover/active background color as a constant for easy reuse
 const ACTIVE_BG_COLOR = "#f3f4f6";
 
