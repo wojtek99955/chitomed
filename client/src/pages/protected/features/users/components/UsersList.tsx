@@ -6,8 +6,7 @@ import { format } from "date-fns";
 const Container = styled.div`
   padding: 2rem;
   width: 100%;
-  background-color: #f7f9fc;
-  border-radius: 12px;
+  background-color: #f3f4f6;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   height: calc(100vh - 4.5rem);
   position: relative;

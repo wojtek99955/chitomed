@@ -15,7 +15,7 @@ import { device } from "../../../../../assets/device";
 
 const Container = styled.div`
   padding: 1rem;
-  background-color: #f8f9fc;
+  background-color: #f3f4f6;
   width: 100%;
   padding-top: 2.5rem;
   height: calc(100vh - 4.5rem);
@@ -23,7 +23,7 @@ const Container = styled.div`
   position: relative;
   top: 4.5rem;
   padding-bottom: 6rem;
-  @media ${device.laptop}{
+  @media ${device.laptop} {
     padding-bottom: 0;
   }
 `;

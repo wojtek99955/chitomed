@@ -44,13 +44,12 @@ const Nav = styled.div`
     }
   }
 `;
-
 // ... (Other styled components remain the same)
 
 const Container = styled.div`
   height: calc(100vh - 4.5rem);
   display: none;
-  border-right: 1px solid #e9eaed;
+  border-right: 1px solid #ecedf0;
   padding: 0.5rem;
   min-width: 15rem;
   background-color: white;
