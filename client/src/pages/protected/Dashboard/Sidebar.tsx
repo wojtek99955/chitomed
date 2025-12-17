@@ -4,7 +4,8 @@ import { device } from "../../../assets/device";
 import { Link, useLocation } from "react-router-dom";
 import { MdMovieEdit } from "react-icons/md";
 import { MdOutlinePeopleOutline } from "react-icons/md";
-
+import { useAuthData } from "../../../features/auth/useAuthData";
+import React, { memo } from "react";
 // Define the hover/active background color as a constant for easy reuse
 const ACTIVE_BG_COLOR = "#f3f4f6";
 
@@ -74,32 +75,34 @@ const ContentIcon = styled(MdMovieEdit)`
 `;
 
 const Sidebar = () => {
-  // 1. Use the useLocation hook to get the current path
+  const { role } = useAuthData();
   const location = useLocation();
   const currentPath = location.pathname;
-
-  // Define the paths for the links
   const dashboardPath = "/dashboard";
   const usersPath = "/users";
 
   return (
-    <Container>
-      <Nav>
-        {/* 2. Check if the current path matches the link's 'to' prop and pass it as a data attribute */}
-        <Link
-          to={dashboardPath}
-          data-is-active={currentPath === dashboardPath ? "true" : "false"}>
-          <ContentIcon /> Treść
-        </Link>
-        <Link
-          to={usersPath}
-          data-is-active={currentPath === usersPath ? "true" : "false"}>
-          <PeopleIcon />
-          Użytkownicy
-        </Link>
-      </Nav>
-    </Container>
+    <>
+      {role === "admin" && (
+        <Container>
+          <Nav>
+            {/* 2. Check if the current path matches the link's 'to' prop and pass it as a data attribute */}
+            <Link
+              to={dashboardPath}
+              data-is-active={currentPath === dashboardPath ? "true" : "false"}>
+              <ContentIcon /> Treść
+            </Link>
+            <Link
+              to={usersPath}
+              data-is-active={currentPath === usersPath ? "true" : "false"}>
+              <PeopleIcon />
+              Użytkownicy
+            </Link>
+          </Nav>
+        </Container>
+      )}
+    </>
   );
 };
 
-export default Sidebar;
+export default memo(Sidebar);

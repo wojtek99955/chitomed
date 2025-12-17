@@ -8,6 +8,7 @@ import EditMaterial from "./EditMaterial";
 import { AnimatePresence } from "framer-motion";
 import { useDeleteMaterial } from "../api/useDeleteMaterial";
 import DeleteConfirmation from "./DeleteConfirmation";
+import { useAuthData } from "../../../../../features/auth/useAuthData";
 
 const MaterialItemContainer = styled.div`
   background: white;
@@ -111,6 +112,7 @@ const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
   const openMaterial = () => {
     navigate(`/material/${material._id}`);
   };
+  const { role } = useAuthData();
 
   return (
     <>
@@ -127,17 +129,21 @@ const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
             </span>
           </Metadata>
         </ContentInfo>
-        <Actions>
-          <IconButton onClick={handleEdit} aria-label="Edit Material">
-            <FaEdit />
-          </IconButton>
-          <IconButton
-            className="delete-btn"
-            onClick={(e) => handleDeleteClick(e)}
-            aria-label="Delete Material">
-            <FaTrashAlt />
-          </IconButton>
-        </Actions>
+
+        {role === "admin" && (
+          <Actions>
+            <IconButton onClick={handleEdit} aria-label="Edit Material">
+              <FaEdit />
+            </IconButton>
+            <IconButton
+              className="delete-btn"
+              onClick={(e) => handleDeleteClick(e)}
+              aria-label="Delete Material">
+              <FaTrashAlt />
+            </IconButton>
+          </Actions>
+        )}
+        
       </MaterialItemContainer>
       <AnimatePresence>
         {isEditOpen && (

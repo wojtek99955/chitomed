@@ -6,6 +6,7 @@ import Logo from "../../../assets/icons/Logo";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { logoutMutation } from "../../../features/auth/api/authApi";
 import { useNavigate } from "react-router-dom";
+import { useAuthData } from "../../../features/auth/useAuthData";
 
 const Container = styled.header`
   padding: 0.5rem 1rem;
@@ -129,7 +130,7 @@ const Header = () => {
   const goDashboard = () => {
     navigate("/dashboard")
   }
-
+const { role } = useAuthData();
   return (
     <Container>
       <div onClick={goDashboard} style={{cursor:"pointer"}}>

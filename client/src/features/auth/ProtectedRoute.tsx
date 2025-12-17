@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "./useAuth";
+import { useAuthData } from "./useAuthData";
 
 interface ProtectedRouteProps {
   redirectPath?: string;
@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   redirectPath = "/sign-in",
 }) => {
-  const { isAuthenticated, isChecking } = useAuth();
+  const { isAuthenticated, isChecking } = useAuthData();
 
   if (isChecking) {
     return <div>Loading...</div>;
