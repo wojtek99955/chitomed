@@ -26,12 +26,13 @@ const Nav = styled.div`
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: #1f2937;
+    color: #364760;
 
     // Default background color (can be overridden below)
     background-color: transparent;
 
     &:hover {
+      color: #1f2937;
       background-color: ${ACTIVE_BG_COLOR}; // Use constant
     }
     &:active {
@@ -41,6 +42,7 @@ const Nav = styled.div`
     // Conditional styling based on the data-is-active attribute
     &[data-is-active="true"] {
       background-color: ${ACTIVE_BG_COLOR}; // Apply hover background for active link
+      color: #1f2937;
     }
   }
 `;
@@ -62,12 +64,12 @@ const Container = styled.div`
 `;
 
 const PeopleIcon = styled(MdOutlinePeopleOutline)`
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: #1f2937;
 `;
 
 const ContentIcon = styled(MdMovieEdit)`
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: #1f2937;
 `;
 
