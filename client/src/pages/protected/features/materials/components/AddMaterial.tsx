@@ -132,7 +132,7 @@ const SubmitButton = styled.button`
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
   width: 100%;
 
   &:hover:not(:disabled) {
@@ -142,6 +142,12 @@ const SubmitButton = styled.button`
   &:disabled {
     background: #9ca3af;
     cursor: not-allowed;
+  }
+  &:hover {
+    transform: scale(1.01);
+  }
+  &:active {
+    transform: scale(0.99);
   }
 `;
 
@@ -154,11 +160,15 @@ const CancelButton = styled.button`
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
   width: 100%;
 
   &:hover {
     background: #dde0e5 !important;
+    transform: scale(1.01);
+  }
+  &:active {
+    transform: scale(0.99);
   }
 `;
 
