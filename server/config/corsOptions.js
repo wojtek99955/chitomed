@@ -2,6 +2,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://chitomed.onrender.com",
   "http://localhost:3000",
+  "https://chitomed-next-test.onrender.com",
 ];
 
 const corsOptions = {
