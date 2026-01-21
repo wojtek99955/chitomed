@@ -3,6 +3,7 @@ const Material = require("../models/Material");
 
 const getMaterials = asyncHandler(async (req, res) => {
   const materialId = req.query.id;
+  console.log(materialId)
   if (materialId) {
     const material = await Material.findById(materialId);
     if (!material) {
@@ -11,6 +12,7 @@ const getMaterials = asyncHandler(async (req, res) => {
     }
     res.status(200).json(material);
   } else {
+    console.log("tu")
     const materials = await Material.find({});
     res.status(200).json(materials);
   }
@@ -40,16 +42,6 @@ const createMaterial = asyncHandler(async (req, res) => {
   res.status(201).json(material);
 });
 
-const getMaterialById = asyncHandler(async (req, res) => {
-  const material = await Material.findById(req.query.id);
-
-  if (!material) {
-    res.status(404);
-    throw new Error("Not found");
-  }
-
-  res.status(200).json(material);
-});
 
 const deleteMaterial = asyncHandler(async (req, res) => {
   const material = await Material.findById(req.params.id);
@@ -110,7 +102,6 @@ const updateMaterial = asyncHandler(async (req, res) => {
 module.exports = {
   getMaterials,
   createMaterial,
-  getMaterialById,
   deleteMaterial,
   updateMaterial,
 };

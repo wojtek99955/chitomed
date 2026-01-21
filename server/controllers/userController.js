@@ -1,7 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const transporter = require("../config/mailer");
 const generatePassword = require("../utils/generatePassword");
-const User = require("../models/User"); // <-- ważne!
+const User = require("../models/User");
+const bcrypt = require("bcrypt");
 
 exports.sendPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
@@ -11,24 +12,21 @@ exports.sendPassword = asyncHandler(async (req, res) => {
     throw new Error("Email jest wymagany.");
   }
 
-  // 🔍 Sprawdź czy użytkownik już istnieje
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     res.status(400);
     throw new Error("Użytkownik z tym emailem już istnieje.");
   }
 
-  // 🔐 Wygenerowane hasło
   const password = generatePassword();
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-  // 🆕 Utwórz użytkownika
   const user = await User.create({
     email,
-    password,
-    role: "user", // możesz zmienić na co chcesz
+    password: hashedPassword,
+    role: "user",
   });
 
-  // ✉️ Wyślij maila
   const mailOptions = {
     from: process.env.MAIL_USER,
     to: email,
@@ -38,63 +36,23 @@ exports.sendPassword = asyncHandler(async (req, res) => {
 
   await transporter.sendMail(mailOptions);
 
-  // 📤 Odpowiedź
   res.json({
     message: "Hasło wysłane na email. Użytkownik został utworzony.",
     userId: user._id,
   });
 });
 
-exports.resendPassword = asyncHandler(async (req, res) => {
-  const { email } = req.body;
-
-  if (!email) {
-    res.status(400);
-    throw new Error("Email jest wymagany.");
-  }
-
-  // 🔍 Szukamy istniejącego użytkownika
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    res.status(404);
-    throw new Error("Nie znaleziono użytkownika z tym emailem.");
-  }
-
-  // ✉️ Wyślij maila z istniejącym hasłem
-  const mailOptions = {
-    from: process.env.MAIL_USER,
-    to: email,
-    subject: "Chitomed: Twoje hasło",
-    text: `Twoje hasło: ${user.password}`, // jeśli hasło jest zahashowane -> musisz wygenerować nowe
-  };
-
-  await transporter.sendMail(mailOptions);
-
-  res.json({
-    message: "Hasło zostało wysłane ponownie.",
-    userId: user._id,
-  });
-});
-
 exports.deleteUser = asyncHandler(async (req, res) => {
-  const { email } = req.body; // możesz też użyć req.params.id
+  const { id } = req.params;
 
-  if (!email) {
-    res.status(400);
-    throw new Error("Email jest wymagany.");
-  }
-
-  // 🔍 Szukamy użytkownika
-  const user = await User.findOne({ email });
+  const user = await User.findById(id);
 
   if (!user) {
     res.status(404);
-    throw new Error("Nie znaleziono użytkownika z tym emailem.");
+    throw new Error("Nie znaleziono użytkownika z tym id.");
   }
 
-  // 🗑️ Usuwamy użytkownika
-  await User.deleteOne({ email });
+  await user.deleteOne();
 
   res.json({
     message: "Użytkownik został usunięty.",
@@ -103,13 +61,7 @@ exports.deleteUser = asyncHandler(async (req, res) => {
 });
 
 exports.getAllUsers = asyncHandler(async (req, res) => {
-  // Pobieramy wszystkich użytkowników
-  // Możesz wybrać, które pola chcesz zwrócić (np. bez hasła!)
-  console.log("USERZXYYY")
-  const users = await User.find({})
-    .select("-password") // ważne: nie zwracaj hasła (nawet zahashowanego)
-    .sort({ createdAt: -1 }); // opcjonalnie: najnowsi na górze
-console.log(users)
+  const users = await User.find({}).select("-password").sort({ createdAt: -1 });
   if (!users || users.length === 0) {
     res.status(404);
     throw new Error("Nie znaleziono żadnych użytkowników.");

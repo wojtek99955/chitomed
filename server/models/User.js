@@ -5,6 +5,7 @@ const userModel = new mongoose.Schema(
     email: String,
     password: String,
     role: String,
+    refreshToken: String,
   },
   { timestamps: true }
 );

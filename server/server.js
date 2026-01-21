@@ -1,7 +1,8 @@
 const express = require("express");
-const cors = require("cors"); // <-- 1. Importowanie modułu cors
+const cors = require("cors");
 const mongoose = require("mongoose");
 const corsOptions = require("./config/corsOptions");
+const errorHandler = require("./errorHandler");
 require("dotenv").config();
 const connectDB = require("./config/dbConn");
 const app = express();
@@ -16,21 +17,13 @@ app.use("/auth", require("./routes/authRoutes"));
 app.use("/material", require("./routes/materialRoutes"));
 app.use("/newsletter", require("./routes/newsletterRoutes"));
 
-
-// 1. GŁÓWNY ENDPOINT
-app.get("/", (req, res) => {
-  res.send("Minimalny serwer Express działa!");
-});
-
-app.listen(PORT, () => {
-  console.log(`\n🚀 SERWER DZIAŁA na http://localhost:${PORT}`);
-  console.log(`✅ CORS Aktywny: Dostęp tylko dla http://localhost:5173`);
-  console.log(`🔍 Testowy endpoint JSON: http://localhost:${PORT}/api/status`);
-  console.log("--------------------------------------------------\n");
-});
+app.use(errorHandler);
 
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
+  app.listen(PORT, () =>
+    console.log(`🚀 SERWER DZIAŁA na http://localhost:${PORT}`)
+  );
 });
 
 mongoose.connection.on("error", (err) => {

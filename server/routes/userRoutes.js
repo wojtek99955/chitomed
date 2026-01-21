@@ -3,8 +3,7 @@ const router = express.Router();
 const mailController = require("../controllers/userController");
 
 router.post("/send-password", mailController.sendPassword);
-router.post("/resend-password", mailController.resendPassword);
-router.delete("/", mailController.deleteUser);
+router.delete("/:id", mailController.deleteUser);
 router.get("/", mailController.getAllUsers);
 
 

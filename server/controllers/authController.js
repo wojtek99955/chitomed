@@ -1,43 +1,103 @@
-const asyncHandler = require("express-async-handler");
-const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const jwt = require("jsonwebtoken");
 
-exports.login = asyncHandler(async (req, res) => {
+exports.login = async (req, res) => {
+  console.log(process.env.REFRESH_TOKEN_SECRET, " tooo");
+  console.log(process.env.ACCESS_TOKEN_SECRET, " akaka");
   const { email, password } = req.body;
   if (!email || !password) {
-    res.status(400);
-    throw new Error("Email and password are required");
+    return res.status(400).json({ message: "Email and password are required" });
+  }
+  const foundUser = await User.findOne({ email }).exec();
+  if (!foundUser) {
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    res.status(401);
-    throw new Error("Incorrect email or password");
+  const match = password === foundUser.password;
+  if (!match) {
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const passwordMatch = password === user.password;
+  const accessToken = jwt.sign(
+    {
+      id: foundUser._id,
+      email: foundUser.email,
+      role: foundUser.role,
+    },
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: "15m" }
+  );
 
-  if (!passwordMatch) {
-    res.status(401);
-    throw new Error("Incorrect email or password");
-  }
-
-  const token = jwt.sign(
-    { id: user._id, email: user.email, role: user.role },
-    process.env.JWT_SECRET,
+  const refreshToken = jwt.sign(
+    { email: foundUser.email },
+    process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: "7d" }
   );
 
-  res.json({
-    message: "Zalogowano pomyślnie.",
-    token,
-    user: { id: user._id, email: user.email, role: user.role },
+  foundUser.refreshToken = refreshToken;
+  await foundUser.save();
+
+  res.cookie("jwt", refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   });
-});
 
-exports.logout = asyncHandler(async (req, res) => {
-  res.cookie("token", "", { httpOnly: true, expires: new Date(0) });
+  res.json({ accessToken });
+};
 
-  res.json({ message: "Logout successfully" });
-});
+exports.handleRefreshToken = async (req, res) => {
+  const cookies = req.cookies;
+  if (!cookies?.jwt) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  const refreshToken = cookies.jwt;
+  const foundUser = await User.findOne({ refreshToken }).exec();
+  if (!foundUser) {
+    return res.status(403).json({ message: "Forbidden" });
+  }
+
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    (err, decoded) => {
+      if (err || foundUser.email !== decoded.email) {
+        return res.status(403).json({ message: "Forbidden" });
+      }
+
+      const accessToken = jwt.sign(
+        {
+          UserInfo: {
+            id: foundUser._id,
+            email: foundUser.email,
+            role: foundUser.role,
+          },
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: "15m" }
+      );
+
+      res.json({ accessToken });
+    }
+  );
+};
+
+exports.logout = async (req, res) => {
+  const cookies = req.cookies;
+  if (!cookies?.jwt) {
+    return res.sendStatus(204); // No content
+  }
+
+  const refreshToken = cookies.jwt;
+  const foundUser = await User.findOne({ refreshToken }).exec();
+
+  if (foundUser) {
+    foundUser.refreshToken = "";
+    await foundUser.save();
+  }
+
+  res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
+  res.json({ message: "Cookie cleared" });
+};
