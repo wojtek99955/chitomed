@@ -28,7 +28,7 @@ const Container = styled.div`
 
 const Back = styled(Link)`
   display: block;
-  background-color: #11b981;
+  background-color: #2d50dc;
   padding: 0.7rem 1rem;
   display: flex;
   align-items: center;
@@ -40,7 +40,7 @@ const Back = styled(Link)`
   text-decoration: none;
   transition: all 200ms;
   &:hover {
-    background-color: #069668;
+    background-color: #2d50dc;
   }
 `;
 
@@ -213,7 +213,7 @@ const MaterialPage = () => {
         <Sidebar />
         <Container>
           <Back to="/dashboard">
-            <BackIcon /> Back
+            <BackIcon />
           </Back>
           {content}
         </Container>

@@ -104,7 +104,7 @@ const MaterialsList = () => {
 
   return (
     <Container>
-      <h3>Materials ({filteredMaterials.length})</h3>
+      <h3>Materiały ({filteredMaterials.length})</h3>
 
       <ListContainer>
         {filteredMaterials.length > 0 ? (
