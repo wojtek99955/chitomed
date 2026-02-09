@@ -6,19 +6,16 @@ const materialSchema = mongoose.Schema(
       type: String,
       trim: true,
     },
-    type: {
+    content: {
       type: String,
     },
-    text: {
-      type: String,
-    },
-    video: {
+    categoryId: {
       type: String,
     },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Material = mongoose.model("Material", materialSchema);

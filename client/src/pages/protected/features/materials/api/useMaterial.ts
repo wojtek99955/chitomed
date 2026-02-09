@@ -4,9 +4,8 @@ import { api } from "../../../../../api/api";
 export interface Material {
   _id: string;
   title: string;
-  type: 'video' | 'text';
-  text?: string;
-  video?: string;
+  content?: string;
+  categoryId:string;
   createdAt: string;
 }
 
@@ -17,6 +16,7 @@ const getMaterials = async (
   if (materialId) {
     url = `${url}?id=${materialId}`;
   }
+  console.log("CO", url)
   const response = await api.get(url);
   return response.data;
 };

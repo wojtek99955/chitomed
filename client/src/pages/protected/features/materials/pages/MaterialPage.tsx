@@ -3,8 +3,6 @@ import styled from "styled-components";
 import {
   FaExclamationTriangle,
   FaSpinner,
-  FaBook,
-  FaVideo,
 } from "react-icons/fa";
 import { useMaterials, type Material } from "../api/useMaterial";
 import Header from "../../../Dashboard/Header";
@@ -95,18 +93,6 @@ const ErrorBox = styled(InfoBox)`
   }
 `;
 
-const TypeBadge = styled.span<{ type: string }>`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  font-weight: 600;
-  color: white;
-  margin-bottom: 1.5rem;
-  background-color: ${({ type }) => (type === "film" ? "#dc2626" : "#10b981")};
-`;
-
 const Title = styled.h1`
   font-size: 2.5rem;
   color: #1f2937;
@@ -133,7 +119,8 @@ const MaterialPage = () => {
   const { id } = useParams<{ id: string }>();
 
   const { data, isLoading, isError, error } = useMaterials(id);
-  const libraryId = "561988";
+  // const libraryId = "561988";
+  console.log(data," data")
   const material = data as Material | undefined;
   let content; // Zmienna do przechowywania warunkowo generowanego JSX
 
@@ -181,22 +168,13 @@ const MaterialPage = () => {
           Created on: {new Date(material.createdAt).toLocaleDateString()}
         </p>
         <br />
-        <TypeBadge type={material.type}>
-          {material.type === "video" ? <FaVideo /> : <FaBook />}
-          {material.type === "video" ? "VIDEO CONTENT" : "TEXT ARTICLE"}
-        </TypeBadge>
 
         <ContentStyle>
-          {/* Wyświetlanie tekstu */}
-          {material.type === "text" && material.text && (
             <>
               <h3>Article Content:</h3>
-              <p>{material.text}</p>
+              <p>{material.content}</p>
             </>
-          )}
-
-          {/* Wyświetlanie linku wideo */}
-          {material.type === "video" && material.video && (
+{/* 
             <>
               <div
                 style={{
@@ -222,8 +200,7 @@ const MaterialPage = () => {
                     border: 0,
                   }}></iframe>
               </div>
-            </>
-          )}
+            </> */}
         </ContentStyle>
       </ContentWrapper>
     );

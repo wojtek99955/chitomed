@@ -8,6 +8,10 @@ import { FrFlag } from "../../assets/icons/FrFlag";
 const Container = styled.div`
   position: relative;
   z-index: 1;
+  border-right: 1px solid white;
+  height: 100%;
+  display: flex;
+  align-items: center;
 `;
 
 const CurrentLanguage = styled.div<any>`

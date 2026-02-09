@@ -11,6 +11,7 @@ const NAV = styled.nav`
   flex-direction: column;
   width: 500px;
   margin: 0 1rem;
+  height: 100%;
   @media ${device.laptop} {
     flex-direction: row;
     margin: 0;
@@ -22,18 +23,21 @@ const NAV = styled.nav`
     gap: 0.4rem;
     flex-direction: column;
     align-items: center;
+    height: 100%;
     @media ${device.laptop} {
       flex-direction: row;
-      align-items: flex-start;
+      /* align-items: flex-start; */
+      align-items: center;
     }
   }
   li {
-    color: white;
-    font-weight: 500;
+    /* color: white; */
     cursor: pointer;
     button {
       text-decoration: none;
-      background-color: white;
+      background-color: transparent;
+
+      /* background-color: white; */
       border: none;
       font-size: 1.3rem;
       color: #444444;
@@ -41,11 +45,13 @@ const NAV = styled.nav`
       cursor: pointer;
       border-radius: 8px;
       transition: all 200ms;
+      font-weight: 400;
+      font-family: "PP Telegraf";
       &:hover {
-        background-color: #f4effc;
+        /* background-color: #f4effc; */
       }
       &:active {
-        background-color: #efe8fb;
+        /* background-color: #efe8fb; */
       }
       @media ${device.laptop} {
         padding: 0.6rem;
@@ -56,8 +62,7 @@ const NAV = styled.nav`
 `;
 
 const SigninBtn = styled(Link)`
-  border: 2px solid #34186e;
-  border:2px solid #58585A;
+  border: 2px solid #5069d4;
   border-radius: 40px;
   padding: 0.7rem 1.8rem;
   text-decoration: none;
@@ -66,10 +71,13 @@ const SigninBtn = styled(Link)`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #34186e;
-  color:#58585A;
+  /* color: #5069d4;
+  color: #58585a; */
+  color: white;
   transition: all 200ms;
   font-size: 1rem;
+
+  background-color: #5069d4;
   &:hover {
     background-color: #f4effc;
   }
@@ -80,8 +88,7 @@ const SigninBtn = styled(Link)`
 
 const UserIcon = styled(FaRegUserCircle)`
   font-size: 1.4rem;
-  color: #34186e;
-  color: #58585a;
+  color:white;
 `;
 
 const Nav = ({ setShowNav }: any) => {
@@ -129,15 +136,15 @@ const Nav = ({ setShowNav }: any) => {
           </button>
         </li>
       </ul>
+      <LanguageChangeDropdown />
       <SigninBtn
-      to="/sign-in"
+        to="/sign-in"
         // href="https://chitomed.onrender.com/sign-in"
         // target="_blank"
         // rel="noopener noreferrer"
-        >
+      >
         <UserIcon /> Sign in
       </SigninBtn>
-      <LanguageChangeDropdown />
     </NAV>
   );
 };

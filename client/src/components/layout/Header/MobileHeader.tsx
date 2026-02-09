@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import styled from "styled-components";
 import Nav from "./Nav";
-import Logo from "../../../assets/icons/Logo";
+import Logo from "../../../assets/icons/Logo1";
 
 const Header = styled.div`
   border-bottom-left-radius: 12px;

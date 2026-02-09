@@ -4,7 +4,8 @@ import { device } from "../../../assets/device";
 import { useRef } from "react";
 import { ScrollReveal } from "../../../animations/ScrollReveal";
 const Container = styled.section`
-  background-image: url(${img});
+  /* background-image: url(${img}); */
+  background-color: #d6e8e8;
   width: 100%;
   min-height: 100vh;
   background-repeat: no-repeat;
@@ -15,13 +16,13 @@ const Container = styled.section`
   align-items: center;
   position: relative;
   z-index: 0;
-  `;
+`;
 
 const Main = styled.div`
-  background-color: #332a85;
-  background-color: #58585a;
+  /* background-color: #332a85; */
+  /* background-color: #58585a; */
   display: block;
-  max-width: 500px;
+  max-width: 700px;
   border-radius: 12px;
   padding: 2rem;
   opacity: 0.9;
@@ -32,10 +33,13 @@ const Main = styled.div`
     margin: auto;
   }
   h1 {
-    color: white;
+    /* color: white; */
+    font-weight: 400;
+    color: #332b5c;
+    font-size: 3rem;
   }
   p {
-    color: white;
+    /* color: white; */
   }
 `;
 

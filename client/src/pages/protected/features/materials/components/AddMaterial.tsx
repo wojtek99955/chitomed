@@ -6,7 +6,7 @@ import { useAddMaterial } from "../api/useAddMaterial";
 import { FaPlus } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import { AnimatePresence, motion } from "framer-motion";
-import AddVideo from "../../video/components/AddVideo";
+import { useGetCategories } from "../../categories/api/useGetCategories";
 
 const AddButton = styled.button`
   display: flex;
@@ -17,18 +17,27 @@ const AddButton = styled.button`
   margin: auto;
   gap: 0.5rem;
   padding: 1rem 1.5rem;
-  background: #10b981; /* Green */
   color: white;
+  background-color: #d6dcf8;
+  background-color: #2c50dc;
   border: none;
   border-radius: 8px;
   font-size: 1.1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  border: 1px solid #2c50dc;
+  transition: all 0.2s;
   margin-bottom: 2rem;
+  color: #000;
+  color: white;
 
   &:hover {
-    background: #059669;
+    background: #2c50dc;
+    color: white;
+    transform: scale(1.02);
+  }
+  &:active {
+    transform: scale(1.01);
   }
 `;
 
@@ -47,7 +56,7 @@ const ModalContent = styled(motion.div)`
   background: white;
   border-radius: 12px;
   width: 90%;
-  max-width: 600px;
+  min-height: 90vh;
   padding: 2rem;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 `;
@@ -73,7 +82,9 @@ const FormSection = styled.div`
     border: 1px solid #d1d5db;
     border-radius: 6px;
     font-size: 1rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
     &:focus {
       outline: none;
       border-color: #3b82f6;
@@ -91,7 +102,9 @@ const FormSection = styled.div`
     border: 1px solid #d1d5db;
     border-radius: 6px;
     font-size: 1rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
 
     &:focus {
       outline: none;
@@ -114,7 +127,9 @@ const Input = styled(Field)`
   border: 1px solid #d1d5db;
   border-radius: 6px;
   font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 
   &:focus {
     outline: none;
@@ -200,46 +215,28 @@ const CloseIcon = styled(MdClose)`
 
 const initialValues = {
   title: "",
-  type: "text" as "video" | "text",
-  text: "",
-  video: "",
+  categoryId: "",
+  content: "",
 };
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("Uzupełnij"),
-  type: Yup.string().oneOf(["video", "text"]).required("Wybierz typ materiału"),
-
-  // Conditional validation based on 'type'
-  text: Yup.string().when("type", {
-    is: "text",
-    then: (schema) => schema.required("Uzupełnij"),
-    otherwise: (schema) => schema.optional(),
-  }),
-
-  video: Yup.string().when("type", {
-    is: "video",
-    then: (schema) => schema.required("Uzupełnij"),
-    otherwise: (schema) => schema.optional(),
-  }),
+  content: Yup.string().required("Uzupełnij"),
+  categoryId: Yup.string().required("Wybierz kategorię"),
 });
-
-// ====================== MAIN COMPONENT ======================
 
 const AddMaterialModal = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [videoId, setVideoId] = useState<any>(null)
   const { mutate, isPending } = useAddMaterial(() => {
-    // Callback after successful mutation
     setIsOpen(false);
   });
+  const { data: categories = [] } = useGetCategories();
 
   const handleSubmit = (values: typeof initialValues) => {
     const dataToSend = {
       title: values.title,
-      type: values.type,
-      // Send only the relevant field based on type
-      text: values.type === "text" ? values.text : undefined,
-      video: values.type === "video" ? videoId : undefined,
+      content: values.content,
+      categoryId: values.categoryId,
     } as any;
 
     mutate(dataToSend);
@@ -278,63 +275,54 @@ const AddMaterialModal = () => {
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}>
-                {({ values }) => (
-                  <Form>
-                    {/* 1. TITLE */}
-                    <FormSection>
-                      <Label htmlFor="title">Tytuł</Label>
-                      <Input name="title" placeholder="tytuł" />
-                      <ErrorMessage name="title" component={ErrorText} />
-                    </FormSection>
+                <Form>
+                  <FormSection>
+                    <Label htmlFor="title">Tytuł</Label>
+                    <Input name="title" placeholder="tytuł" />
+                    <ErrorMessage name="title" component={ErrorText} />
+                  </FormSection>
 
-                    {/* 2. TYPE SELECT */}
-                    <FormSection>
-                      <Label htmlFor="type">Typ materiału</Label>
-                      <Field name="type" as="select">
-                        <option value="text">Tekstowy</option>
-                        <option value="video">Film</option>
-                      </Field>
-                      <ErrorMessage name="type" component={ErrorText} />
-                    </FormSection>
-                    {/* 3. CONDITIONAL FIELDS */}
-                    {values.type === "text" && (
-                      <FormSection>
-                        <Label htmlFor="text">Tekst</Label>
-                        <Field
-                          as="textarea"
-                          name="text"
-                          rows={5}
-                          placeholder="Wpisz tutaj tekst"
-                        />
-                        <ErrorMessage name="text" component={ErrorText} />
-                      </FormSection>
-                    )}
+                  <FormSection>
+                    <Label htmlFor="categoryId">Kategoria</Label>
+                    <Field as="select" name="categoryId">
+                      <option value="" disabled>
+                        -- Wybierz kategorię --
+                      </option>
+                      {categories.map((cat: any) => (
+                        <option key={cat._id} value={cat._id}>
+                          {cat.name}
+                        </option>
+                      ))}
+                    </Field>
+                    <ErrorMessage name="categoryId" component={ErrorText} />
+                  </FormSection>
 
-                    {values.type === "video" && (
-                      <AddVideo
-                        name="video"
-                        label="Prześlij wideo"
-                        setVideoId={setVideoId}
-                      />
-                    )}
+                  <FormSection>
+                    <Label htmlFor="content">Tekst</Label>
+                    <Field
+                      as="textarea"
+                      name="content"
+                      rows={5}
+                      placeholder="Wpisz tutaj tekst"
+                    />
+                    <ErrorMessage name="content" component={ErrorText} />
+                  </FormSection>
 
-                    {/* SUBMIT BUTTON AND CONTROLS */}
-                    <SubmitButton type="submit" disabled={isPending}>
-                      {isPending ? "Dodaję..." : "Dodaj"}
-                    </SubmitButton>
+                  <SubmitButton type="submit" disabled={isPending}>
+                    {isPending ? "Dodaję..." : "Dodaj"}
+                  </SubmitButton>
 
-                    <CancelButton
-                      type="button"
-                      onClick={() => setIsOpen(false)}
-                      style={{
-                        marginTop: "10px",
-                        background: "#f3f4f6",
-                        color: "#4b5563",
-                      }}>
-                      Anuluj
-                    </CancelButton>
-                  </Form>
-                )}
+                  <CancelButton
+                    type="button"
+                    onClick={() => setIsOpen(false)}
+                    style={{
+                      marginTop: "10px",
+                      background: "#f3f4f6",
+                      color: "#4b5563",
+                    }}>
+                    Anuluj
+                  </CancelButton>
+                </Form>
               </Formik>
             </ModalContent>
           </ModalOverlay>

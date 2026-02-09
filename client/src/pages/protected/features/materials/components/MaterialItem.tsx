@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import type { Material } from "../api/useMaterial";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { FaBook, FaVideo } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import EditMaterial from "./EditMaterial";
+// import EditMaterial from "./EditMaterial";
 import { AnimatePresence } from "framer-motion";
 import { useDeleteMaterial } from "../api/useDeleteMaterial";
 import DeleteConfirmation from "./DeleteConfirmation";
@@ -12,17 +11,20 @@ import { useAuthData } from "../../../../../features/auth/useAuthData";
 
 const MaterialItemContainer = styled.div`
   background: white;
+  position: relative;
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   padding: 1.5rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  flex-direction: column;
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
   transition: all 0.2s;
   cursor: pointer;
   &:hover {
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 0.1),
       0 4px 6px -4px rgb(0 0 0 / 0.1);
     transform: scale(1.01);
   }
@@ -47,22 +49,15 @@ const Metadata = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
-`;
-
-const TypeBadge = styled.span<{ type: "video" | "text" }>`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  font-weight: 600;
-  color: white;
-  background-color: ${({ type }) => (type === "video" ? "#ef4444" : "#059669")};
+  margin-bottom: 1rem;
 `;
 
 const Actions = styled.div`
   display: flex;
   gap: 0.8rem;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
 `;
 
 const IconButton = styled.button`
@@ -83,6 +78,22 @@ const IconButton = styled.button`
   }
 `;
 
+const Cover = styled.div`
+  border: 1px solid #d5dbf4;
+  border-radius: 6px;
+  width: 100%;
+  height: 10rem;
+  background-image: url("https://chitomed-files.b-cdn.net/background-gradient-tiny.webp");
+  background-size: cover;
+  overflow: hidden; /* Opcjonalnie, żeby nic nie wystawało */
+
+  img {
+    width: 100%;
+    height: 100%; /* TO JEST KLUCZOWE */
+    object-fit: contain;
+  }
+`;
+
 const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -95,11 +106,11 @@ const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
 
   const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    setIsDeleteModalOpen(true); 
+    setIsDeleteModalOpen(true);
   };
 
   const handleConfirmDelete = () => {
-    setIsDeleteModalOpen(false); 
+    setIsDeleteModalOpen(false);
     mutate(material._id);
   };
 
@@ -120,15 +131,15 @@ const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
         <ContentInfo>
           <Title>{material.title}</Title>
           <Metadata>
-            <TypeBadge type={material.type}>
-              {material.type === "video" ? <FaVideo /> : <FaBook />}
-              {material.type.toUpperCase()}
-            </TypeBadge>
             <span>
               Created: {new Date(material.createdAt).toLocaleDateString()}
             </span>
           </Metadata>
         </ContentInfo>
+
+        <Cover>
+          <img src="https://chitomed-files.b-cdn.net/Vector%20(1).svg" alt="" />
+        </Cover>
 
         {role === "admin" && (
           <Actions>
@@ -143,11 +154,11 @@ const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
             </IconButton>
           </Actions>
         )}
-        
       </MaterialItemContainer>
       <AnimatePresence>
         {isEditOpen && (
-          <EditMaterial setIsOpen={setIsEditOpen} material={material} />
+          <></>
+          // <EditMaterial setIsOpen={setIsEditOpen} material={material} />
         )}
       </AnimatePresence>
       <AnimatePresence>

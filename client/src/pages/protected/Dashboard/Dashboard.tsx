@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import Header from "./Header";
-import MaterialsPage from "../features/materials/pages/MaterialsPage";
 import Sidebar from "./Sidebar";
 import BottomNav from "../BottomNav";
+import { Outlet } from "react-router-dom";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -31,7 +31,7 @@ const Dashboard = () => {
       <Section>
         <Sidebar />
         <Wrapper>
-          <MaterialsPage />
+          <Outlet />
         </Wrapper>
       </Section>
       <BottomNav />

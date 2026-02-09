@@ -9,6 +9,7 @@ const app = express();
 const PORT = 8080;
 connectDB();
 
+
 app.use(cors(corsOptions));
 
 app.use(express.json());
@@ -16,13 +17,14 @@ app.use("/user", require("./routes/userRoutes"));
 app.use("/auth", require("./routes/authRoutes"));
 app.use("/material", require("./routes/materialRoutes"));
 app.use("/newsletter", require("./routes/newsletterRoutes"));
+app.use("/categories", require("./routes/categoryRoutes"));
 
 app.use(errorHandler);
 
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
   app.listen(PORT, () =>
-    console.log(`🚀 SERWER DZIAŁA na http://localhost:${PORT}`)
+    console.log(`🚀 SERWER DZIAŁA na http://localhost:${PORT}`),
   );
 });
 

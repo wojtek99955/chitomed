@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaRegUser } from "react-icons/fa";
-import Logo from "../../../assets/icons/Logo";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { logoutMutation } from "../../../features/auth/api/authApi";
 import { useNavigate } from "react-router-dom";
+import { MdLogout } from "react-icons/md";
+import Logo1 from "../../../assets/icons/Logo1";
 
 const Container = styled.header`
   padding: 0.5rem 1rem;
@@ -24,12 +25,13 @@ const Container = styled.header`
 const UserWrapper = styled.div`
   position: relative;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.6rem;
   border-radius: 4px;
+  background-color: #f0f0f0;
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: #dde0e5;
   }
 `;
 
@@ -51,10 +53,19 @@ const DropdownContainer = styled(motion.div)`
   z-index: 10;
   overflow: hidden;
 `;
+const UserIconDropdown = styled(FaRegUser)`
+font-size: 1.2rem;
+`;
+const LogoutIcon = styled(MdLogout)`
+  font-size: 1.2rem;
+`;
 
 const DropdownItem = styled.div`
-  padding: .9rem 1rem;
+  padding: 0.9rem 1rem;
   font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap:.5rem;
   color: #333;
   cursor: pointer;
 
@@ -127,12 +138,16 @@ const Header = () => {
   }, [isDropdownOpen]);
 
   const goDashboard = () => {
-    navigate("/dashboard")
-  }
+    navigate("/dashboard");
+  };
+
+  const goToProfile = () => {
+    navigate("/profile");
+  };
   return (
     <Container>
-      <div onClick={goDashboard} style={{cursor:"pointer"}}>
-        <Logo />
+      <div onClick={goDashboard} style={{ cursor: "pointer" }}>
+        <Logo1 />
       </div>
       <UserWrapper ref={dropdownRef} onClick={toggleDropdown}>
         <UserIcon />
@@ -143,8 +158,12 @@ const Header = () => {
               animate="visible"
               exit="hidden"
               variants={dropdownVariants}>
-              <DropdownItem>Account</DropdownItem>
-              <DropdownItem onClick={logout}>Log Out</DropdownItem>
+              <DropdownItem onClick={goToProfile}>
+                <UserIconDropdown /> Profile
+              </DropdownItem>
+              <DropdownItem onClick={logout}>
+                <LogoutIcon /> Log Out
+              </DropdownItem>
             </DropdownContainer>
           )}
         </AnimatePresence>

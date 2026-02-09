@@ -2,12 +2,13 @@ import styled from "styled-components";
 import { useMaterials } from "../api/useMaterial";
 import MaterialItem from "./MaterialItem";
 import { device } from "../../../../../assets/device";
+import { useEffect, useState } from "react";
 
 const Container = styled.div`
   max-width: 1100px;
   margin: auto;
   padding-bottom: 4rem;
-  @media ${device.laptop}{
+  @media ${device.laptop} {
     padding-bottom: 0;
   }
 
@@ -21,6 +22,7 @@ const Container = styled.div`
 
 const ListContainer = styled.div`
   display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 1.5rem;
 `;
 
@@ -41,6 +43,28 @@ const ErrorContainer = styled.div`
 
 const MaterialsList = () => {
   const { data: materials, isLoading, isError, error } = useMaterials();
+  const STORAGE_KEY = "selected_category_id";
+
+  // 1. Stan trzymający aktualnie wybrane ID z localStorage
+  const [filterId, setFilterId] = useState<string | null>(
+    localStorage.getItem(STORAGE_KEY),
+  );
+
+  // 2. Nasłuchiwanie na zmiany filtra (wyzwalane przez Twoje window.dispatchEvent)
+  useEffect(() => {
+    const handleFilterChange = () => {
+      setFilterId(localStorage.getItem(STORAGE_KEY));
+    };
+
+    window.addEventListener("click", handleFilterChange);
+    // Opcjonalnie: nasłuchiwanie zmian z innych kart/okien
+    window.addEventListener("storage", handleFilterChange);
+
+    return () => {
+      window.removeEventListener("click", handleFilterChange);
+      window.removeEventListener("storage", handleFilterChange);
+    };
+  }, []);
 
   if (isLoading) {
     return (
@@ -63,32 +87,41 @@ const MaterialsList = () => {
     );
   }
 
-  if (!materials) {
-    return (
-      <Container>
-        <h3>Materials</h3>
-        <p style={{ textAlign: "center", color: "#6b7280" }}>
-          No materials found. Add one to get started!
-        </p>
-      </Container>
-    );
-  }
+  // 3. Logika filtrowania
+  const materialArray = Array.isArray(materials)
+    ? materials
+    : materials
+      ? [materials]
+      : [];
+
+  const filteredMaterials = materialArray.filter((item) => {
+    // Jeśli filtr to 'all' lub nie ma nic wybranego -> pokaż wszystko
+    if (!filterId || filterId === "all") return true;
+
+    // W przeciwnym razie dopasuj ID kategorii (pamiętaj o nazwie pola w modelu Material!)
+    return item.categoryId === filterId;
+  });
 
   return (
     <Container>
-      <h3>
-        Materials (
-        {Array.isArray(materials) ? materials.length : materials ? 1 : 0})
-      </h3>
+      <h3>Materials ({filteredMaterials.length})</h3>
 
       <ListContainer>
-        {Array.isArray(materials) ? (
-          materials.map((material) => (
+        {filteredMaterials.length > 0 ? (
+          filteredMaterials.map((material) => (
             <MaterialItem key={material._id} material={material} />
           ))
-        ) : materials ? (
-          <MaterialItem key={materials._id} material={materials} />
-        ) : null}
+        ) : (
+          <p
+            style={{
+              gridColumn: "1 / -1",
+              textAlign: "center",
+              color: "#6b7280",
+              padding: "2rem",
+            }}>
+            Brak materiałów w tej kategorii.
+          </p>
+        )}
       </ListContainer>
     </Container>
   );

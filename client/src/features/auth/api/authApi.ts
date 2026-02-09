@@ -6,13 +6,7 @@ export interface LoginCredentials {
 }
 
 export interface LoginResponse {
-  message: string;
-  token: string;
-  user: {
-    id: string;
-    email: string;
-    role: string;
-  };
+  accessToken: string;
 }
 
 export interface LogoutResponse {

@@ -3,7 +3,7 @@ const Material = require("../models/Material");
 
 const getMaterials = asyncHandler(async (req, res) => {
   const materialId = req.query.id;
-  console.log(materialId)
+  console.log(materialId);
   if (materialId) {
     const material = await Material.findById(materialId);
     if (!material) {
@@ -12,36 +12,23 @@ const getMaterials = asyncHandler(async (req, res) => {
     }
     res.status(200).json(material);
   } else {
-    console.log("tu")
     const materials = await Material.find({});
     res.status(200).json(materials);
   }
 });
 
 const createMaterial = asyncHandler(async (req, res) => {
-  const { title, type, text, video } = req.body;
-  if (!title || !type) {
-    res.status(400);
-    throw new Error("Title or type are missing");
-  }
-  if (type === "text" && !text) {
-    res.status(400);
-    throw new Error("Text is missing");
-  }
-  if (type === "video" && !video) {
-    res.status(400);
-    throw new Error("video is missing");
-  }
+  const { title, categoryId, content } = req.body;
+  console.log(req.body, " BODY")
+
   const material = await Material.create({
     title,
-    type,
-    text: type === "text" ? text : undefined,
-    video: type === "video" ? video : undefined,
+    categoryId,
+    content,
   });
 
   res.status(201).json(material);
 });
-
 
 const deleteMaterial = asyncHandler(async (req, res) => {
   const material = await Material.findById(req.params.id);
@@ -58,7 +45,7 @@ const deleteMaterial = asyncHandler(async (req, res) => {
 
 const updateMaterial = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { title, type, text, video } = req.body;
+  const { title, content, categoryId } = req.body;
   const material = await Material.findById(id);
 
   if (!material) {
@@ -67,29 +54,10 @@ const updateMaterial = asyncHandler(async (req, res) => {
   }
 
   const updateData = {
-    title: title !== undefined ? title : material.title,
-    type: type !== undefined ? type : material.type,
+    title,
+    content,
+    categoryId,
   };
-
-  const finalType = updateData.type;
-
-  if (finalType === "text") {
-    updateData.text = text !== undefined ? text : material.text;
-    updateData.video = undefined;
-
-    if (!updateData.text) {
-      res.status(400);
-      throw new Error('Dla typu "text" pole "text" nie może być puste.');
-    }
-  } else if (finalType === "video") {
-    updateData.video = video !== undefined ? video : material.video;
-    updateData.text = undefined;
-
-    if (!updateData.video) {
-      res.status(400);
-      throw new Error('Dla typu "video" pole "video" nie może być puste.');
-    }
-  }
 
   const updatedMaterial = await Material.findByIdAndUpdate(id, updateData, {
     new: true,

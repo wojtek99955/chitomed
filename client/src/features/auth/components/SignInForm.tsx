@@ -2,7 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 import { device } from "../../../assets/device";
-import Logo from "../../../assets/icons/Logo";
+import Logo from "../../../assets/icons/Logo1";
 import { useMutation } from "@tanstack/react-query";
 import {
   loginMutation,
@@ -38,7 +38,7 @@ const Input = styled(Field)<{ $error?: boolean }>`
 
   &:focus {
     outline: none;
-    border-color: ${({ $error }) => ($error ? "#ff8181" : "#6542b3")};
+    border-color: ${({ $error }) => ($error ? "#ff8181" : "#5069d41")};
   }
 `;
 
@@ -53,7 +53,7 @@ const Button = styled.button<{ $loading?: boolean }>`
   margin-top: 1.5rem;
   width: 100%;
   padding: 0.9rem;
-  background-color: #5d2fbd;
+  background-color: #5069d4;
   color: white;
   border: none;
   border-radius: 8px;
@@ -64,7 +64,7 @@ const Button = styled.button<{ $loading?: boolean }>`
   transition: 0.2s;
 
   &:hover {
-    background-color: #43238b;
+    background-color: #3955ce;
   }
 `;
 
@@ -104,14 +104,14 @@ const SignUpLink = styled(Link)`
   display: block;
   margin-top: 1rem;
   text-align: center;
-  color: #6542b3;
+  color: #5069d4;
   font-weight: 500;
   text-decoration: none;
   transition: 0.2s;
 
   &:hover {
     text-decoration: underline;
-    color: #43238b;
+    color: #3955ce;
   }
 `;
 
@@ -132,7 +132,7 @@ const SignInForm = () => {
   const mutation = useMutation<LoginResponse, Error, LoginCredentials>({
     mutationFn: loginMutation,
     onSuccess: (data) => {
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.accessToken);
       setServerError(null);
       setSuccessMessage("Logged in successfully! Redirecting...");
       navigate("/dashboard");

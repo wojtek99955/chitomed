@@ -1,10 +1,10 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
-import { device } from "../../../assets/device";
-import Logo from "../../../assets/icons/Logo";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Logo from "../../assets/icons/Logo1";
+import { device } from "../../assets/device";
 // import { useMutation } from "@tanstack/react-query";
 // import {
 //   loginMutation,
@@ -48,7 +48,7 @@ const Input = styled(Field)<{ $error?: boolean }>`
 
   &:focus {
     outline: none;
-    border-color: ${({ $error }) => ($error ? "#ff8181" : "#6542b3")};
+    border-color: ${({ $error }) => ($error ? "#ff8181" : "#5069d4")};
   }
 `;
 
@@ -63,7 +63,7 @@ const Button = styled.button<{ $loading?: boolean }>`
   margin-top: 1.5rem;
   width: 100%;
   padding: 0.9rem;
-  background-color: #5d2fbd;
+  background-color: #5069d4;
   color: white;
   border: none;
   border-radius: 8px;
@@ -74,7 +74,7 @@ const Button = styled.button<{ $loading?: boolean }>`
   transition: 0.2s;
 
   &:hover {
-    background-color: #43238b;
+    background-color: #3955ce;
   }
 `;
 
@@ -116,7 +116,7 @@ const SignInSchema = Yup.object().shape({
     .required("Email is required"),
 });
 
-const Signup = () => {
+const SignUp = () => {
   let navigate = useNavigate();
   //   const [serverError, setServerError] = useState<string | null>(null);
   //   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -216,4 +216,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignUp;
