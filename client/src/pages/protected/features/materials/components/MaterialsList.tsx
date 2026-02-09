@@ -44,7 +44,7 @@ const ErrorContainer = styled.div`
 const MaterialsList = () => {
   const { data: materials, isLoading, isError, error } = useMaterials();
   const STORAGE_KEY = "selected_category_id";
-
+console.log(materials, " materials")
   // 1. Stan trzymający aktualnie wybrane ID z localStorage
   const [filterId, setFilterId] = useState<string | null>(
     localStorage.getItem(STORAGE_KEY),

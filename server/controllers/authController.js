@@ -25,7 +25,7 @@ exports.login = async (req, res) => {
       role: foundUser.role,
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "15m" }
+    { expiresIn: "365d" }
   );
 
   const refreshToken = jwt.sign(

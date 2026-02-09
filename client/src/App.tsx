@@ -12,6 +12,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import ProfilePage from "./pages/protected/features/profile/pages/ProfilePage";
 
 import MaterialsPage from "./pages/protected/features/materials/pages/MaterialsPage";
+import AddMaterialModal from "./pages/protected/features/materials/components/AddMaterial";
 
 function App() {
   const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ function App() {
               <Route path="users" element={<UsersPage />} />
               <Route path="users/:id" element={<User />} />
               <Route path="profile" element={<ProfilePage />} />
+              <Route path="add-material" element={<AddMaterialModal />} />
             </Route>
           </Routes>
         </Router>

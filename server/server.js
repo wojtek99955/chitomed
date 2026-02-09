@@ -18,6 +18,8 @@ app.use("/auth", require("./routes/authRoutes"));
 app.use("/material", require("./routes/materialRoutes"));
 app.use("/newsletter", require("./routes/newsletterRoutes"));
 app.use("/categories", require("./routes/categoryRoutes"));
+app.use("/upload", require("./routes/upload"));
+
 
 app.use(errorHandler);
 

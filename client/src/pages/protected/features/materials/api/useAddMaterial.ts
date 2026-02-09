@@ -4,7 +4,6 @@ import { api } from "../../../../../api/api";
 
 export interface MaterialData {
   title: string;
-  type: "video" | "text";
   text?: string;
   videoUrl?: string;
 }

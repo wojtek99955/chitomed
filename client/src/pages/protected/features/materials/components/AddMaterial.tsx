@@ -1,334 +1,246 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useAddMaterial } from "../api/useAddMaterial";
-import { FaPlus } from "react-icons/fa";
-import { MdClose } from "react-icons/md";
-import { AnimatePresence, motion } from "framer-motion";
 import { useGetCategories } from "../../categories/api/useGetCategories";
+import { useCreateBlockNote } from "@blocknote/react";
+import { BlockNoteView } from "@blocknote/mantine";
+import "@blocknote/core/fonts/inter.css";
+import "@blocknote/mantine/style.css";
 
-const AddButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-width: 1100px;
-  width: 100%;
-  margin: auto;
-  gap: 0.5rem;
-  padding: 1rem 1.5rem;
-  color: white;
-  background-color: #d6dcf8;
-  background-color: #2c50dc;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid #2c50dc;
-  transition: all 0.2s;
-  margin-bottom: 2rem;
-  color: #000;
-  color: white;
+import {
+  ModalContent,
+  ModalOverlay,
+  FormSection,
+  FormTitle,
+  Label,
+  Header,
+  Input,
+  CancelButton,
+  CloseContainer,
+  CloseIcon,
+  ErrorText,
+  SubmitButton,
+} from "./AddMaterial/Styles";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-  &:hover {
-    background: #2c50dc;
-    color: white;
-    transform: scale(1.02);
-  }
-  &:active {
-    transform: scale(1.01);
-  }
-`;
-
-const ModalOverlay = styled(motion.div)<{ $isOpen: boolean }>`
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  backdrop-filter: blur(5px);
-`;
-
-const ModalContent = styled(motion.div)`
-  background: white;
-  border-radius: 12px;
-  width: 90%;
-  min-height: 90vh;
-  padding: 2rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-`;
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 1.5rem;
-`;
-const FormTitle = styled.h2`
-  font-size: 1.5rem;
-  color: #1f2937;
-  padding-bottom: 0.5rem;
-  margin-bottom: 0;
-`;
-
-const FormSection = styled.div`
-  margin-bottom: 1.5rem;
-  textarea {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 1rem;
-    transition:
-      border-color 0.2s,
-      box-shadow 0.2s;
-    &:focus {
-      outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
-    }
-  }
-  select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236B7280'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1em;
-    width: 100%;
-    padding: 0.8rem 1rem;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 1rem;
-    transition:
-      border-color 0.2s,
-      box-shadow 0.2s;
-
-    &:focus {
-      outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
-    }
-  }
-`;
-
-const Label = styled.label`
-  display: block;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 0.4rem;
-`;
-
-const Input = styled(Field)`
-  width: 100%;
-  padding: 0.8rem 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
-
-  &:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
-  }
-`;
-
-const SubmitButton = styled.button`
-  padding: 0.9rem 2rem;
-  background: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  width: 100%;
-
-  &:hover:not(:disabled) {
-    background: #2563eb;
-  }
-
-  &:disabled {
-    background: #9ca3af;
-    cursor: not-allowed;
-  }
-  &:hover {
-    transform: scale(1.01);
-  }
-  &:active {
-    transform: scale(0.99);
-  }
-`;
-
-const CancelButton = styled.button`
-  padding: 0.9rem 2rem;
-  background: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  width: 100%;
-
-  &:hover {
-    background: #dde0e5 !important;
-    transform: scale(1.01);
-  }
-  &:active {
-    transform: scale(0.99);
-  }
-`;
-
-const ErrorText = styled.p`
-  color: #ef4444;
-  font-size: 0.9rem;
-  margin-top: 0.4rem;
-  font-weight: 500;
-`;
-
-const CloseContainer = styled.div`
-  background-color: #f3f4f6;
-  aspect-ratio: 1/1;
-  padding: 0.3rem;
-  border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: all 200ms;
-  &:hover {
-    background-color: #dde0e5;
-  }
-`;
-
-const CloseIcon = styled(MdClose)`
-  font-size: 1.7rem;
-`;
+// ────────────────────────────────────────────────
 
 const initialValues = {
   title: "",
   categoryId: "",
-  content: "",
 };
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required("Uzupełnij"),
-  content: Yup.string().required("Uzupełnij"),
+  title: Yup.string().required("Uzupełnij tytuł"),
   categoryId: Yup.string().required("Wybierz kategorię"),
 });
 
+// ────────────────────────────────────────────────
+
 const AddMaterialModal = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   const { mutate, isPending } = useAddMaterial(() => {
-    setIsOpen(false);
+    navigate("/dashboard");
   });
   const { data: categories = [] } = useGetCategories();
 
+  // Lokalny stan na treść z BlockNote
+  const [content, setContent] = useState<any[]>([]);
+
+  const editor = useCreateBlockNote({
+    uploadFile: async (file: File) => {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      let uploadEndpoint = "http://localhost:8080/upload/upload-image";
+
+      if (file.type.startsWith("video/")) {
+        uploadEndpoint = "http://localhost:8080/upload/upload-video";
+      } else if (!file.type.startsWith("image/")) {
+        throw new Error("Obsługiwane są tylko obrazy i filmy");
+      }
+
+      const response = await fetch(uploadEndpoint, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error || `Błąd uploadu (${file.type})`);
+      }
+
+      const { url } = await response.json();
+      return url;
+    },
+  });
+
+  // Nasłuchujemy zmian w edytorze → zapisujemy lokalnie
+  useEffect(() => {
+    const unsubscribe = editor.onChange(() => {
+      setContent(editor.document);
+    });
+    return () => unsubscribe();
+  }, [editor]);
+
+  // Zamień video tagi na iframe po załadowaniu
+  useEffect(() => {
+    const replaceVideoWithIframe = () => {
+      const videoElements = document.querySelectorAll(
+        ".bn-visual-media-wrapper video",
+      );
+
+      videoElements.forEach((video: any) => {
+        const videoUrl = video.src;
+        if (!videoUrl || video.dataset.replaced === "true") return;
+
+        // Sprawdź czy to nie jest już iframe
+        const wrapper = video.closest(".bn-visual-media-wrapper");
+        if (!wrapper) return;
+
+        // Utwórz iframe
+        const iframe = document.createElement("iframe");
+        iframe.src = videoUrl;
+        iframe.style.width = "100%";
+        iframe.style.height = "400px";
+        iframe.style.border = "1px solid #e5e7eb";
+        iframe.style.borderRadius = "8px";
+        iframe.setAttribute(
+          "allow",
+          "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+        );
+        iframe.setAttribute("allowfullscreen", "true");
+
+        // Zamień video na iframe
+        wrapper.innerHTML = "";
+        wrapper.appendChild(iframe);
+
+        // Oznacz jako zamienione
+        iframe.dataset.replaced = "true";
+      });
+    };
+
+    // Obserwuj zmiany w DOM
+    const observer = new MutationObserver(replaceVideoWithIframe);
+    const editorElement = document.querySelector(".bn-container");
+
+    if (editorElement) {
+      observer.observe(editorElement, {
+        childList: true,
+        subtree: true,
+      });
+
+      // Wykonaj od razu
+      replaceVideoWithIframe();
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   const handleSubmit = (values: typeof initialValues) => {
+    if (content.length === 0) {
+      alert("Treść nie może być pusta!");
+      return;
+    }
+
+    // Można dodać prostą walidację tekstu, np.:
+    const hasSomeText = content.some(
+      (block: any) =>
+        block.type === "paragraph" &&
+        block.content?.some((c: any) => c.type === "text" && c.text?.trim()),
+    );
+
+    if (!hasSomeText) {
+      alert("Wpisz choć trochę tekstu!");
+      return;
+    }
+
     const dataToSend = {
       title: values.title,
-      content: values.content,
       categoryId: values.categoryId,
-    } as any;
+      content, // ← wysyłamy lokalny stan
+    };
 
     mutate(dataToSend);
   };
 
-  const closeModal = (e?: React.MouseEvent) => {
-    if (e && e.target !== e.currentTarget) return; // Ignore clicks on children
-    setIsOpen(false);
-  };
-
   return (
-    <>
-      <AddButton onClick={() => setIsOpen(true)}>
-        <FaPlus /> Dodaj materiał
-      </AddButton>
-      <AnimatePresence>
-        {isOpen && (
-          <ModalOverlay
-            $isOpen={isOpen}
-            onClick={closeModal}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}>
-            <ModalContent
-              onClick={(e) => e.stopPropagation()}
-              initial={{ opacity: 0, scale: 0.75 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.85 }}>
-              <Header>
-                <FormTitle>Dodaj materiał</FormTitle>
-                <CloseContainer onClick={() => setIsOpen(false)}>
-                  <CloseIcon />
-                </CloseContainer>
-              </Header>
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}>
-                <Form>
-                  <FormSection>
-                    <Label htmlFor="title">Tytuł</Label>
-                    <Input name="title" placeholder="tytuł" />
-                    <ErrorMessage name="title" component={ErrorText} />
-                  </FormSection>
+    <ModalOverlay>
+      <ModalContent onClick={(e) => e.stopPropagation()}>
+        <Header>
+          <FormTitle>Dodaj materiał</FormTitle>
+          <CloseContainer onClick={() => navigate("/dashboard")}>
+            <CloseIcon />
+          </CloseContainer>
+        </Header>
 
-                  <FormSection>
-                    <Label htmlFor="categoryId">Kategoria</Label>
-                    <Field as="select" name="categoryId">
-                      <option value="" disabled>
-                        -- Wybierz kategorię --
-                      </option>
-                      {categories.map((cat: any) => (
-                        <option key={cat._id} value={cat._id}>
-                          {cat.name}
-                        </option>
-                      ))}
-                    </Field>
-                    <ErrorMessage name="categoryId" component={ErrorText} />
-                  </FormSection>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}>
+          <Form>
+            <FormSection>
+              <Label htmlFor="title">Tytuł</Label>
+              <Field as={Input} name="title" placeholder="Tytuł materiału" />
+              <ErrorMessage name="title" component={ErrorText} />
+            </FormSection>
 
-                  <FormSection>
-                    <Label htmlFor="content">Tekst</Label>
-                    <Field
-                      as="textarea"
-                      name="content"
-                      rows={5}
-                      placeholder="Wpisz tutaj tekst"
-                    />
-                    <ErrorMessage name="content" component={ErrorText} />
-                  </FormSection>
+            <FormSection>
+              <Label htmlFor="categoryId">Kategoria</Label>
+              <Field as="select" name="categoryId">
+                <option value="" disabled>
+                  -- Wybierz kategorię --
+                </option>
+                {categories.map((cat: any) => (
+                  <option key={cat._id} value={cat._id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </Field>
+              <ErrorMessage name="categoryId" component={ErrorText} />
+            </FormSection>
 
-                  <SubmitButton type="submit" disabled={isPending}>
-                    {isPending ? "Dodaję..." : "Dodaj"}
-                  </SubmitButton>
+            <FormSection>
+              <Label>Treść</Label>
 
-                  <CancelButton
-                    type="button"
-                    onClick={() => setIsOpen(false)}
-                    style={{
-                      marginTop: "10px",
-                      background: "#f3f4f6",
-                      color: "#4b5563",
-                    }}>
-                    Anuluj
-                  </CancelButton>
-                </Form>
-              </Formik>
-            </ModalContent>
-          </ModalOverlay>
-        )}
-      </AnimatePresence>
-    </>
+              <div
+                style={{
+                  border: "1px solid #d1d5db",
+                  borderRadius: "6px",
+                  minHeight: "180px",
+                  background: "#fff",
+                }}>
+                <BlockNoteView editor={editor} theme="light" />
+              </div>
+
+              {/* Można dodać własną informację o błędzie, jeśli treść pusta */}
+              {content.length === 0 && (
+                <ErrorText style={{ marginTop: "4px" }}>
+                  Treść nie może być pusta
+                </ErrorText>
+              )}
+            </FormSection>
+
+            <SubmitButton type="submit" disabled={isPending}>
+              {isPending ? "Dodaję..." : "Dodaj"}
+            </SubmitButton>
+
+            <CancelButton
+              type="button"
+              onClick={() => navigate("/dashboard")}
+              style={{
+                marginTop: "10px",
+                background: "#f3f4f6",
+                color: "#4b5563",
+              }}>
+              Anuluj
+            </CancelButton>
+          </Form>
+        </Formik>
+      </ModalContent>
+    </ModalOverlay>
   );
 };
 

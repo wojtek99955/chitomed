@@ -6,9 +6,7 @@ const materialSchema = mongoose.Schema(
       type: String,
       trim: true,
     },
-    content: {
-      type: String,
-    },
+    content: { type: mongoose.Schema.Types.Mixed, required: true },
     categoryId: {
       type: String,
     },
