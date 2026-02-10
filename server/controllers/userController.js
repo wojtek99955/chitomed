@@ -3,19 +3,18 @@ const transporter = require("../config/mailer");
 const generatePassword = require("../utils/generatePassword");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-
 exports.sendPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
     res.status(400);
-    throw new Error("Email jest wymagany.");
+    throw new Error("Email is required.");
   }
 
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    res.status(400);
-    throw new Error("Użytkownik z tym emailem już istnieje.");
+    res.status(409);
+    throw new Error("A user with this email already exists.");
   }
 
   const password = generatePassword();
@@ -28,19 +27,36 @@ exports.sendPassword = asyncHandler(async (req, res) => {
   });
 
   const mailOptions = {
-    from: process.env.MAIL_USER,
+    from: "no-reply@chitomed.com",
     to: email,
-    subject: "Chitomed: Twoje hasło",
-    text: `Oto Twoje hasło: ${password}`,
+    subject: "Chitomed: Account registration confirmation",
+    template: "register", // views/email/register.hbs
+    context: {
+      email: email,
+      password: password,
+      // e.g. loginUrl: "https://app.chitomed.com/sign-in"
+    },
   };
 
-  await transporter.sendMail(mailOptions);
+  try {
+    await transporter.sendMail(mailOptions);
 
-  res.json({
-    message: "Hasło wysłane na email. Użytkownik został utworzony.",
-    userId: user._id,
-  });
+    res.json({
+      message:
+        "Password has been sent by email. The user account has been created.",
+      userId: user._id,
+    });
+  } catch (err) {
+    // If the email fails, remove the created user to avoid orphan accounts
+    await User.findByIdAndDelete(user._id);
+
+    res.status(500);
+    throw new Error(
+      "The account was created, but the email could not be sent.",
+    );
+  }
 });
+
 
 exports.deleteUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -71,5 +87,28 @@ exports.getAllUsers = asyncHandler(async (req, res) => {
     message: "Pobrano wszystkich użytkowników.",
     count: users.length,
     users,
+  });
+});
+
+exports.deleteUserByEmail = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    res.status(400);
+    throw new Error("Id jest wymagany do usunięcia użytkownika.");
+  }
+
+  const user = await User.findById(id);
+  if (!user) {
+    res.status(404);
+    throw new Error("Nie znaleziono użytkownika z podanym adresem id.");
+  }
+
+  await user.deleteOne();
+
+  res.json({
+    message: "Użytkownik został pomyślnie usunięty.",
+    deletedEmail: email,
+    deletedUserId: user._id,
   });
 });

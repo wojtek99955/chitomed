@@ -1,19 +1,12 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/icons/Logo1";
 import { device } from "../../assets/device";
-// import { useMutation } from "@tanstack/react-query";
-// import {
-//   loginMutation,
-//   type LoginCredentials,
-//   type LoginResponse,
-// } from "../api/authApi";
-
-// import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { signUp } from "../../features/user/api/userApi";
 
 const Container = styled.section`
   min-height: 100vh;
@@ -84,25 +77,25 @@ const ErrorText = styled.div`
   margin-top: 0.2rem;
 `;
 
-// const ServerError = styled.div`
-//   color: #ff8181;
-//   font-size: 1rem;
-//   margin-top: 1rem;
-//   text-align: center;
-//   background: #ff818130;
-//   padding: 0.8rem;
-//   border-radius: 8px;
-// `;
+const ServerError = styled.div`
+  color: #ff3c3c;
+  font-size: 1rem;
+  margin-top: 1rem;
+  text-align: center;
+  background: #ff818130;
+  padding: 0.8rem;
+  border-radius: 8px;
+`;
 
-// const SuccessMessage = styled.div`
-//   color: #a0ffa0;
-//   font-size: 1rem;
-//   margin-top: 1rem;
-//   text-align: center;
-//   background: #00aa0030;
-//   padding: 0.8rem;
-//   border-radius: 8px;
-// `;
+const SuccessMessage = styled.div`
+  color: #009a00;
+  font-size: 1rem;
+  margin-top: 1rem;
+  text-align: center;
+  background: rgba(0, 100, 0, 0.11);
+  padding: 0.8rem;
+  border-radius: 8px;
+`;
 
 const LogoContainer = styled.div`
   display: flex;
@@ -110,64 +103,66 @@ const LogoContainer = styled.div`
   margin-bottom: 1rem;
 `;
 
-const SignInSchema = Yup.object().shape({
+const SignUpSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
 });
 
 const SignUp = () => {
-  let navigate = useNavigate();
-  //   const [serverError, setServerError] = useState<string | null>(null);
-  //   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  //   let navigate = useNavigate();
+  const navigate = useNavigate();
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  //   const mutation = useMutation<LoginResponse, Error, LoginCredentials>({
-  //     mutationFn: loginMutation,
-  //     onSuccess: (data) => {
-  //       localStorage.setItem("token", data.token);
-  //       setServerError(null);
-  //       setSuccessMessage("Logged in successfully! Redirecting...");
-  //       navigate("/dashboard");
-  //     },
-  //     onError: (error: any) => {
-  //       let message = "Login failed. Please try again.";
-  //       if (error.response?.status === 401) {
-  //         message = "Incorrect email or password";
-  //       } else if (error.response?.data?.message) {
-  //         message = error.response.data.message;
-  //       } else if (error.message) {
-  //         message = error.message;
-  //       }
-  //       setServerError(message);
-  //     },
-  //   });
-
-  const [isSuccess, setIsSuccess] = useState(false);
-
-  const fakeSubmit = () => {
-    setIsSuccess(true);
-  };
+  const mutation = useMutation<any, Error, any>({
+    mutationFn: signUp,
+    onSuccess: () => {
+      setServerError(null);
+      setSuccessMessage(
+          "Password has been sent to your email. Check your inbox (including spam folder).",
+      );
+    },
+    onError: (error: any) => {
+      let message = "An error occurred during registration. Please try again.";
+      if (error.response?.data?.message) {
+        message = error.response.data.message;
+      } else if (error.response?.status === 409) {
+        message = "An account with this email already exists.";
+      } else if (error.response?.status === 429) {
+        message = "Too many attempts. Please wait a moment.";
+      } else if (error.message) {
+        message = error.message;
+      }
+      setServerError(message);
+      setSuccessMessage(null);
+    },
+  });
 
   return (
     <Container>
-      {!isSuccess && (
-        <FormContainer>
-          <LogoContainer>
-            <Logo />
-          </LogoContainer>
-          <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>Sign up</h2>
+      <FormContainer>
+        <LogoContainer>
+          <Logo />
+        </LogoContainer>
 
-          {/* {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
-      {serverError && <ServerError>{serverError}</ServerError>} */}
+        <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>Sign Up</h2>
 
+        {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
+        {serverError && <ServerError>{serverError}</ServerError>}
+
+        {successMessage ? (
+          <Button onClick={() => navigate("/sign-in")}>Sign In</Button>
+        ) : (
           <Formik
-            initialValues={{ email: "", password: "" }}
-            validationSchema={SignInSchema}
-            onSubmit={(_values) => {
-              //   setServerError(null);
-              //   mutation.mutate(values);
-              fakeSubmit();
+            initialValues={{ email: "" }}
+            validationSchema={SignUpSchema}
+            onSubmit={(values, { resetForm }) => {
+              setServerError(null);
+              mutation.mutate(values, {
+                onSuccess: () => {
+                  resetForm();
+                },
+              });
             }}>
             {({ errors, touched }) => (
               <Form>
@@ -175,43 +170,23 @@ const SignUp = () => {
                 <Input
                   type="email"
                   name="email"
-                  placeholder="Enter email"
+                  placeholder="Your email"
                   id="email"
                   $error={touched.email && !!errors.email}
                 />
                 <ErrorMessage name="email" component={ErrorText} />
+
                 <Button
                   type="submit"
-                  // $loading={mutation.isPending}
-                >
-                  {/* {mutation.isPending ? "..." : "Sign in"} */}
-                  Send password
+                  disabled={mutation.isPending}
+                  $loading={mutation.isPending}>
+                  {mutation.isPending ? "Sending..." : "Send Password"}
                 </Button>
               </Form>
             )}
           </Formik>
-        </FormContainer>
-      )}
-      {isSuccess && (
-        <>
-          <FormContainer>
-            <LogoContainer>
-              <Logo />
-            </LogoContainer>
-            <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>
-              Sign up
-            </h2>
-            <p>Your password has been sent to your email!</p>
-            <Button
-              onClick={()=>navigate("/sign-in")}
-              // $loading={mutation.isPending}
-            >
-              {/* {mutation.isPending ? "..." : "Sign in"} */}
-              Sign in{" "}
-            </Button>
-          </FormContainer>
-        </>
-      )}
+        )}
+      </FormContainer>
     </Container>
   );
 };

@@ -1,7 +1,13 @@
 import styled from "styled-components";
-import { FaSpinner, FaExclamationTriangle, FaEnvelope } from "react-icons/fa";
-import { useUsers, type User } from "../api/useUser";
+import {
+  FaSpinner,
+  FaExclamationTriangle,
+  FaEnvelope,
+  FaTrashAlt,
+} from "react-icons/fa";
+import { useUsers, type User, useDeleteUser } from "../api/useUser"; // ← dodaj useDeleteUser
 import { format } from "date-fns";
+import { toast } from "react-hot-toast"; // lub react-toastify / inna biblioteka
 
 const Container = styled.div`
   padding: 2rem;
@@ -60,11 +66,11 @@ const Table = styled.table`
   border-spacing: 0;
   background: white;
   border-radius: 8px;
-  overflow: hidden; /* Aby zaokrąglenia działały na rogach */
+  overflow: hidden;
 `;
 
 const TableHead = styled.thead`
-  background-color: #10b981; /* Zielony dla nagłówka */
+  background-color: #10b981;
   color: white;
   text-align: left;
 `;
@@ -86,26 +92,17 @@ const TableHeader = styled.th`
 `;
 
 const TableData = styled.td`
-  padding: 1rem 1.5rem;
+  padding: 1.2rem 1.5rem;
   color: #374151;
   border-bottom: 1px solid #e5e7eb;
 
   &:first-child {
     font-weight: 600;
-    width: 50px;
+    width: 60px;
   }
   &:nth-child(2) {
     display: flex;
     align-items: center;
-  }
-  &:last-child {
-    border-bottom: none;
-  }
-  &:nth-last-child(2) {
-    border-bottom: none;
-  }
-  &:nth-last-child(3) {
-    border-bottom: none;
   }
 `;
 
@@ -114,17 +111,69 @@ const EmailIcon = styled(FaEnvelope)`
   color: #3b82f6;
 `;
 
+const DeleteButton = styled.button`
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.3rem 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #dc2626;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  svg {
+    font-size: .8rem;
+  }
+`;
+
+const ActionCell = styled(TableData)`
+  text-align: center;
+  border-bottom: 1px solid #e5e7eb;
+`;
+
 const UsersList = () => {
   const { data, isLoading, isError, error } = useUsers();
+  const { mutate: deleteUser, isPending: isDeleting } = useDeleteUser();
 
   const users: User[] = Array.isArray(data) ? data : [];
-  console.log(users);
 
-  const formatDate = (date: string) => {
-    if (!date) return "";
+  const handleDelete = (userId: string, email: string) => {
+    if (!window.confirm(`Na pewno chcesz usunąć użytkownika ${email}?`)) {
+      return;
+    }
 
-    return format(new Date(date), "dd.MM.yyyy HH:mm");
+    deleteUser(userId, {
+      onSuccess: () => {
+        toast.success(`Użytkownik ${email} został usunięty`);
+        // Jeśli używasz React Query → invalidateQueries automatycznie odświeży listę
+      },
+      onError: (err: any) => {
+        toast.error(err?.message || "Nie udało się usunąć użytkownika");
+      },
+    });
   };
+
+  const formatDate = (date: string | undefined) => {
+    if (!date) return "—";
+    try {
+      return format(new Date(date), "dd.MM.yyyy HH:mm");
+    } catch {
+      return "—";
+    }
+  };
+
   if (isLoading) {
     return (
       <Container>
@@ -176,19 +225,27 @@ const UsersList = () => {
             <TableHeader>Lp.</TableHeader>
             <TableHeader>Adres E-mail</TableHeader>
             <TableHeader>Dołączył</TableHeader>
+            <TableHeader>Akcje</TableHeader>
           </TableRow>
         </TableHead>
         <tbody>
           {users.map((user, index) => (
-            <TableRow key={index}>
+            <TableRow key={user._id || index}>
               <TableData>{index + 1}</TableData>
               <TableData>
                 <EmailIcon />
                 {user.email}
               </TableData>
-              <TableData>
-                {formatDate(user.createdAt)}
-              </TableData>
+              <TableData>{formatDate(user.createdAt)}</TableData>
+              <ActionCell>
+                <DeleteButton
+                  onClick={() => handleDelete(user._id, user.email)}
+                  disabled={isDeleting}
+                  title="Usuń użytkownika">
+                  <FaTrashAlt />
+                  Usuń
+                </DeleteButton>
+              </ActionCell>
             </TableRow>
           ))}
         </tbody>

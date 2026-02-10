@@ -1,11 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../../../../api/api";
 
 // Aktualizacja interfejsu zgodnie z danymi z backendu
 export interface User {
   _id: string;
   email: string;
-  createdAt:string;
+  createdAt: string;
   role: string; // Dodajemy pole role
   // Dodaj inne pola, jeśli backend je zwraca (np. createdAt)
 }
@@ -36,7 +36,7 @@ const getUsers = async (userId: string | undefined): Promise<User | User[]> => {
   if (!data || !Array.isArray(data.users)) {
     // Rzucamy błąd, jeśli dane nie mają oczekiwanej struktury
     throw new Error(
-      "Nieprawidłowy format danych z serwera. Oczekiwano pola 'users'."
+      "Nieprawidłowy format danych z serwera. Oczekiwano pola 'users'.",
     );
   }
 
@@ -72,5 +72,21 @@ export const useUsers = (userId?: string) => {
     queryFn: () => getUsers(userId),
     enabled: true,
     staleTime: 5 * 60 * 1000,
+  });
+};
+
+export const useDeleteUser = () => {
+    const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (userId: string) => {
+      const res = await api.delete(`/user/${userId}`);
+      console.log(res);
+      return res.data;
+    },
+    onSuccess: () => {
+      // 🔥 TO JEST KLUCZ
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
   });
 };
