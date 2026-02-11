@@ -25,6 +25,9 @@ const FormContainer = styled.div`
   @media ${device.tablet} {
     width: 450px;
   }
+  h2{
+    color:black;
+  }
 `;
 
 const Input = styled(Field)<{ $error?: boolean }>`
@@ -46,7 +49,7 @@ const Label = styled.label`
   display: block;
   margin-top: 1rem;
   font-weight: 400;
-  color: #444444;
+  color: black;
 `;
 
 const Button = styled.button<{ $loading?: boolean }>`
@@ -112,6 +115,20 @@ const SignUpLink = styled(Link)`
   &:hover {
     text-decoration: underline;
     color: #3955ce;
+  }
+`;
+
+const ForgotPasswordLink = styled(Link)`
+  display: block;
+  margin: 1rem 0 0.5rem auto;
+  text-align: right;
+  color: #000000;
+  text-decoration: none;
+  text-align: center;
+  transition: 0.2s;
+
+  &:hover {
+    text-decoration: underline;
   }
 `;
 
@@ -194,6 +211,9 @@ const SignInForm = () => {
             <SignUpLink to="/sign-up">
               Don’t have an account? Sign up
             </SignUpLink>
+            <ForgotPasswordLink to="/forgot-password">
+              Forgot password
+            </ForgotPasswordLink>
           </Form>
         )}
       </Formik>

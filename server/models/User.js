@@ -6,8 +6,17 @@ const userModel = new mongoose.Schema(
     password: String,
     role: String,
     refreshToken: String,
+    resetPasswordToken: {
+      type: String,
+      select: false,
+    },
+
+    resetPasswordExpires: {
+      type: Date,
+      select: false,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Users", userModel);

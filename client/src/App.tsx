@@ -13,6 +13,8 @@ import ProfilePage from "./pages/protected/features/profile/pages/ProfilePage";
 
 import MaterialsPage from "./pages/protected/features/materials/pages/MaterialsPage";
 import AddMaterialModal from "./pages/protected/features/materials/components/AddMaterial";
+import ForgotPasswordForm from "./pages/protected/ForgotPassword/ForgotPassword";
+import ResetPasswordForm from "./pages/protected/ResetPasswordForm/ResetPasswordForm";
 
 function App() {
   const queryClient = new QueryClient();
@@ -28,6 +30,8 @@ function App() {
 
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/forgot-password" element={<ForgotPasswordForm />} />
+            <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
 
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<Dashboard />}>
