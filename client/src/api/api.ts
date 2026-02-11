@@ -1,7 +1,8 @@
 import axios from "axios";
+let baseURL =  import.meta.env.VITE_API_BASE_URL;
 
 export const api = axios.create({
-  baseURL: "https://chitomed-server.onrender.com",
+  baseURL,
   withCredentials: true,
 });
 

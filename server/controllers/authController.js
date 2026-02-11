@@ -2,6 +2,8 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt"); // ← dodaj na górze pliku jeśli jeszcze nie ma
+const asyncHandler = require("express-async-handler");
+const transporter = require("../config/mailer");
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
@@ -154,7 +156,7 @@ exports.forgotPassword = asyncHandler(async (req, res) => {
   await user.save();
 
   // Przygotowujemy link
-  const link = `https://chitomed.onrender.com/reset-password?token=${resetToken}`;
+  const link = `https://chitomed.onrender.com/reset-password/${resetToken}`;
 
   // Dane do szablonu Handlebars
   const mailOptions = {

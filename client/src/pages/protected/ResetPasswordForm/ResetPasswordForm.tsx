@@ -3,9 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
-import { api } from "../../../api/api"; // your axios/fetch instance
+import { api } from "../../../api/api";
 
-// ── Styled Components ────────────────────────────────────────────────
 const Container = styled.div`
   max-width: 450px;
   margin: 4rem auto;
@@ -14,6 +13,13 @@ const Container = styled.div`
   border-radius: 16px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
   color: white;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: black;
+  }
 `;
 
 const Title = styled.h2`
@@ -23,23 +29,24 @@ const Title = styled.h2`
 
 const Input = styled(Field)<{ $error?: boolean }>`
   width: 100%;
-  padding: 0.9rem;
-  margin: 0.5rem 0 1rem;
-  border: 1px solid ${({ $error }) => ($error ? "#ff8181" : "#555")};
+  padding: 0.8rem 1rem;
+  margin-top: 0.3rem;
+  margin-bottom: 1rem;
   border-radius: 8px;
-  background: #1e1e1e;
-  color: white;
+  border: 1px solid ${({ $error }) => ($error ? "#ff8181" : "#ccc")};
   font-size: 1rem;
+  transition: all 200ms;
 
   &:focus {
-    border-color: #5069d4;
     outline: none;
+    border-color: ${({ $error }) => ($error ? "#ff8181" : "#5069d41")};
   }
 `;
 
 const Button = styled.button<{ $loading?: boolean }>`
   width: 100%;
   padding: 1rem;
+  margin-top: 2rem;
   background: #5069d4;
   color: white;
   border: none;
@@ -57,15 +64,15 @@ const ErrorText = styled.div`
 `;
 
 const SuccessMessage = styled.div`
-  color: #a0ffa0;
+  color: #009a00;
+  font-size: 1rem;
+  margin-top: 1rem;
   text-align: center;
-  margin: 1.5rem 0;
-  padding: 1rem;
-  background: #00aa0030;
+  background: rgba(0, 100, 0, 0.11);
+  padding: 0.8rem;
   border-radius: 8px;
 `;
 
-// ── Validation Schema ────────────────────────────────────────────────
 const ResetSchema = Yup.object().shape({
   newPassword: Yup.string()
     .min(8, "Password must be at least 8 characters")
@@ -77,7 +84,6 @@ const ResetSchema = Yup.object().shape({
     .required("Confirm password is required"),
 });
 
-// ── Main Component ───────────────────────────────────────────────────
 const ResetPasswordForm = () => {
   let navigate = useNavigate();
   const { token } = useParams();

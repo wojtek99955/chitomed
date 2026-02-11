@@ -31,7 +31,7 @@ function App() {
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/forgot-password" element={<ForgotPasswordForm />} />
-            <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
+            <Route path="/reset-password/:token?" element={<ResetPasswordForm />} />
 
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<Dashboard />}>
