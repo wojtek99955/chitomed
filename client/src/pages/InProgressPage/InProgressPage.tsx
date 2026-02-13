@@ -115,15 +115,6 @@ const BackButton = styled.a`
   }
 `;
 
-const Estimate = styled.div`
-  margin-top: 3rem;
-  font-size: 1.05rem;
-  color: #94a3b8;
-
-  strong {
-    color: #e0f2fe;
-  }
-`;
 
 const InProgressPage = () => {
   return (
