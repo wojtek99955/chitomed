@@ -4,39 +4,42 @@ import { useMutation } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../../../api/api";
+import { useState } from "react";
 
 const Section = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
-min-height: 100vh;
-`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+`;
+
 const Container = styled.div`
   max-width: 450px;
   margin: 3rem auto;
-  padding: 2rem;
-  background: #ffffff10;
+  padding: 2.5rem;
+  background: #ffffff15;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
   color: white;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 
   @media (max-width: 500px) {
     margin: 2rem 1rem;
-    padding: 1.5rem;
+    padding: 2rem 1.5rem;
   }
 `;
 
 const Title = styled.h2`
   text-align: center;
-  margin-bottom: 1rem;
-  font-size: 1.8rem;
+  margin-bottom: 1.2rem;
+  font-size: 1.9rem;
 `;
 
 const Description = styled.p`
   text-align: center;
   margin-bottom: 2rem;
   font-size: 1rem;
-  color:black;
 `;
 
 const StyledForm = styled(Form)`
@@ -46,9 +49,9 @@ const StyledForm = styled(Form)`
 
 const Label = styled.label`
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color:black;
+  margin-top: 1rem;
+  font-weight: 400;
+  color: black;
 `;
 
 const Input = styled(Field)<{ $hasError?: boolean }>`
@@ -69,32 +72,37 @@ const Input = styled(Field)<{ $hasError?: boolean }>`
 const ErrorText = styled(ErrorMessage)`
   color: #ff8181;
   font-size: 0.85rem;
-  margin-top: 0.4rem;
+  margin-top: 0.35rem;
   margin-left: 0.2rem;
 `;
 
-const Button = styled.button<{ $loading?: boolean }>`
-  margin-top: 1.5rem;
-  padding: 0.95rem;
-  background: #5069d4;
+const Button = styled.button<{ $loading?: boolean; $sent?: boolean }>`
+  margin-top: 1.6rem;
+  padding: 1rem;
+  background: ${({ $sent }) => ($sent ? "#4caf50" : "#5069d4")};
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 1.05rem;
   font-weight: 600;
-  cursor: ${({ $loading }) => ($loading ? "not-allowed" : "pointer")};
-  opacity: ${({ $loading }) => ($loading ? 0.7 : 1)};
-  transition:
-    background 0.2s,
-    transform 0.1s;
+  cursor: ${({ $loading, $sent }) =>
+    $loading || $sent ? "not-allowed" : "pointer"};
+  opacity: ${({ $loading, $sent }) => ($loading || $sent ? 0.75 : 1)};
+  transition: all 0.2s;
 
   &:hover:not(:disabled) {
-    background: #3955ce;
+    background: ${({ $sent }) => ($sent ? "#43a047" : "#3955ce")};
   }
+`;
 
-  &:active:not(:disabled) {
-    transform: translateY(1px);
-  }
+const SuccessMessage = styled.div`
+  color: #009a00;
+  font-size: 1rem;
+  margin-top: 1rem;
+  text-align: center;
+  background: rgba(0, 100, 0, 0.11);
+  padding: 0.8rem;
+  border-radius: 8px;
 `;
 
 const BackLink = styled(Link)`
@@ -118,23 +126,22 @@ const ForgotSchema = Yup.object().shape({
     .required("Email is required"),
 });
 
-
 const ForgotPasswordForm = () => {
+  const [isSent, setIsSent] = useState(false);
+
   const mutation = useMutation({
     mutationFn: async (email: string) => {
       const response = await api.post("/auth/forgot-password", { email });
       return response.data;
     },
     onSuccess: () => {
-      alert(
-        "If an account with this email exists, a password reset link has been sent.",
-      );
+      setIsSent(true);
     },
     onError: (error: any) => {
       const message =
         error.response?.data?.message ||
         "Something went wrong. Please try again later.";
-      alert(message);
+      alert(message); // ← można później zamienić na ładny error div
     },
   });
 
@@ -145,6 +152,15 @@ const ForgotPasswordForm = () => {
         <Description>
           Enter the email address associated with your account.
         </Description>
+
+        {isSent ? (
+          <SuccessMessage>
+            If an account with this email exists, a password reset link has been
+            sent.
+            <br />
+            Check your inbox (and spam folder).
+          </SuccessMessage>
+        ) : null}
 
         <Formik
           initialValues={{ email: "" }}
@@ -159,22 +175,26 @@ const ForgotPasswordForm = () => {
                 type="email"
                 placeholder="Your email"
                 $hasError={touched.email && !!errors.email}
+                disabled={isSent || mutation.isPending}
               />
               <ErrorText name="email" component="div" />
 
               <Button
                 type="submit"
                 $loading={mutation.isPending || isSubmitting}
-                disabled={mutation.isPending || isSubmitting}>
-                {mutation.isPending || isSubmitting
-                  ? "Sending..."
-                  : "Send Password"}
+                $sent={isSent}
+                disabled={mutation.isPending || isSubmitting || isSent}>
+                {isSent
+                  ? "Link Sent"
+                  : mutation.isPending || isSubmitting
+                    ? "Sending..."
+                    : "Send Reset Link"}
               </Button>
             </StyledForm>
           )}
         </Formik>
 
-        <BackLink to="/sign-in">Sign In</BackLink>
+        <BackLink to="/sign-in">Back to Sign In</BackLink>
       </Container>
     </Section>
   );

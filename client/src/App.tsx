@@ -15,6 +15,7 @@ import MaterialsPage from "./pages/protected/features/materials/pages/MaterialsP
 import AddMaterialModal from "./pages/protected/features/materials/components/AddMaterial";
 import ForgotPasswordForm from "./pages/protected/ForgotPassword/ForgotPassword";
 import ResetPasswordForm from "./pages/protected/ResetPasswordForm/ResetPasswordForm";
+import InProgressPage from "./pages/InProgressPage/InProgressPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -26,12 +27,16 @@ function App() {
           <Routes>
             {/* <Route path="/" element={<Home />} /> */}
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/" element={<SignIn />} />
+            {/* <Route path="/" element={<SignIn />} /> */}
+            <Route path="/" element={<InProgressPage />} />
 
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/forgot-password" element={<ForgotPasswordForm />} />
-            <Route path="/reset-password/:token?" element={<ResetPasswordForm />} />
+            <Route
+              path="/reset-password/:token?"
+              element={<ResetPasswordForm />}
+            />
 
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<Dashboard />}>

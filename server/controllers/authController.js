@@ -165,7 +165,6 @@ exports.forgotPassword = asyncHandler(async (req, res) => {
     subject: "Reset Your Password - Chitomed",
     template: "resetPassword", // nazwa pliku: reset-password.handlebars
     context: {
-      name: user.name || user.username || "User",
       link: link,
     },
   };
