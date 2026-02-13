@@ -148,9 +148,9 @@ const InProgressPage = () => {
           Back to Homepage <ArrowRight size={18} />
         </BackButton>
 
-        <Estimate>
+        {/* <Estimate>
           Estimated return: <strong>end of February / early March</strong>
-        </Estimate>
+        </Estimate> */}
       </Content>
     </PageWrapper>
   );
