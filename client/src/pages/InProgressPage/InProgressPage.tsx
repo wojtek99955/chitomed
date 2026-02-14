@@ -125,9 +125,9 @@ const InProgressPage = () => {
         <Title>Page Under Construction</Title>
 
         <Subtitle>
-          We're working on something really cool.
+          This page is currently under development.
           <br />
-          Soon you'll be able to do a lot more here 😉
+          It will be available soon.
         </Subtitle>
 
         <ProgressContainer>
