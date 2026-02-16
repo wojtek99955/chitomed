@@ -3,6 +3,7 @@ import Header from "./Header";
 import Sidebar from "./Sidebar";
 import BottomNav from "../BottomNav";
 import { Outlet } from "react-router-dom";
+import { useAuthData } from "../../../features/auth/useAuthData";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -25,6 +26,7 @@ const Section = styled.div`
 `;
 
 const Dashboard = () => {
+  const {role} = useAuthData();
   return (
     <>
       <Header />
@@ -34,7 +36,7 @@ const Dashboard = () => {
           <Outlet />
         </Wrapper>
       </Section>
-      <BottomNav />
+      {role === "admin" && <BottomNav />}
     </>
   );
 };
