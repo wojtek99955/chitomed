@@ -41,7 +41,7 @@ const Categories = () => {
             <Category key={category._id} category={category} />
           ))
         ) : (
-          <EmptyText>Brak kategorii do wyświetlenia.</EmptyText>
+          <EmptyText>No categories</EmptyText>
         )}
       </Grid>
     </Wrapper>
@@ -58,9 +58,10 @@ const spin = keyframes`
 `;
 
 const Wrapper = styled.div`
-  padding: 2rem;
+  padding: 0rem;
   max-width: 1200px;
   margin: 0 auto;
+  margin-bottom: 2rem;
 `;
 
 const Grid = styled.div`

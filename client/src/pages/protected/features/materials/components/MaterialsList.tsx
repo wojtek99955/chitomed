@@ -5,7 +5,7 @@ import { device } from "../../../../../assets/device";
 import { useEffect, useState } from "react";
 
 const Container = styled.div`
-  max-width: 1100px;
+  max-width: 1200px;
   margin: auto;
   padding-bottom: 4rem;
   @media ${device.laptop} {
@@ -22,8 +22,15 @@ const Container = styled.div`
 
 const ListContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 1.5rem;
+  @media ${device.tablet}{
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media ${device.laptop}{
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 `;
 
 const LoadingText = styled.p`
@@ -44,13 +51,10 @@ const ErrorContainer = styled.div`
 const MaterialsList = () => {
   const { data: materials, isLoading, isError, error } = useMaterials();
   const STORAGE_KEY = "selected_category_id";
-console.log(materials, " materials")
-  // 1. Stan trzymający aktualnie wybrane ID z localStorage
   const [filterId, setFilterId] = useState<string | null>(
     localStorage.getItem(STORAGE_KEY),
   );
 
-  // 2. Nasłuchiwanie na zmiany filtra (wyzwalane przez Twoje window.dispatchEvent)
   useEffect(() => {
     const handleFilterChange = () => {
       setFilterId(localStorage.getItem(STORAGE_KEY));
@@ -119,7 +123,7 @@ console.log(materials, " materials")
               color: "#6b7280",
               padding: "2rem",
             }}>
-            Brak materiałów w tej kategorii.
+            No materials in this category
           </p>
         )}
       </ListContainer>
