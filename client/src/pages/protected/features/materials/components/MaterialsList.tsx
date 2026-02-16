@@ -3,6 +3,7 @@ import { useMaterials } from "../api/useMaterial";
 import MaterialItem from "./MaterialItem";
 import { device } from "../../../../../assets/device";
 import { useEffect, useState } from "react";
+import SkeletonLoader from "../../../../../components/SkeletonLoader";
 
 const Container = styled.div`
   max-width: 1200px;
@@ -33,12 +34,6 @@ const ListContainer = styled.div`
   }
 `;
 
-const LoadingText = styled.p`
-  font-size: 1.1rem;
-  color: #3b82f6;
-  text-align: center;
-`;
-
 const ErrorContainer = styled.div`
   padding: 1rem;
   background-color: #fef2f2;
@@ -46,6 +41,26 @@ const ErrorContainer = styled.div`
   color: #ef4444;
   border-radius: 8px;
   text-align: center;
+`;
+
+const MaterialSkeleton = styled.div`
+  width: 100%;
+  height: 160px;
+  border-radius: 20px;
+  position: relative;
+  border-radius: 9999px;
+`;
+const LoaderContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  @media ${device.tablet} {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media ${device.laptop} {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 `;
 
 const MaterialsList = () => {
@@ -74,7 +89,26 @@ const MaterialsList = () => {
     return (
       <Container>
         <h3>Materials</h3>
-        <LoadingText>Loading materials...</LoadingText>
+        <LoaderContainer>
+          <MaterialSkeleton>
+            <SkeletonLoader />
+          </MaterialSkeleton>
+          <MaterialSkeleton>
+            <SkeletonLoader />
+          </MaterialSkeleton>
+          <MaterialSkeleton>
+            <SkeletonLoader />
+          </MaterialSkeleton>
+          <MaterialSkeleton>
+            <SkeletonLoader />
+          </MaterialSkeleton>
+          <MaterialSkeleton>
+            <SkeletonLoader />
+          </MaterialSkeleton>
+          <MaterialSkeleton>
+            <SkeletonLoader />
+          </MaterialSkeleton>
+        </LoaderContainer>
       </Container>
     );
   }

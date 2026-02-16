@@ -1,6 +1,7 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { useGetCategories } from "../api/useGetCategories";
 import Category from "./Category";
+import SkeletonLoader from "../../../../../components/SkeletonLoader";
 
 const Categories = () => {
   const {
@@ -17,10 +18,25 @@ const Categories = () => {
 
   if (isLoading) {
     return (
-      <Center>
-        <Spinner />
-        <LoadingText>Loading...</LoadingText>
-      </Center>
+      <Wrapper>
+        <LoaderContainer>
+          <CategorySkeleton>
+            <SkeletonLoader />
+          </CategorySkeleton>
+          <CategorySkeleton>
+            <SkeletonLoader />
+          </CategorySkeleton>
+          <CategorySkeleton>
+            <SkeletonLoader />
+          </CategorySkeleton>
+          <CategorySkeleton>
+            <SkeletonLoader />
+          </CategorySkeleton>
+          <CategorySkeleton>
+            <SkeletonLoader />
+          </CategorySkeleton>
+        </LoaderContainer>
+      </Wrapper>
     );
   }
 
@@ -52,10 +68,6 @@ export default Categories;
 
 // --- STYLED COMPONENTS ---
 
-const spin = keyframes`
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-`;
 
 const Wrapper = styled.div`
   padding: 0rem;
@@ -68,30 +80,6 @@ const Grid = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-`;
-
-
-
-const Center = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem;
-`;
-
-const Spinner = styled.div`
-  width: 40px;
-  height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #3182ce;
-  border-radius: 50%;
-  animation: ${spin} 1s linear infinite;
-`;
-
-const LoadingText = styled.p`
-  margin-top: 1rem;
-  color: #718096;
 `;
 
 const ErrorBox = styled.div`
@@ -107,3 +95,17 @@ const EmptyText = styled.p`
   color: #a0aec0;
   font-style: italic;
 `;
+
+const CategorySkeleton = styled.div`
+  width: 100px;
+  height: 40px;
+  border-radius: 20px;
+  position: relative;
+  padding: 10px 20px;
+
+  border-radius: 9999px;
+`;
+const LoaderContainer = styled.div`
+display: flex;
+gap:1rem;
+`
