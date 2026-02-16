@@ -156,7 +156,7 @@ exports.forgotPassword = asyncHandler(async (req, res) => {
   await user.save();
 
   // Przygotowujemy link
-  const link = `https://chitomed.onrender.com/reset-password/${resetToken}`;
+  const link = `https://app.chitomed.com/reset-password/${resetToken}`;
 
   // Dane do szablonu Handlebars
   const mailOptions = {
