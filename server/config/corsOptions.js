@@ -3,7 +3,7 @@ const allowedOrigins = [
   "https://chitomed.onrender.com",
   "http://localhost:3000",
   "https://chitomed-next-test.onrender.com",
-  "https://www.app.chitomed.onrender.com",
+  "https://www.app.chitomed.com",
   "https://www.chitomed.com",
 ];
 
