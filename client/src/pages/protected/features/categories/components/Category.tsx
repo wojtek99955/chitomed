@@ -36,16 +36,19 @@ interface CategoryProps {
   };
 }
 
-const Category = ({ category }: CategoryProps) => {
-  const STORAGE_KEY = "selected_category_id";
+const STORAGE_KEY = "selected_category_id";
+const DEFAULT_CATEGORY_ID = "all";
 
-  // Stan inicjalizowany bezpośrednio z localStorage
+const Category = ({ category }: CategoryProps) => {
   const [isActive, setIsActive] = useState<boolean>(() => {
     const savedId = localStorage.getItem(STORAGE_KEY);
+    // Jeśli nic nie zapisane → "all" jest domyślnie aktywny
+    if (savedId === null) {
+      return category._id === DEFAULT_CATEGORY_ID;
+    }
     return savedId === category._id;
   });
 
-  // Reagowanie na zmiany w innych komponentach (opcjonalne, ale pomocne)
   useEffect(() => {
     const checkStorage = () => {
       const savedId = localStorage.getItem(STORAGE_KEY);
