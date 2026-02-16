@@ -79,7 +79,7 @@ const Wrapper = styled.div`
 const Grid = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: .5rem;
 `;
 
 const ErrorBox = styled.div`
