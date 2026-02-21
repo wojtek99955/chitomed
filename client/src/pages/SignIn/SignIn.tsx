@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import SignInForm from "../../features/auth/components/SignInForm";
 import { pillIcon } from "./pillIcon";
+import { device } from "../../assets/device";
 
 const Container = styled.section`
   min-height: 100vh;
@@ -9,17 +10,21 @@ const Container = styled.section`
   justify-content: center;
   align-items: center;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
+
+  @media ${device.tablet} {
+    grid-template-columns: 1fr 1fr;
+  }
 
   h1 {
     color: #2d50dc;
     font-weight: 400;
     font-size: 3rem;
   }
-  strong{
+  strong {
     font-weight: 500;
   }
-  p{
+  p {
     font-size: 1.3rem;
   }
 `;
@@ -27,6 +32,7 @@ const Container = styled.section`
 const Wrapper = styled.div`
   height: 100%;
   position: relative;
+  display: none;
   img {
     width: 100%;
     height: 100%;
@@ -36,6 +42,9 @@ const Wrapper = styled.div`
     top: 0;
     bottom: 0;
     margin: auto;
+  }
+  @media ${device.tablet}{
+    display: block;
   }
 `;
 

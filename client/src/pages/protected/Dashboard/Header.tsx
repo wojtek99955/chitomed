@@ -25,6 +25,7 @@ const Container = styled.header`
 const UserWrapper = styled.div`
   position: relative;
   cursor: pointer;
+  margin-left: auto;
   padding: 0.6rem;
   border-radius: 4px;
   background-color: #f0f0f0;
@@ -38,6 +39,7 @@ const UserWrapper = styled.div`
 const UserIcon = styled(FaRegUser)`
   font-size: 1.2rem;
   display: block;
+  color:white;
 `;
 
 const DropdownContainer = styled(motion.div)`
@@ -59,6 +61,17 @@ font-size: 1.2rem;
 const LogoutIcon = styled(MdLogout)`
   font-size: 1.2rem;
 `;
+
+const LogoutBtn = styled.button`
+border-radius: 33px;
+background-color: black;
+color:white;
+border:none;
+padding: 1rem 2.5rem;
+font-size: 1rem;
+font-weight: 400;
+cursor: pointer;
+`
 
 const DropdownItem = styled.div`
   padding: 0.9rem 1rem;
@@ -94,6 +107,15 @@ const dropdownVariants: any = {
   },
 };
 
+const Profile = styled.div`
+background-color: black;
+margin-left: auto;
+margin-right: 1rem;
+padding:1rem;
+border-radius: 50%;
+cursor: pointer;
+`
+
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const queryClient = useQueryClient();
@@ -117,7 +139,7 @@ const Header = () => {
   };
 
   const logout = () => {
-    setIsDropdownOpen(false);
+    // setIsDropdownOpen(false);
     logoutMutationHook.mutate();
   };
 
@@ -149,7 +171,10 @@ const Header = () => {
       <div onClick={goDashboard} style={{ cursor: "pointer" }}>
         <Logo1 />
       </div>
-      <UserWrapper ref={dropdownRef} onClick={toggleDropdown}>
+      <Profile onClick={goToProfile}>
+        <UserIcon />
+      </Profile>
+      {/* <UserWrapper ref={dropdownRef} onClick={toggleDropdown}>
         <UserIcon />
         <AnimatePresence>
           {isDropdownOpen && (
@@ -167,7 +192,8 @@ const Header = () => {
             </DropdownContainer>
           )}
         </AnimatePresence>
-      </UserWrapper>
+      </UserWrapper> */}
+      <LogoutBtn onClick={logout}>Log out</LogoutBtn>
     </Container>
   );
 };

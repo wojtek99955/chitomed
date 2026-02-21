@@ -8,8 +8,6 @@ import { useAuthData } from "../../../features/auth/useAuthData";
 const Wrapper = styled.div`
   margin: 0 auto;
   width: auto;
-  background-color: #f8f9fc;
-  background-color: #f3f4f6;
   width: 100%;
   height: calc(100vh - 4.5rem);
   position: relative;

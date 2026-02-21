@@ -7,7 +7,7 @@ import { MdOutlinePeopleOutline } from "react-icons/md";
 import { useAuthData } from "../../../features/auth/useAuthData";
 import { memo } from "react";
 // Define the hover/active background color as a constant for easy reuse
-const ACTIVE_BG_COLOR = "#f3f4f6";
+const ACTIVE_BG_COLOR = "white";
 
 // Update Nav styled component to accept the active path prop
 const Nav = styled.div`
@@ -19,9 +19,9 @@ const Nav = styled.div`
   a {
     text-decoration: none;
     display: block;
-    padding: 0.7rem 0.6rem;
+    padding: 0.7rem 1.2rem;
     font-size: 1.1rem;
-    border-radius: 6px;
+    border-radius:33px;
     color: unset;
     transition: all 200ms;
     display: flex;
@@ -52,10 +52,10 @@ const Nav = styled.div`
 const Container = styled.div`
   height: calc(100vh - 4.5rem);
   display: none;
-  border-right: 1px solid #ecedf0;
+  /* border-right: 1px solid #ecedf0; */
   padding: 0.5rem;
   min-width: 15rem;
-  background-color: white;
+  background-color: #f3f4f6;
 
   @media ${device.laptop} {
     display: block;
