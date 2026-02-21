@@ -2,7 +2,6 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 import { device } from "../../../assets/device";
-import Logo from "../../../assets/icons/Logo1";
 import { useMutation } from "@tanstack/react-query";
 import {
   loginMutation,
@@ -12,18 +11,17 @@ import {
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { logo } from "../../../pages/SignIn/logo";
 
 const FormContainer = styled.div`
   width: 90%;
   margin: 2rem auto;
-  background: #ffffff10;
   padding: 2rem;
   border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   color: white;
 
   @media ${device.tablet} {
-    width: 450px;
+    width: 550px;
   }
   h2{
     color:black;
@@ -34,8 +32,9 @@ const Input = styled(Field)<{ $error?: boolean }>`
   width: 100%;
   padding: 0.8rem 1rem;
   margin-top: 0.3rem;
-  border-radius: 8px;
-  border: 1px solid ${({ $error }) => ($error ? "#ff8181" : "#ccc")};
+  border-radius: 33px;
+  margin-bottom: 1rem;
+  border: 1px solid ${({ $error }) => ($error ? "#ff8181" : "#DCDCE1")};
   font-size: 1rem;
   transition: all 200ms;
 
@@ -45,21 +44,14 @@ const Input = styled(Field)<{ $error?: boolean }>`
   }
 `;
 
-const Label = styled.label`
-  display: block;
-  margin-top: 1rem;
-  font-weight: 400;
-  color: black;
-`;
-
 const Button = styled.button<{ $loading?: boolean }>`
   margin-top: 1.5rem;
   width: 100%;
   padding: 0.9rem;
-  background-color: #5069d4;
+  background-color: black;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 33px;
   font-size: 1rem;
   font-weight: 600;
   cursor: ${({ $loading }) => ($loading ? "not-allowed" : "pointer")};
@@ -67,7 +59,7 @@ const Button = styled.button<{ $loading?: boolean }>`
   transition: 0.2s;
 
   &:hover {
-    background-color: #3955ce;
+    transform: scale(1.01);
   }
 `;
 
@@ -101,6 +93,9 @@ const LogoContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
+  width: 50%;
+  margin: auto;
+  margin-bottom: 6rem;
 `;
 
 const SignUpLink = styled(Link)`
@@ -170,7 +165,7 @@ const SignInForm = () => {
   return (
     <FormContainer>
       <LogoContainer>
-        <Logo />
+        {logo}
       </LogoContainer>
       <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>Sign in</h2>
 
@@ -186,7 +181,6 @@ const SignInForm = () => {
         }}>
         {({ errors, touched }) => (
           <Form>
-            <Label htmlFor="email">Email</Label>
             <Input
               type="email"
               name="email"
@@ -196,7 +190,6 @@ const SignInForm = () => {
             />
             <ErrorMessage name="email" component={ErrorText} />
 
-            <Label htmlFor="password">Password</Label>
             <Input
               type="password"
               name="password"
