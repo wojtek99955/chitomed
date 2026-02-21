@@ -1,12 +1,12 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
-import Logo from "../../assets/icons/Logo1";
 import { device } from "../../assets/device";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../../features/user/api/userApi";
+import { logo } from "../SignIn/logo";
 
 const Container = styled.section`
   min-height: 100vh;
@@ -19,10 +19,8 @@ const Container = styled.section`
 const FormContainer = styled.div`
   width: 90%;
   margin: 2rem auto;
-  background: #ffffff10;
   padding: 2rem;
   border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   color: white;
 
   @media ${device.tablet} {
@@ -34,32 +32,29 @@ const Input = styled(Field)<{ $error?: boolean }>`
   width: 100%;
   padding: 0.8rem 1rem;
   margin-top: 0.3rem;
-  border-radius: 8px;
-  border: 1px solid ${({ $error }) => ($error ? "#ff8181" : "#ccc")};
+  border-radius: 33px;
+  margin-bottom: 1rem;
+  border: 1px solid ${({ $error }) => ($error ? "#ff8181" : "#DCDCE1")};
   font-size: 1rem;
   transition: all 200ms;
 
   &:focus {
     outline: none;
-    border-color: ${({ $error }) => ($error ? "#ff8181" : "#5069d4")};
+    border-color: ${({ $error }) => ($error ? "#ff8181" : "#2D50DC")};
   }
-`;
-
-const Label = styled.label`
-  display: block;
-  margin-top: 1rem;
-  font-weight: 400;
-  color: #444444;
+  &::placeholder {
+    text-align: center;
+  }
 `;
 
 const Button = styled.button<{ $loading?: boolean }>`
   margin-top: 1.5rem;
   width: 100%;
-  padding: 0.9rem;
-  background-color: #5069d4;
+  padding: 1rem;
+  background-color: black;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 33px;
   font-size: 1rem;
   font-weight: 600;
   cursor: ${({ $loading }) => ($loading ? "not-allowed" : "pointer")};
@@ -67,24 +62,30 @@ const Button = styled.button<{ $loading?: boolean }>`
   transition: 0.2s;
 
   &:hover {
-    background-color: #3955ce;
+    transform: scale(1.01);
   }
 `;
 
 const ErrorText = styled.div`
   color: #ff8181;
-  font-size: 0.9rem;
-  margin-top: 0.2rem;
-`;
-
-const ServerError = styled.div`
-  color: #ff3c3c;
   font-size: 1rem;
   margin-top: 1rem;
   text-align: center;
-  background: #ff818130;
+  background: #f3f4f6;
   padding: 0.8rem;
   border-radius: 8px;
+  margin-bottom: 1rem;
+`;
+
+const ServerError = styled.div`
+  color: #ff8181;
+  font-size: 1rem;
+  margin-top: 1rem;
+  text-align: center;
+  background: #f3f4f6;
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
 `;
 
 const SuccessMessage = styled.div`
@@ -100,7 +101,9 @@ const SuccessMessage = styled.div`
 const LogoContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-bottom: 1rem;
+  width: 50%;
+  margin: auto;
+  margin-bottom: 3rem;
 `;
 
 const SignUpSchema = Yup.object().shape({
@@ -142,7 +145,7 @@ const SignUp = () => {
     <Container>
       <FormContainer>
         <LogoContainer>
-          <Logo />
+          {logo}
         </LogoContainer>
 
         <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>Sign Up</h2>
@@ -166,7 +169,6 @@ const SignUp = () => {
             }}>
             {({ errors, touched }) => (
               <Form>
-                <Label htmlFor="email">Enter your email</Label>
                 <Input
                   type="email"
                   name="email"
