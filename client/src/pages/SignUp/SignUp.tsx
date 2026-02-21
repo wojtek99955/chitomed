@@ -17,14 +17,16 @@ const Container = styled.section`
 `;
 
 const FormContainer = styled.div`
-  width: 90%;
-  margin: 2rem auto;
-  padding: 2rem;
-  border-radius: 16px;
+  width: 95%;
   color: white;
-
+  margin: auto;
   @media ${device.tablet} {
-    width: 450px;
+    width: 400px;
+    padding: 2rem;
+  }
+  @media ${device.laptop} {
+    width: 550px;
+    padding: 2rem;
   }
 `;
 
@@ -45,6 +47,7 @@ const Input = styled(Field)<{ $error?: boolean }>`
   &::placeholder {
     text-align: center;
   }
+  outline: 2px solid #ffd4d4;
 `;
 
 const Button = styled.button<{ $loading?: boolean }>`

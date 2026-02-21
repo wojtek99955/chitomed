@@ -15,7 +15,6 @@ import { logo } from "../../../pages/SignIn/logo";
 
 const FormContainer = styled.div`
   width: 95%;
-  border-radius: 16px;
   color: white;
   margin: auto;
   @media ${device.tablet} {
