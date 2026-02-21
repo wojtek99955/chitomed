@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { motion, AnimatePresence } from "framer-motion";
+// import { motion, AnimatePresence } from "framer-motion";
 import { FaRegUser } from "react-icons/fa";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { logoutMutation } from "../../../features/auth/api/authApi";
 import { useNavigate } from "react-router-dom";
-import { MdLogout } from "react-icons/md";
+// import { MdLogout } from "react-icons/md";
 import Logo1 from "../../../assets/icons/Logo1";
 
 const Container = styled.header`
@@ -22,19 +22,19 @@ const Container = styled.header`
   z-index: 100;
 `;
 
-const UserWrapper = styled.div`
-  position: relative;
-  cursor: pointer;
-  margin-left: auto;
-  padding: 0.6rem;
-  border-radius: 4px;
-  background-color: #f0f0f0;
-  transition: background-color 0.2s;
+// const UserWrapper = styled.div`
+//   position: relative;
+//   cursor: pointer;
+//   margin-left: auto;
+//   padding: 0.6rem;
+//   border-radius: 4px;
+//   background-color: #f0f0f0;
+//   transition: background-color 0.2s;
 
-  &:hover {
-    background-color: #dde0e5;
-  }
-`;
+//   &:hover {
+//     background-color: #dde0e5;
+//   }
+// `;
 
 const UserIcon = styled(FaRegUser)`
   font-size: 1.2rem;
@@ -42,25 +42,25 @@ const UserIcon = styled(FaRegUser)`
   color:white;
 `;
 
-const DropdownContainer = styled(motion.div)`
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 8px;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  min-width: 150px;
-  z-index: 10;
-  overflow: hidden;
-`;
-const UserIconDropdown = styled(FaRegUser)`
-font-size: 1.2rem;
-`;
-const LogoutIcon = styled(MdLogout)`
-  font-size: 1.2rem;
-`;
+// const DropdownContainer = styled(motion.div)`
+//   position: absolute;
+//   top: 100%;
+//   right: 0;
+//   margin-top: 8px;
+//   background: white;
+//   border: 1px solid #ddd;
+//   border-radius: 4px;
+//   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+//   min-width: 150px;
+//   z-index: 10;
+//   overflow: hidden;
+// `;
+// const UserIconDropdown = styled(FaRegUser)`
+// font-size: 1.2rem;
+// `;
+// const LogoutIcon = styled(MdLogout)`
+//   font-size: 1.2rem;
+// `;
 
 const LogoutBtn = styled.button`
 border-radius: 33px;
@@ -73,39 +73,39 @@ font-weight: 400;
 cursor: pointer;
 `
 
-const DropdownItem = styled.div`
-  padding: 0.9rem 1rem;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  gap:.5rem;
-  color: #333;
-  cursor: pointer;
+// const DropdownItem = styled.div`
+//   padding: 0.9rem 1rem;
+//   font-size: 1.1rem;
+//   display: flex;
+//   align-items: center;
+//   gap:.5rem;
+//   color: #333;
+//   cursor: pointer;
 
-  &:hover {
-    background-color: #f5f5f5;
-  }
-`;
+//   &:hover {
+//     background-color: #f5f5f5;
+//   }
+// `;
 
-const dropdownVariants: any = {
-  hidden: {
-    opacity: 0,
-    height: 0,
-    transition: {
-      when: "afterChildren",
-      duration: 0.2,
-    },
-  },
-  visible: {
-    opacity: 1,
-    height: "auto",
-    transition: {
-      when: "beforeChildren",
-      duration: 0.2,
-      ease: "easeOut",
-    },
-  },
-};
+// const dropdownVariants: any = {
+//   hidden: {
+//     opacity: 0,
+//     height: 0,
+//     transition: {
+//       when: "afterChildren",
+//       duration: 0.2,
+//     },
+//   },
+//   visible: {
+//     opacity: 1,
+//     height: "auto",
+//     transition: {
+//       when: "beforeChildren",
+//       duration: 0.2,
+//       ease: "easeOut",
+//     },
+//   },
+// };
 
 const Profile = styled.div`
 background-color: black;
@@ -134,9 +134,9 @@ const Header = () => {
       navigate("/login");
     },
   });
-  const toggleDropdown = () => {
-    setIsDropdownOpen((prev) => !prev);
-  };
+  // const toggleDropdown = () => {
+  //   setIsDropdownOpen((prev) => !prev);
+  // };
 
   const logout = () => {
     // setIsDropdownOpen(false);
