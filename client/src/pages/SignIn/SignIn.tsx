@@ -2,6 +2,7 @@ import styled from "styled-components";
 import SignInForm from "../../features/auth/components/SignInForm";
 import { device } from "../../assets/device";
 import AuthSectionText from "../SignUp/AuthSectionText";
+import Footer from "./Footer";
 
 const Container = styled.section`
   min-height: 100vh;
@@ -11,6 +12,7 @@ const Container = styled.section`
   align-items: center;
   display: grid;
   grid-template-columns: 1fr;
+  position: relative;
 
   @media ${device.tablet} {
     grid-template-columns: 1fr 1fr;
@@ -34,6 +36,7 @@ const SignIn = () => {
     <Container>
       <SignInForm />
       <AuthSectionText />
+      <Footer/>
     </Container>
   );
 };
