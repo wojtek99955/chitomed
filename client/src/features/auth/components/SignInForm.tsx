@@ -67,6 +67,9 @@ const Button = styled.button<{ $loading?: boolean }>`
   &:hover {
     transform: scale(1.01);
   }
+  &:active {
+    transform: scale(.98);
+  }
 `;
 
 const ErrorText = styled.div`
@@ -214,8 +217,8 @@ const SignInForm = () => {
             <ForgotPasswordLink to="/forgot-password">
               Forgot password
             </ForgotPasswordLink>
-            <ErrorMessage name="password" component={ErrorText} />
             <ErrorMessage name="email" component={ErrorText} />
+            <ErrorMessage name="password" component={ErrorText} />
           </Form>
         )}
       </Formik>
