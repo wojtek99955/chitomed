@@ -47,7 +47,6 @@ const Input = styled(Field)<{ $error?: boolean }>`
   &::placeholder {
     text-align: center;
   }
-  outline: 2px solid #ffd4d4;
 `;
 
 const Button = styled.button<{ $loading?: boolean }>`
