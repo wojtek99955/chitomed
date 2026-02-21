@@ -36,9 +36,10 @@ const PillIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  transform: rotate(90deg);
 
   svg {
-    filter: blur(13px);
+    filter: blur(17px);
     width: 90%;
   }
 `;
