@@ -217,18 +217,18 @@ const SignInForm = () => {
               id="password"
               $error={touched.password && !!errors.password}
             />
-
+            <ErrorMessage name="email" component={ErrorText} />
+            <ErrorMessage name="password" component={ErrorText} />
             <Button type="submit" $loading={mutation.isPending}>
               {mutation.isPending ? "Signing in..." : "Sign in"}
             </Button>
             <SignUpLink to="/sign-up">
-              Don’t have an account? Sign up<Arrow/>
+              Don’t have an account? Sign up
+              <Arrow />
             </SignUpLink>
             <ForgotPasswordLink to="/forgot-password">
               Forgot password
             </ForgotPasswordLink>
-            <ErrorMessage name="email" component={ErrorText} />
-            <ErrorMessage name="password" component={ErrorText} />
           </Form>
         )}
       </Formik>
