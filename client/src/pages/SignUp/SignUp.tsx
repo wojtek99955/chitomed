@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../../features/user/api/userApi";
 import { logo } from "../SignIn/logo";
+import AuthSectionText from "./AuthSectionText";
 
 const Container = styled.section`
   min-height: 100vh;
@@ -14,6 +15,24 @@ const Container = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+  display: grid;
+  grid-template-columns: 1fr;
+
+  @media ${device.tablet} {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  h1 {
+    color: #2d50dc;
+    font-weight: 400;
+    font-size: 3rem;
+  }
+  strong {
+    font-weight: 500;
+  }
+  p {
+    font-size: 1.3rem;
+  }
 `;
 
 const FormContainer = styled.div`
@@ -194,6 +213,7 @@ const SignUp = () => {
           </Formik>
         )}
       </FormContainer>
+      <AuthSectionText/>
     </Container>
   );
 };
