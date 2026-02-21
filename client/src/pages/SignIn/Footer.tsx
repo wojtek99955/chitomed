@@ -4,7 +4,8 @@ import { device } from "../../assets/device";
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column-reverse;
+  align-items: center;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -22,6 +23,8 @@ const Container = styled.div`
   }
   @media ${device.tablet} {
     width: 50%;
+    flex-direction: row;
+    justify-content: space-between;
   }
 `;
 const Footer = () => {

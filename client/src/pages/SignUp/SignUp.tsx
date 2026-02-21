@@ -22,10 +22,8 @@ const Container = styled.section`
     grid-template-columns: 1fr 1fr;
   }
 
-  h1 {
-    color: #2d50dc;
-    font-weight: 400;
-    font-size: 3rem;
+  h2 {
+    color:black;
   }
   strong {
     font-weight: 500;
@@ -51,7 +49,7 @@ const FormContainer = styled.div`
 
 const Input = styled(Field)<{ $error?: boolean }>`
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.9rem 1rem;
   margin-top: 0.3rem;
   border-radius: 33px;
   margin-bottom: 1rem;

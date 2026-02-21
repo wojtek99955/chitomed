@@ -32,10 +32,10 @@ const FormContainer = styled.div`
 
 const Input = styled(Field)<{ $error?: boolean }>`
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.9rem 1rem;
   margin-top: 0.3rem;
   border-radius: 33px;
-  margin-bottom: 1rem;
+  margin-bottom: .8rem;
   border: 1px solid ${({ $error }) => ($error ? "#ff8181" : "#DCDCE1")};
   font-size: 1rem;
   transition: all 200ms;
