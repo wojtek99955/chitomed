@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { logo } from "../../../pages/SignIn/logo";
+import { FaArrowRight } from "react-icons/fa6";
 
 const FormContainer = styled.div`
   width: 95%;
@@ -27,6 +28,7 @@ const FormContainer = styled.div`
   }
   h2 {
     color: black;
+    font-weight: 400;
   }
 `;
 
@@ -112,8 +114,12 @@ const LogoContainer = styled.div`
 `;
 
 const SignUpLink = styled(Link)`
-  display: block;
+  display: flex;
+  margin: auto;
+text-align: center;
+justify-content: center;
   margin-top: 1rem;
+  align-items: center;
   text-align: center;
   color: #5069d4;
   font-weight: 500;
@@ -139,6 +145,11 @@ const ForgotPasswordLink = styled(Link)`
     text-decoration: underline;
   }
 `;
+
+const Arrow = styled(FaArrowRight)`
+font-size: 1rem;
+margin-left: .5rem;
+`
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string()
@@ -211,7 +222,7 @@ const SignInForm = () => {
               {mutation.isPending ? "Signing in..." : "Sign in"}
             </Button>
             <SignUpLink to="/sign-up">
-              Don’t have an account? Sign up
+              Don’t have an account? Sign up<Arrow/>
             </SignUpLink>
             <ForgotPasswordLink to="/forgot-password">
               Forgot password

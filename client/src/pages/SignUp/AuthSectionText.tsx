@@ -19,6 +19,11 @@ const Wrapper = styled.div`
   @media ${device.tablet} {
     display: block;
   }
+  h1 {
+    color: #2d50dc;
+    font-weight: 400;
+    font-size: 3rem;
+  }
 `;
 
 const PillIcon = styled.div`

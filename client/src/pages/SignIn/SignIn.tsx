@@ -17,12 +17,6 @@ const Container = styled.section`
   @media ${device.tablet} {
     grid-template-columns: 1fr 1fr;
   }
-
-  h1 {
-    color: #2d50dc;
-    font-weight: 400;
-    font-size: 3rem;
-  }
   strong {
     font-weight: 500;
   }

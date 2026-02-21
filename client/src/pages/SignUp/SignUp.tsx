@@ -24,6 +24,7 @@ const Container = styled.section`
 
   h2 {
     color:black;
+    font-weight: 400;
   }
   strong {
     font-weight: 500;
