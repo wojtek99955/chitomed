@@ -72,13 +72,13 @@ const IconButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1rem;
+  font-size: .9rem;
   transition: color 0.2s;
   aspect-ratio: 1/1;
   background-color: #2d50dc;
   padding: 0.2rem;
   border-radius: 50%;
-  width: 2.1rem;
+  width: 1.8rem;
   transition: all 200ms;
   &:hover {
     transform: scale(1.02);
