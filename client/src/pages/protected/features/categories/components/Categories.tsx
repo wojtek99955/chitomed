@@ -1,111 +1,125 @@
+import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useGetCategories } from "../api/useGetCategories";
 import Category from "./Category";
-import SkeletonLoader from "../../../../../components/SkeletonLoader";
+import { PiArrowsDownUp } from "react-icons/pi";
+
+const STORAGE_KEY = "selected_category_id";
 
 const Categories = () => {
-  const {
-    data: categoriesData = [],
-    isLoading,
-    isError,
-    error,
-  } = useGetCategories();
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const allCategories = [
-    { _id: "all", name: "Wszystko" },
-    ...categoriesData,
-  ];
+  const { data: categoriesData = [], isLoading } = useGetCategories();
+  const allCategories = [{ _id: "all", name: "Wszystko" }, ...categoriesData];
 
-  if (isLoading) {
-    return (
-      <Wrapper>
-        <LoaderContainer>
-          <CategorySkeleton>
-            <SkeletonLoader />
-          </CategorySkeleton>
-          <CategorySkeleton>
-            <SkeletonLoader />
-          </CategorySkeleton>
-          <CategorySkeleton>
-            <SkeletonLoader />
-          </CategorySkeleton>
-          <CategorySkeleton>
-            <SkeletonLoader />
-          </CategorySkeleton>
-          <CategorySkeleton>
-            <SkeletonLoader />
-          </CategorySkeleton>
-        </LoaderContainer>
-      </Wrapper>
-    );
-  }
+  // Pobieramy ID z localStorage (lub "all" jako domyślne)
+  const [selectedId, setSelectedId] = useState(() => {
+    return localStorage.getItem(STORAGE_KEY) || "all";
+  });
 
-  if (isError) {
-    return (
-      <ErrorBox>
-        <strong>Error:</strong>
-        {error?.message || "Try again later."}
-      </ErrorBox>
-    );
-  }
+  // Znajdujemy nazwę wybranej kategorii do wyświetlenia na przycisku
+  const selectedCategoryName =
+    allCategories.find((c) => c._id === selectedId)?.name || "Kategoria";
+
+  const handleSelect = (id: string) => {
+    localStorage.setItem(STORAGE_KEY, id);
+    setSelectedId(id);
+    setIsOpen(false);
+
+    // Opcjonalnie: wymuszenie odświeżenia innych komponentów
+    window.dispatchEvent(new Event("storage_change"));
+  };
+
+  // Zamknij przy kliknięciu poza dropdownem
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <Wrapper>
-      <Grid>
-        {allCategories.length > 1 ? (
-          allCategories.map((category) => (
-            <Category key={category._id} category={category} />
-          ))
-        ) : (
-          <EmptyText>No categories</EmptyText>
+      <DropdownContainer ref={dropdownRef}>
+        <DropdownButton onClick={() => setIsOpen(!isOpen)} $active={isOpen}>
+          <Arrows/>
+          <span>{isLoading ? "Ładowanie..." : selectedCategoryName}</span>
+
+        </DropdownButton>
+
+        {isOpen && (
+          <Menu>
+            {allCategories.map((cat) => (
+              <Category
+                key={cat._id}
+                category={cat}
+                isActive={selectedId === cat._id}
+                onSelect={() => handleSelect(cat._id)}
+              />
+            ))}
+          </Menu>
         )}
-      </Grid>
+      </DropdownContainer>
     </Wrapper>
   );
 };
 
 export default Categories;
 
-// --- STYLED COMPONENTS ---
-
-
 const Wrapper = styled.div`
-  padding: 0rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  margin-bottom: 2rem;
+  padding: 0 1rem;
+  margin-left: auto;
 `;
 
-const Grid = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: .5rem;
-`;
-
-const ErrorBox = styled.div`
-  margin: 2rem;
-  padding: 1rem;
-  background-color: #fff5f5;
-  border-left: 4px solid #f56565;
-  color: #c53030;
-  border-radius: 4px;
-`;
-
-const EmptyText = styled.p`
-  color: #a0aec0;
-  font-style: italic;
-`;
-
-const CategorySkeleton = styled.div`
-  width: 100px;
-  height: 40px;
-  border-radius: 20px;
+const DropdownContainer = styled.div`
   position: relative;
-  padding: 10px 20px;
-
-  border-radius: 9999px;
+  width: 100%;
+  min-width: 200px;
 `;
-const LoaderContainer = styled.div`
-display: flex;
-gap:1rem;
+
+const DropdownButton = styled.button<{ $active: boolean }>`
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  background-color: white;
+  border-radius: 33px;
+  border: none;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #1e293b;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+
+  &:hover {
+    border: 1px solid #2c50dc;
+    box-shadow: 0 0 0 3px rgba(44, 80, 220, 0.1);
+  }
+`;
+
+const Arrows = styled(PiArrowsDownUp)`
+font-size: 1.3rem;
+color:black;
 `
+
+const Menu = styled.div`
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow: hidden;
+  min-width: 200px;
+`;

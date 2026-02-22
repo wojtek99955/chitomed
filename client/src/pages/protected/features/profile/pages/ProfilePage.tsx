@@ -12,14 +12,13 @@ display: flex;
 `
 
 const ProfileContainer = styled.div`
-  height: calc(100vh - 4.5rem);
-  top: 4.5rem;
+  height: calc(100vh - 180.59px);
+  top: 180.59px;
   position: relative;
   padding: 2rem 1rem;
   display: flex;
   justify-content: center;
   width: 100%;
-  background-color: #f3f4f6;
 `;
 
 const Email = styled.div`

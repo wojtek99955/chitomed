@@ -8,24 +8,19 @@ import { AnimatePresence } from "framer-motion";
 import { useDeleteMaterial } from "../api/useDeleteMaterial";
 import DeleteConfirmation from "./DeleteConfirmation";
 import { useAuthData } from "../../../../../features/auth/useAuthData";
+import EditMaterial from "./EditMaterial";
 
 const MaterialItemContainer = styled.div`
   background: white;
   position: relative;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 1.5rem;
+  /* border-radius: 10px; */
   display: flex;
   flex-direction: column;
-  box-shadow:
-    0 4px 6px -1px rgb(0 0 0 / 0.1),
-    0 2px 4px -2px rgb(0 0 0 / 0.1);
   transition: all 0.2s;
   cursor: pointer;
+  border-bottom: 1px solid #e5e7eb;
+
   &:hover {
-    box-shadow:
-      0 10px 15px -3px rgb(0 0 0 / 0.1),
-      0 4px 6px -4px rgb(0 0 0 / 0.1);
     transform: scale(1.01);
   }
   &:active {
@@ -35,12 +30,22 @@ const MaterialItemContainer = styled.div`
 
 const ContentInfo = styled.div`
   flex-grow: 1;
+  padding: 1rem;
 `;
 
 const Title = styled.h4`
   font-size: 1.25rem;
   margin-bottom: 0.5rem;
   color: #1f2937;
+`;
+
+const Category = styled.div`
+  position: absolute;
+  left: 0.5rem;
+  top: 0.5rem;
+  background-color: white;
+  color: #2d50dc;
+  text-transform: uppercase;
 `;
 
 const Metadata = styled.div`
@@ -54,7 +59,7 @@ const Metadata = styled.div`
 
 const Actions = styled.div`
   display: flex;
-  gap: 0.8rem;
+  gap: 0.5rem;
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
@@ -63,23 +68,27 @@ const Actions = styled.div`
 const IconButton = styled.button`
   border: none;
   cursor: pointer;
-  color: #6b7280;
-  font-size: 1.1rem;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
   transition: color 0.2s;
-  background-color: green;
   aspect-ratio: 1/1;
-  background-color: #f3f4f6;
+  background-color: #2d50dc;
   padding: 0.2rem;
-  border-radius: 6px;
-  width: 2.2rem;
+  border-radius: 50%;
+  width: 2.1rem;
   transition: all 200ms;
   &:hover {
-    background-color: #dde0e5;
+    transform: scale(1.02);
+  }
+  &:active {
+    transform: scale(0.95);
   }
 `;
 
 const Cover = styled.div`
-  border: 1px solid #d5dbf4;
   border-radius: 6px;
   width: 100%;
   height: 10rem;
@@ -128,6 +137,10 @@ const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
   return (
     <>
       <MaterialItemContainer onClick={openMaterial}>
+        <Category>{material.categoryId}</Category>
+        <Cover>
+          <img src="https://chitomed-files.b-cdn.net/Vector%20(1).svg" alt="" />
+        </Cover>
         <ContentInfo>
           <Title>{material.title}</Title>
           <Metadata>
@@ -136,10 +149,6 @@ const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
             </span>
           </Metadata>
         </ContentInfo>
-
-        <Cover>
-          <img src="https://chitomed-files.b-cdn.net/Vector%20(1).svg" alt="" />
-        </Cover>
 
         {role === "admin" && (
           <Actions>
@@ -157,8 +166,7 @@ const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
       </MaterialItemContainer>
       <AnimatePresence>
         {isEditOpen && (
-          <></>
-          // <EditMaterial setIsOpen={setIsEditOpen} material={material} />
+          <EditMaterial setIsOpen={setIsEditOpen} material={material} />
         )}
       </AnimatePresence>
       <AnimatePresence>

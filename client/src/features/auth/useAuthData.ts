@@ -1,16 +1,14 @@
-import { useState, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { jwtDecode } from "jwt-decode";
 import { api } from "../../api/api";
-// 1. Definicja struktury danych wewnątrz tokena (Payload)
+
 interface MyJwtPayload {
   id: string;
   email: string;
   role: string;
-  iat: number;
   exp: number;
 }
 
-// 2. Definicja struktury stanu zwracanego przez hook
 interface AuthData {
   id: string | null;
   email: string | null;
@@ -20,105 +18,73 @@ interface AuthData {
   isRefreshing: boolean;
 }
 
+const AUTH_QUERY_KEY = ["authUser"];
+
 const refreshToken = async () => {
   const response = await api.get("/auth/refresh");
-  localStorage.setItem("token", response.data.accessToken);
-  return response.data.accessToken;
+  const newToken = response.data.accessToken;
+  localStorage.setItem("token", newToken);
+  return newToken;
 };
 
-/**
- * Hook useAuthData - synchronicznie i asynchronicznie odczytuje dane użytkownika z tokena JWT.
- * Używa "Lazy Initializer" w useState, aby uniknąć migania interfejsu (isChecking: true).
- * Dodatkowo, obsługuje odświeżanie tokena.
- */
-export const useAuthData = () => {
-  const [auth, setAuth] = useState<AuthData>({
-    id: null,
-    email: null,
-    role: null,
-    isAuthenticated: false,
-    isChecking: true,
-    isRefreshing: false,
+export const useAuthData = (): AuthData => {
+
+  const { data, isLoading, isFetching } = useQuery({
+    queryKey: AUTH_QUERY_KEY,
+    queryFn: async () => {
+      let token = localStorage.getItem("token");
+      if (!token) return null;
+
+      try {
+        const decoded = jwtDecode<MyJwtPayload>(token);
+        const currentTime = Date.now() / 1000;
+
+        if (decoded.exp < currentTime) {
+          // Jeśli potrzebujemy odświeżyć, to jest moment "isRefreshing"
+          token = await refreshToken();
+        }
+
+        return jwtDecode<MyJwtPayload>(token!);
+      } catch (error) {
+        localStorage.removeItem("token");
+        return null;
+      }
+    },
+    staleTime: 1000 * 60 * 15, // 15 minut spokoju
+    gcTime: 1000 * 60 * 60,
+    retry: false,
+    refetchOnWindowFocus: false,
   });
 
-  useEffect(() => {
-    const initializeAuth = async () => {
-      const token = localStorage.getItem("token");
-
-      if (token) {
-        try {
-          const decoded = jwtDecode<MyJwtPayload>(token);
-          const currentTime = Date.now() / 1000;
-
-          if (decoded.exp < currentTime) {
-            setAuth((prev) => ({ ...prev, isRefreshing: true }));
-            try {
-              const newToken = await refreshToken();
-              const newDecoded = jwtDecode<MyJwtPayload>(newToken);
-              setAuth({
-                id: newDecoded.id,
-                email: newDecoded.email,
-                role: newDecoded.role,
-                isAuthenticated: true,
-                isChecking: false,
-                isRefreshing: false,
-              });
-            } catch (error) {
-              console.error("Błąd odświeżania tokena:", error);
-              localStorage.removeItem("token");
-              setAuth({
-                id: null,
-                email: null,
-                role: null,
-                isAuthenticated: false,
-                isChecking: false,
-                isRefreshing: false,
-              });
-            }
-          } else {
-            setAuth({
-              id: decoded.id,
-              email: decoded.email,
-              role: decoded.role,
-              isAuthenticated: true,
-              isChecking: false,
-              isRefreshing: false,
-            });
-          }
-        } catch (error) {
-          console.error("Błąd dekodowania tokena:", error);
-          setAuth({
-            id: null,
-            email: null,
-            role: null,
-            isAuthenticated: false,
-            isChecking: false,
-            isRefreshing: false,
-          });
-        }
-      } else {
-        setAuth({
-          id: null,
-          email: null,
-          role: null,
-          isAuthenticated: false,
-          isChecking: false,
-          isRefreshing: false,
-        });
-      }
+  // Mapujemy dane z React Query na Twój format AuthData
+  if (isLoading) {
+    return {
+      id: null,
+      email: null,
+      role: null,
+      isAuthenticated: false,
+      isChecking: true,
+      isRefreshing: false,
     };
+  }
 
-    initializeAuth();
-
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.key === "token") {
-        window.location.reload();
-      }
+  if (!data) {
+    return {
+      id: null,
+      email: null,
+      role: null,
+      isAuthenticated: false,
+      isChecking: false,
+      isRefreshing: false,
     };
+  }
 
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
-
-  return auth;
+  return {
+    id: data.id,
+    email: data.email,
+    role: data.role,
+    isAuthenticated: true,
+    isChecking: false,
+    isRefreshing: isFetching, // Jeśli React Query pobiera dane w tle
+  };
 };

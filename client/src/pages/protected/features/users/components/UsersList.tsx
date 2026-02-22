@@ -5,14 +5,15 @@ import {
   FaEnvelope,
   FaTrashAlt,
 } from "react-icons/fa";
-import { useUsers, type User, useDeleteUser } from "../api/useUser"; // ← dodaj useDeleteUser
+import { useUsers, type User, useDeleteUser } from "../api/useUser";
 import { format } from "date-fns";
-import { toast } from "react-hot-toast"; // lub react-toastify / inna biblioteka
+import { toast } from "react-hot-toast";
+
+// --- STYLED COMPONENTS ---
 
 const Container = styled.div`
   padding: 2rem;
   width: 100%;
-  background-color: #f3f4f6;
   height: calc(100vh - 4.5rem);
   position: relative;
   top: 4.5rem;
@@ -55,77 +56,85 @@ const ErrorBox = styled(InfoBox)`
   background-color: #fee2e2;
   color: #ef4444;
   border: 1px solid #fca5a5;
-  svg {
-    margin-right: 0.8rem;
-  }
+  flex-direction: column;
+  gap: 0.5rem;
 `;
 
-const Table = styled.table`
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+const TableContainer = styled.div`
   background: white;
   border-radius: 8px;
   overflow: hidden;
 `;
 
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+`;
+
 const TableHead = styled.thead`
-  background-color: #10b981;
-  color: white;
-  text-align: left;
+  border-bottom: 1px solid #f5f5f7;
 `;
 
 const TableRow = styled.tr`
-  &:nth-child(even) {
-    background-color: #f3f4f6;
-  }
   &:hover {
-    background-color: #e5e7eb;
+    background-color: #f9fafb;
   }
 `;
 
 const TableHeader = styled.th`
   padding: 1rem 1.5rem;
   font-weight: 700;
+  text-align: left;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  font-size: 1rem;
+  color: black;
 `;
 
 const TableData = styled.td`
-  padding: 1.2rem 1.5rem;
+  padding: 1rem 1.5rem;
   color: #374151;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #f5f5f7;
+  vertical-align: middle; /* Gwarantuje równą wysokość w pionie */
 
   &:first-child {
     font-weight: 600;
     width: 60px;
   }
-  &:nth-child(2) {
-    display: flex;
-    align-items: center;
-  }
+`;
+
+const EmailWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 `;
 
 const EmailIcon = styled(FaEnvelope)`
-  margin-right: 0.5rem;
   color: #3b82f6;
+  flex-shrink: 0;
+`;
+
+const ActionCell = styled(TableData)`
+  text-align: center;
+  width: 80px;
 `;
 
 const DeleteButton = styled.button`
   background: #ef4444;
   color: white;
   border: none;
-  border-radius: 6px;
-  padding: 0.3rem 0.9rem;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.7rem;
+  justify-content: center;
   transition: all 0.2s;
 
   &:hover {
     background: #dc2626;
+    transform: scale(1.05);
   }
 
   &:disabled {
@@ -134,14 +143,11 @@ const DeleteButton = styled.button`
   }
 
   svg {
-    font-size: .8rem;
+    font-size: 0.9rem;
   }
 `;
 
-const ActionCell = styled(TableData)`
-  text-align: center;
-  border-bottom: 1px solid #e5e7eb;
-`;
+// --- COMPONENT LOGIC ---
 
 const UsersList = () => {
   const { data, isLoading, isError, error } = useUsers();
@@ -157,7 +163,6 @@ const UsersList = () => {
     deleteUser(userId, {
       onSuccess: () => {
         toast.success(`Użytkownik ${email} został usunięty`);
-        // Jeśli używasz React Query → invalidateQueries automatycznie odświeży listę
       },
       onError: (err: any) => {
         toast.error(err?.message || "Nie udało się usunąć użytkownika");
@@ -190,15 +195,12 @@ const UsersList = () => {
       <Container>
         <Title>Lista Użytkowników</Title>
         <ErrorBox>
-          <FaExclamationTriangle /> Wystąpił błąd podczas ładowania danych.
-          <p
-            style={{
-              marginTop: "0.5rem",
-              fontSize: "0.9rem",
-              fontWeight: 500,
-            }}>
+          <div>
+            <FaExclamationTriangle /> Wystąpił błąd podczas ładowania danych.
+          </div>
+          <span style={{ fontSize: "0.85rem", opacity: 0.8 }}>
             {error?.message || "Nieznany błąd."}
-          </p>
+          </span>
         </ErrorBox>
       </Container>
     );
@@ -209,7 +211,8 @@ const UsersList = () => {
       <Container>
         <Title>Lista Użytkowników</Title>
         <InfoBox style={{ backgroundColor: "#fffbe0", color: "#a16207" }}>
-          <FaExclamationTriangle /> Brak użytkowników do wyświetlenia.
+          <FaExclamationTriangle style={{ marginRight: "0.5rem" }} />
+          Brak użytkowników do wyświetlenia.
         </InfoBox>
       </Container>
     );
@@ -217,39 +220,42 @@ const UsersList = () => {
 
   return (
     <Container>
-      <Title>Lista Użytkowników ({users.length})</Title>
+      <Title>Users list ({users.length})</Title>
 
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableHeader>Lp.</TableHeader>
-            <TableHeader>Adres E-mail</TableHeader>
-            <TableHeader>Dołączył</TableHeader>
-            <TableHeader>Akcje</TableHeader>
-          </TableRow>
-        </TableHead>
-        <tbody>
-          {users.map((user, index) => (
-            <TableRow key={user._id || index}>
-              <TableData>{index + 1}</TableData>
-              <TableData>
-                <EmailIcon />
-                {user.email}
-              </TableData>
-              <TableData>{formatDate(user.createdAt)}</TableData>
-              <ActionCell>
-                <DeleteButton
-                  onClick={() => handleDelete(user._id, user.email)}
-                  disabled={isDeleting}
-                  title="Usuń użytkownika">
-                  <FaTrashAlt />
-                  Usuń
-                </DeleteButton>
-              </ActionCell>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableHeader>Lp.</TableHeader>
+              <TableHeader>Adres E-mail</TableHeader>
+              <TableHeader>Dołączył</TableHeader>
+              <TableHeader style={{ textAlign: "center" }}>Akcja</TableHeader>
             </TableRow>
-          ))}
-        </tbody>
-      </Table>
+          </TableHead>
+          <tbody>
+            {users.map((user, index) => (
+              <TableRow key={user._id || index}>
+                <TableData>{index + 1}</TableData>
+                <TableData>
+                  <EmailWrapper>
+                    <EmailIcon />
+                    {user.email}
+                  </EmailWrapper>
+                </TableData>
+                <TableData>{formatDate(user.createdAt)}</TableData>
+                <ActionCell>
+                  <DeleteButton
+                    onClick={() => handleDelete(user._id, user.email)}
+                    disabled={isDeleting}
+                    title="Usuń użytkownika">
+                    <FaTrashAlt />
+                  </DeleteButton>
+                </ActionCell>
+              </TableRow>
+            ))}
+          </tbody>
+        </Table>
+      </TableContainer>
     </Container>
   );
 };

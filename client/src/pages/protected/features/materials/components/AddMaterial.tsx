@@ -24,6 +24,7 @@ import {
 } from "./AddMaterial/Styles";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { pl } from "@blocknote/core/locales";
 
 // ────────────────────────────────────────────────
 
@@ -50,6 +51,7 @@ const AddMaterialModal = () => {
   const [content, setContent] = useState<any[]>([]);
 
   const editor = useCreateBlockNote({
+    dictionary:pl,
     uploadFile: async (file: File) => {
       const formData = new FormData();
       formData.append("file", file);

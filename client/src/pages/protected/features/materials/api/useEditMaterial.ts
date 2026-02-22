@@ -2,11 +2,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../../../../api/api";
 
 export interface EditMaterialData {
-  _id: string;
-  title: string;
-  type: "video" | "text";
-  text?: string;
-  videoUrl?: string;
+  _id: string,
+  title: string,
+  categoryId: string
+  content:any;
 }
 
 const editMaterial = async (data: EditMaterialData) => {

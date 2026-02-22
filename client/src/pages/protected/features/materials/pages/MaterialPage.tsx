@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {
   FaExclamationTriangle,
   FaSpinner,
-  FaChevronCircleLeft,
+  // FaChevronCircleLeft,
 } from "react-icons/fa";
 import { useMaterials, type Material } from "../api/useMaterial";
 import Header from "../../../Dashboard/Header";
@@ -11,20 +11,39 @@ import BottomNav from "../../../BottomNav";
 import { device } from "../../../../../assets/device";
 import { useEffect, useState, useMemo } from "react";
 import { BlockNoteEditor } from "@blocknote/core";
+import Sidebar from "../../../Dashboard/Sidebar";
+
+// GŁÓWNY WRAPPER: zajmuje całą wysokość ekranu i blokuje scroll na body
+const Wrapper = styled.div`
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden; /* Sidebar nie będzie uciekać */
+`;
+
+// KONTENER NA TREŚĆ (Header + Content): zajmuje resztę szerokości i ma własny scroll
+const MainContent = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+`;
 
 const Container = styled.div`
-  padding: 1.5rem;
-  background-color: #f8fafc;
   width: 100%;
-  min-height: calc(100vh - 4.5rem);
-  overflow-y: auto;
+  display: grid;
+  align-items: flex-start;
+  grid-template-columns: 1fr 800px 1fr;
+  gap: 1rem;
   position: relative;
-  top: 4.5rem;
-  padding-bottom: 7rem;
+  height: calc(100vh - 160px);
+  top: 160px;
+  overflow-y: auto; /* To sprawia, że tylko treść się przewija */
 
   @media ${device.laptop} {
-    padding: 2.5rem 3rem;
-    padding-bottom: 2rem;
+    padding: 2rem 1rem;
+    padding-bottom: 5rem; /* Miejsce na BottomNav na mobile/laptop */
   }
 `;
 
@@ -32,36 +51,36 @@ const BackButton = styled(Link)`
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  background: #3b82f6;
+  background: black;
   color: white;
-  padding: 0.7rem 1.3rem;
-  border-radius: 8px;
+  padding: 0.7rem 2.2rem;
+  border-radius: 33px;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.2s ease;
   margin-bottom: 1.5rem;
+  width: fit-content;
+  transition: all 200ms;
 
   &:hover {
-    background: #2563eb;
-    transform: translateY(-1px);
+    /* background: #2563eb; */
+    background-color: #262626;
+    transform: scale(1.02);
+  }
+  &:active {
+    transform: scale(0.95);
   }
 `;
 
-const BackIcon = styled(FaChevronCircleLeft)`
-  font-size: 1.3rem;
-`;
+// const BackIcon = styled(FaChevronCircleLeft)`
+//   font-size: 1.3rem;
+// `;
 
 const ContentWrapper = styled.div`
   background: white;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  padding: 2.5rem;
-  max-width: 920px;
-  margin: 0 auto;
-
-  @media ${device.tablet} {
-    padding: 3rem;
-  }
+  margin: 0 auto 1rem auto;
+  width: 100%;
 `;
 
 const Title = styled.h1`
@@ -76,6 +95,7 @@ const Meta = styled.p`
   color: #6b7280;
   font-size: 0.95rem;
   margin: 0 0 2rem 0;
+  text-align: right;
 `;
 
 const ArticleContent = styled.div`
@@ -149,7 +169,6 @@ const LoadingBox = styled.div`
   svg {
     animation: spin 1.2s linear infinite;
   }
-
   @keyframes spin {
     to {
       transform: rotate(360deg);
@@ -162,6 +181,19 @@ const ErrorBox = styled(LoadingBox)`
   color: #991b1b;
   border: 1px solid #fecaca;
 `;
+
+const Category = styled.div`
+  background-color: #f3f4f6;
+  color: #2d50dc;
+  text-transform:uppercase;
+  padding:.3rem;
+  width: fit-content;
+  margin-top: 1rem;
+  border-radius: 8px;
+  margin-left: auto;
+
+`;
+
 
 const MaterialPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -180,7 +212,7 @@ const MaterialPage = () => {
       return url.replace("watch?v=", "embed/");
     }
     if (url.includes("youtu.be/")) {
-      return url.replace("youtu.be/", "youtube.com/embed/");
+      return url.replace("youtu.be/", "https://www.youtube.com/embed/");
     }
     return url;
   };
@@ -193,49 +225,37 @@ const MaterialPage = () => {
 
     const convert = async () => {
       try {
-        // 1. Generuj HTML z BlockNote
-        let html = await converterEditor.blocksToHTMLLossy(material.content as any);
-
-        // 2. Parsuj HTML do manipulacji
+        let html = await converterEditor.blocksToHTMLLossy(
+          material.content as any,
+        );
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, "text/html");
 
-        // 3. Znajdź wszystkie tagi <video> wygenerowane przez BlockNote
         const videoTags = doc.querySelectorAll("video");
-
         videoTags.forEach((videoTag) => {
-          // Pobierz URL z atrybutu src lub data-url
           const rawUrl =
             videoTag.getAttribute("src") || videoTag.getAttribute("data-url");
-
           if (rawUrl) {
-            const embedUrl = formatVideoUrl(rawUrl);
-
-            // Stwórz nowy iframe
             const iframe = doc.createElement("iframe");
-            iframe.src = embedUrl;
+            iframe.src = formatVideoUrl(rawUrl);
             iframe.setAttribute("allowfullscreen", "true");
             iframe.setAttribute(
               "allow",
               "clipboard-write; encrypted-media; gyroscope; picture-in-picture",
             );
-
             videoTag.replaceWith(iframe);
           }
         });
 
-        // Obsługa kontenerów data-content-type="video" (dodatkowe zabezpieczenie)
         const videoContainers = doc.querySelectorAll(
           '[data-content-type="video"]',
         );
         videoContainers.forEach((container) => {
-          // Jeśli kontener nadal istnieje i nie został podmieniony wyżej
           if (doc.contains(container)) {
             const videoInside = container.querySelector("video");
             const url =
               videoInside?.getAttribute("src") ||
               container.getAttribute("data-url");
-
             if (url) {
               const iframe = doc.createElement("iframe");
               iframe.src = formatVideoUrl(url);
@@ -261,68 +281,72 @@ const MaterialPage = () => {
 
   if (isLoading) {
     return (
-      <>
-        <Header />
-        <Container>
-          <BackButton to="/dashboard">
-            <BackIcon /> Powrót
-          </BackButton>
-          <LoadingBox>
-            <FaSpinner /> Ładowanie...
-          </LoadingBox>
-        </Container>
-        <BottomNav />
-      </>
+      <Wrapper>
+        <Sidebar />
+        <MainContent>
+          <Header />
+          <Container>
+            <LoadingBox>
+              <FaSpinner /> loading...
+            </LoadingBox>
+          </Container>
+          <BottomNav />
+        </MainContent>
+      </Wrapper>
     );
   }
 
   if (isError || !material) {
     return (
-      <>
-        <Header />
-        <Container>
-          <BackButton to="/dashboard">
-            <BackIcon /> Powrót
-          </BackButton>
-          <ErrorBox>
-            <FaExclamationTriangle /> Błąd pobierania materiału
-          </ErrorBox>
-        </Container>
-        <BottomNav />
-      </>
+      <Wrapper>
+        <Sidebar />
+        <MainContent>
+          <Header />
+          <Container>
+            <ErrorBox>
+              <FaExclamationTriangle /> Error
+            </ErrorBox>
+          </Container>
+          <BottomNav />
+        </MainContent>
+      </Wrapper>
     );
   }
 
   return (
-    <>
-      <Header />
-      <Container>
-        <BackButton to="/dashboard">
-          <BackIcon /> Powrót do listy
-        </BackButton>
+    <Wrapper>
+      <Sidebar />
+      <MainContent>
+        <Header />
+        <Container>
+          <BackButton to="/dashboard">
+            {/* <BackIcon />  */}
+            Back
+          </BackButton>
 
-        <ContentWrapper>
-          <Title>{material.title}</Title>
+          <ContentWrapper>
+            <Title>{material.title}</Title>
+            <ArticleContent>
+              {htmlContent ? (
+                <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+              ) : (
+                <p>Ładowanie treści...</p>
+              )}
+            </ArticleContent>
+          </ContentWrapper>
           <Meta>
-            Utworzono:{" "}
-            {new Date(material.createdAt).toLocaleDateString("pl-PL", {
+            Created:{" "}
+            {new Date(material.createdAt).toLocaleDateString("en-EN", {
               day: "numeric",
               month: "long",
               year: "numeric",
             })}
+            <Category>Category</Category>
           </Meta>
-
-          <ArticleContent>
-            {htmlContent ? (
-              <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-            ) : (
-              <p>Ładowanie treści...</p>
-            )}
-          </ArticleContent>
-        </ContentWrapper>
-      </Container>
-      <BottomNav />
-    </>
+        </Container>
+        <BottomNav />
+      </MainContent>
+    </Wrapper>
   );
 };
 

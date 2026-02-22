@@ -1,311 +1,197 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom"; // 1. Importujemy ReactDOM
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useEditMaterial } from "../api/useEditMaterial";
-import { MdClose } from "react-icons/md";
-import { motion } from "framer-motion";
+import { useGetCategories } from "../../categories/api/useGetCategories";
+import { useCreateBlockNote } from "@blocknote/react";
+import { BlockNoteView } from "@blocknote/mantine";
+import "@blocknote/core/fonts/inter.css";
+import "@blocknote/mantine/style.css";
+import styled from "styled-components";
+import { motion } from "framer-motion"; // Dodane dla obsługi animacji
 
+import {
+  ModalContent,
+  FormSection,
+  FormTitle,
+  Label,
+  Header,
+  Input,
+  CancelButton,
+  CloseContainer,
+  CloseIcon,
+  ErrorText,
+  SubmitButton,
+} from "./AddMaterial/Styles";
 
+import type { Material } from "../api/useMaterial";
+
+// Zmieniamy na motion.div, aby animacje initial/animate działały
 const ModalOverlay = styled(motion.div)`
-  position: fixed;
+  position: fixed; // Fixed jest lepsze dla portalu/modala
+  z-index: 999999;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.5); // Dodajemy tło, żeby odciąć resztę strony
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-  backdrop-filter: blur(5px);
+  overflow-y: auto;
+  padding: 20px;
 `;
 
-const  ModalContent = styled(motion.div)`
-  background: white;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 600px;
-  padding: 2rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+const StyledModalContent = styled(ModalContent)`
+  position: relative;
+  margin: auto; // Centrowanie przy długim kontencie
 `;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 1.5rem;
-`;
-
-const FormTitle = styled.h2`
-  font-size: 1.5rem;
-  color: #1f2937;
-  padding-bottom: 0.5rem;
-  margin-bottom: 0;
-`;
-
-const FormSection = styled.div`
-  margin-bottom: 1.5rem;
-  textarea {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 1rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    &:focus {
-      outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
-    }
-  }
-`;
-
-const Label = styled.label`
-  display: block;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 0.4rem;
-`;
-
-const Input = styled(Field)`
-  width: 100%;
-  padding: 0.8rem 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-
-  &:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
-  }
-`;
-
-const Select = styled(Input).attrs({ as: "select" })`
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236B7280'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 1em;
-`;
-
-const SubmitButton = styled.button`
-  padding: 0.9rem 2rem;
-  background: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  width: 100%;
-
-  &:hover:not(:disabled) {
-    background: #2563eb;
-  }
-  &:active {
-    transform: scale(0.98);
-  }
-
-  &:disabled {
-    background: #9ca3af;
-    cursor: not-allowed;
-  }
-`;
-
-const CancelButton = styled.button`
-  padding: 0.9rem 2rem;
-  background-color: #e5e7eb;
-  color: #374151;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-  width: 100%;
-  margin-top: 10px;
-  &:hover {
-    background-color: #d1d5db;
-  }
-  &:active {
-    transform: scale(0.98);
-  }
-`;
-
-const ErrorText = styled.p`
-  color: #ef4444;
-  font-size: 0.9rem;
-  margin-top: 0.4rem;
-  font-weight: 500;
-`;
-
-const CloseContainer = styled.div`
-  background-color: #f3f4f6;
-  aspect-ratio: 1/1;
-  padding: 0.3rem;
-  border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: all 200ms;
-  &:hover {
-    background-color: #dde0e5;
-  }
-`;
-
-const CloseIcon = styled(MdClose)`
-  font-size: 1.7rem;
-`;
-
-// ====================== WALIDACJA ======================
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required("Uzupełnij"),
-  type: Yup.string().oneOf(["video", "text"]).required("Wybierz typ materiału"),
-  text: Yup.string().when("type", {
-    is: "text",
-    then: (schema) => schema.required("Uzupełnij"),
-    otherwise: (schema) => schema.optional(),
-  }),
-  videoUrl: Yup.string().when("type", {
-    is: "video",
-    then: (schema) => schema.url("Musi być poprawny URL").required("Uzupełnij"),
-    otherwise: (schema) => schema.optional(),
-  }),
+  title: Yup.string().required("Uzupełnij tytuł"),
+  categoryId: Yup.string().required("Wybierz kategorię"),
 });
 
-// ====================== TYPY ======================
-
-type MaterialType = {
-  _id: string;
-  title: string;
-  type: "video" | "text";
-  text?: string;
-  videoUrl?: string;
-};
-
 type EditMaterialProps = {
-  material: MaterialType;
+  material: Material;
   setIsOpen: (open: boolean) => void;
 };
 
-// ====================== KOMPONENT ======================
-
-const EditMaterial: React.FC<EditMaterialProps> = ({ material, setIsOpen }:any) => {
+const EditMaterial: React.FC<EditMaterialProps> = ({ material, setIsOpen }) => {
   const { mutate, isPending } = useEditMaterial(() => {
     setIsOpen(false);
   });
 
-  const initialValues = {
-    title: material.title || "",
-    type: material.type || "text",
-    text: material.text || "",
-    videoUrl: material.videoUrl || "",
-  };
+  const { data: categories = [] } = useGetCategories();
+  const [content, setContent] = useState<any>(material.content || []);
 
-  const handleSubmit = (values: typeof initialValues) => {
+  const editor = useCreateBlockNote({
+    initialContent: material.content ? (material.content as any) : undefined,
+    uploadFile: async (file: File) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      let uploadEndpoint = "http://localhost:8080/upload/upload-image";
+      if (file.type.startsWith("video/")) {
+        uploadEndpoint = "http://localhost:8080/upload/upload-video";
+      }
+
+      const response = await fetch(uploadEndpoint, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error("Błąd uploadu");
+      const { url } = await response.json();
+      return url;
+    },
+  });
+
+  useEffect(() => {
+    const unsubscribe = editor.onChange(() => {
+      setContent(editor.document);
+    });
+    return () => unsubscribe();
+  }, [editor]);
+
+  const handleSubmit = (values: { title: string; categoryId: string }) => {
+    if (content.length === 0) {
+      alert("Treść nie może być pusta!");
+      return;
+    }
     const dataToSend = {
-      _id: material._id, // ważne – przekazujemy ID do edycji
+      _id: material._id,
       title: values.title,
-      type: values.type,
-      text: values.type === "text" ? values.text : undefined,
-      videoUrl: values.type === "video" ? values.videoUrl : undefined,
+      categoryId: values.categoryId,
+      content,
     };
-
     mutate(dataToSend);
   };
 
-  const closeModal = (e?: React.MouseEvent) => {
-    if (e && e.target !== e.currentTarget) return;
-    setIsOpen(false);
-  };
-console.log(material._id, "material didididi ")
-  return (
-    <>
-      <ModalOverlay
-        onClick={closeModal}
-        initial={{ opacity: 0}}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}>
-        <ModalContent
-          onClick={(e) => e.stopPropagation()}
-          initial={{ opacity: 0, scale: 0.75 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.85 }}>
-          <Header>
-            <FormTitle>Edytuj materiał</FormTitle>
-            <CloseContainer onClick={() => setIsOpen(false)}>
-              <CloseIcon />
-            </CloseContainer>
-          </Header>
+  // 2. Logika Portalu
+  const modalRoot = document.getElementById("modal-root") || document.body;
 
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-            enableReinitialize // ważne przy edycji – pozwala załadować nowe wartości
-          >
-            {({ values }) => (
-              <Form>
-                {/* Tytuł */}
-                <FormSection>
-                  <Label htmlFor="title">Tytuł</Label>
-                  <Input name="title" placeholder="tytuł" />
-                  <ErrorMessage name="title" component={ErrorText} />
-                </FormSection>
+  return ReactDOM.createPortal(
+    <ModalOverlay
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={() => setIsOpen(false)}>
+      <StyledModalContent
+        as={motion.div} // Wrażamy style w motion
+        onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 20 }}>
+        <Header>
+          <FormTitle>Edytuj materiał</FormTitle>
+          <CloseContainer onClick={() => setIsOpen(false)}>
+            <CloseIcon />
+          </CloseContainer>
+        </Header>
 
-                {/* Typ materiału */}
-                <FormSection>
-                  <Label htmlFor="type">Typ materiału</Label>
-                  <Select name="type">
-                    <option value="text">Tekstowy</option>
-                    <option value="video">Film</option>
-                  </Select>
-                  <ErrorMessage name="type" component={ErrorText} />
-                </FormSection>
+        <Formik
+          initialValues={{
+            title: material.title || "",
+            categoryId: material.categoryId || "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+          enableReinitialize>
+          <Form>
+            <FormSection>
+              <Label htmlFor="title">Tytuł</Label>
+              <Field as={Input} name="title" placeholder="Tytuł materiału" />
+              <ErrorMessage name="title" component={ErrorText} />
+            </FormSection>
 
-                {/* Warunkowe pola */}
-                {values.type === "text" && (
-                  <FormSection>
-                    <Label htmlFor="text">Tekst</Label>
-                    <Field
-                      as="textarea"
-                      name="text"
-                      rows={5}
-                      placeholder="Wpisz tutaj tekst"
-                    />
-                    <ErrorMessage name="text" component={ErrorText} />
-                  </FormSection>
-                )}
+            <FormSection>
+              <Label htmlFor="categoryId">Kategoria</Label>
+              <Field
+                as="select"
+                name="categoryId"
+                style={{
+                  width: "100%",
+                  padding: "0.8rem",
+                  borderRadius: "6px",
+                  border: "1px solid #d1d5db",
+                }}>
+                <option value="" disabled>
+                  -- Wybierz kategorię --
+                </option>
+                {categories.map((cat: any) => (
+                  <option key={cat._id} value={cat._id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </Field>
+              <ErrorMessage name="categoryId" component={ErrorText} />
+            </FormSection>
 
-                {values.type === "video" && (
-                  <FormSection>
-                    <Label htmlFor="videoUrl">Video URL</Label>
-                    <Input
-                      name="videoUrl"
-                      placeholder="np. https://youtube.com/watch?v=12345"
-                    />
-                    <ErrorMessage name="videoUrl" component={ErrorText} />
-                  </FormSection>
-                )}
+            <FormSection>
+              <Label>Treść</Label>
+              <div
+                style={{
+                  border: "1px solid #d1d5db",
+                  borderRadius: "6px",
+                  minHeight: "250px",
+                  background: "#fff",
+                  overflow: "hidden",
+                }}>
+                <BlockNoteView editor={editor} theme="light" />
+              </div>
+            </FormSection>
 
-                {/* Przyciski */}
-                <SubmitButton type="submit" disabled={isPending}>
-                  {isPending ? "Zapisywanie..." : "Zapisz zmiany"}
-                </SubmitButton>
-
-                <CancelButton type="button" onClick={() => setIsOpen(false)}>
-                  Anuluj
-                </CancelButton>
-              </Form>
-            )}
-          </Formik>
-        </ModalContent>
-      </ModalOverlay>
-    </>
+            <SubmitButton type="submit" disabled={isPending}>
+              {isPending ? "Zapisywanie..." : "Zapisz zmiany"}
+            </SubmitButton>
+<br />
+<br />
+            <CancelButton type="button" onClick={() => setIsOpen(false)}>
+              Anuluj
+            </CancelButton>
+          </Form>
+        </Formik>
+      </StyledModalContent>
+    </ModalOverlay>,
+    modalRoot, // Miejsce, gdzie portal "wstrzyknie" kod
   );
 };
 

@@ -1,26 +1,25 @@
 import styled from "styled-components";
 import MaterialsList from "../components/MaterialsList";
 import { useAuthData } from "../../../../../features/auth/useAuthData";
-import Categories from "../../categories/components/Categories";
 import { Link } from "react-router-dom";
-import { FaPlus } from "react-icons/fa";
+// import { FaPlus } from "react-icons/fa";
 const Container = styled.div`
-  padding-top: 2rem;
+  display: flex;
+  gap:1rem;
+  width: 100%;
 `;
 export const AddButton = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 1100px;
-  width: 100%;
-  margin: auto;
   gap: 0.5rem;
-  padding: 1rem 1.5rem;
+  height: fit-content;
+  padding: .7rem 2em;
   color: white;
   background-color: #d6dcf8;
   background-color: #2c50dc;
   border: none;
-  border-radius: 8px;
+  border-radius: 33px;
   font-size: 1.1rem;
   font-weight: 500;
   cursor: pointer;
@@ -47,11 +46,11 @@ const MaterialsPage = () => {
     <Container>
       {role === "admin" && (
         <AddButton to={"/add-material"}>
-          <FaPlus /> Dodaj materiał
+          {/* <FaPlus />  */}
+          Add
         </AddButton>
       )}
-      <Categories />
-      <MaterialsList />
+        <MaterialsList />
     </Container>
   );
 };

@@ -1,92 +1,98 @@
 import styled from "styled-components";
 import { device } from "../../../assets/device";
-// Import useLocation for checking the current route
 import { Link, useLocation } from "react-router-dom";
-import { MdMovieEdit } from "react-icons/md";
-import { MdOutlinePeopleOutline } from "react-icons/md";
+import { RxVideo } from "react-icons/rx";
+import { PiUsersFour } from "react-icons/pi";
 import { useAuthData } from "../../../features/auth/useAuthData";
 import { memo } from "react";
-// Define the hover/active background color as a constant for easy reuse
+
 const ACTIVE_BG_COLOR = "white";
 
-// Update Nav styled component to accept the active path prop
 const Nav = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  padding:1rem;
 
-  // The 'a' selector is modified to check for the 'data-is-active' attribute
   a {
     text-decoration: none;
-    display: block;
     padding: 0.7rem 1.2rem;
     font-size: 1.1rem;
-    border-radius:33px;
-    color: unset;
+    border-radius: 33px;
     transition: all 200ms;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     color: #364760;
-
-    // Default background color (can be overridden below)
     background-color: transparent;
 
     &:hover {
       color: #1f2937;
-      background-color: ${ACTIVE_BG_COLOR}; // Use constant
-    }
-    &:active {
-      background-color: #dde0e5;
+      background-color: ${ACTIVE_BG_COLOR};
     }
 
-    // Conditional styling based on the data-is-active attribute
     &[data-is-active="true"] {
-      background-color: ${ACTIVE_BG_COLOR}; // Apply hover background for active link
+      background-color: ${ACTIVE_BG_COLOR};
       color: #1f2937;
+      font-weight: 500;
     }
   }
 `;
-// ... (Other styled components remain the same)
 
 const Container = styled.div`
-  height: calc(100vh - 4.5rem);
+  height: 100vh;
   display: none;
-  /* border-right: 1px solid #ecedf0; */
-  padding: 0.5rem;
   min-width: 15rem;
   background-color: #f3f4f6;
 
   @media ${device.laptop} {
     display: block;
     left: 0;
-    margin-top: 4.5rem;
+    margin-top: 0;
   }
 `;
 
-const PeopleIcon = styled(MdOutlinePeopleOutline)`
+const PeopleIcon = styled(PiUsersFour)`
   font-size: 1.6rem;
   color: #1f2937;
 `;
 
-const ContentIcon = styled(MdMovieEdit)`
+const ContentIcon = styled(RxVideo)`
   font-size: 1.6rem;
   color: #1f2937;
+`;
+
+const Name = styled.div`
+  height: 160px;
+  display: flex;
+  align-items: center;
+  padding: 0 1.2rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: #6b7280;
+  border-bottom: 1px solid #e9eaed;
 `;
 
 const Sidebar = () => {
   const { role } = useAuthData();
   const location = useLocation();
   const currentPath = location.pathname;
+
   const dashboardPath = "/dashboard";
   const usersPath = "/users";
+
+  console.log("Sidebar render"); // Log do testów optymalizacji
 
   return (
     <>
       {role === "admin" && (
         <Container>
+          <Name>
+            Administrator <br />
+            menu
+          </Name>
           <Nav>
-            {/* 2. Check if the current path matches the link's 'to' prop and pass it as a data attribute */}
             <Link
               to={dashboardPath}
               data-is-active={currentPath === dashboardPath ? "true" : "false"}>
@@ -105,4 +111,13 @@ const Sidebar = () => {
   );
 };
 
+/* Customowa funkcja porównująca:
+  Komponent NIE wyrenderuje się ponownie, jeśli propsy (których tu nie ma) 
+  się nie zmienią. 
+  
+  UWAGA: React.memo chroni przed renderem wywołanym przez rodzica. 
+  Ponieważ używasz useLocation() WEWNĄTRZ Sidebaru, Sidebar I TAK 
+  wyrenderuje się przy każdej zmianie trasy (co jest poprawne, 
+  bo musi zmienić aktywny link).
+*/
 export default memo(Sidebar);

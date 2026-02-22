@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 import SkeletonLoader from "../../../../../components/SkeletonLoader";
 
 const Container = styled.div`
-  max-width: 1200px;
   margin: auto;
   padding-bottom: 4rem;
+  width: 100%;
   @media ${device.laptop} {
     padding-bottom: 0;
   }
@@ -88,7 +88,6 @@ const MaterialsList = () => {
   if (isLoading) {
     return (
       <Container>
-        <h3>Materials</h3>
         <LoaderContainer>
           <MaterialSkeleton>
             <SkeletonLoader />
@@ -116,7 +115,6 @@ const MaterialsList = () => {
   if (isError) {
     return (
       <Container>
-        <h3>Materials</h3>
         <ErrorContainer>
           <p>An error occurred while fetching materials:</p>
           <p>{error.message}</p>
@@ -142,8 +140,6 @@ const MaterialsList = () => {
 
   return (
     <Container>
-      <h3>Materiały ({filteredMaterials.length})</h3>
-
       <ListContainer>
         {filteredMaterials.length > 0 ? (
           filteredMaterials.map((material) => (
