@@ -25,6 +25,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { pl } from "@blocknote/core/locales";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // ────────────────────────────────────────────────
 
@@ -56,10 +57,10 @@ const AddMaterialModal = () => {
       const formData = new FormData();
       formData.append("file", file);
 
-      let uploadEndpoint = "http://localhost:8080/upload/upload-image";
+      let uploadEndpoint = `${BASE_URL}/upload/upload-image`;
 
       if (file.type.startsWith("video/")) {
-        uploadEndpoint = "http://localhost:8080/upload/upload-video";
+        uploadEndpoint = `${BASE_URL}/upload/upload-video`;
       } else if (!file.type.startsWith("image/")) {
         throw new Error("Obsługiwane są tylko obrazy i filmy");
       }

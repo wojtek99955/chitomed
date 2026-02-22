@@ -10,6 +10,7 @@ import "@blocknote/core/fonts/inter.css";
 import "@blocknote/mantine/style.css";
 import styled from "styled-components";
 import { motion } from "framer-motion"; // Dodane dla obsługi animacji
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 import {
   ModalContent,
@@ -68,9 +69,9 @@ const EditMaterial: React.FC<EditMaterialProps> = ({ material, setIsOpen }) => {
     uploadFile: async (file: File) => {
       const formData = new FormData();
       formData.append("file", file);
-      let uploadEndpoint = "http://localhost:8080/upload/upload-image";
+      let uploadEndpoint = `${BASE_URL}/upload/upload-image`;
       if (file.type.startsWith("video/")) {
-        uploadEndpoint = "http://localhost:8080/upload/upload-video";
+        uploadEndpoint = `${BASE_URL}/upload/upload-video`;
       }
 
       const response = await fetch(uploadEndpoint, {
