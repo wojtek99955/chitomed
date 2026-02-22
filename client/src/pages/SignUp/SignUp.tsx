@@ -23,7 +23,7 @@ const Container = styled.section`
   }
 
   h2 {
-    color:black;
+    color: black;
     font-weight: 400;
   }
   strong {
@@ -145,7 +145,7 @@ const SignUp = () => {
     onSuccess: () => {
       setServerError(null);
       setSuccessMessage(
-          "Password has been sent to your email. Check your inbox (including spam folder).",
+        "Password has been sent to your email. Check your inbox (including spam folder).",
       );
     },
     onError: (error: any) => {
@@ -167,9 +167,7 @@ const SignUp = () => {
   return (
     <Container>
       <FormContainer>
-        <LogoContainer>
-          {logo}
-        </LogoContainer>
+        <LogoContainer>{logo}</LogoContainer>
 
         <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>Sign Up</h2>
 
@@ -212,7 +210,7 @@ const SignUp = () => {
           </Formik>
         )}
       </FormContainer>
-      <AuthSectionText/>
+      <AuthSectionText />
     </Container>
   );
 };
