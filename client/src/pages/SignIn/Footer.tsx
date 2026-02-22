@@ -14,6 +14,7 @@ const Container = styled.div`
   color: black;
   padding: 1rem;
   width: 100%;
+  gap:.4rem;
   a {
     text-decoration: none;
     color: black;
