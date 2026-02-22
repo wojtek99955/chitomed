@@ -9,17 +9,8 @@ const Container = styled.div`
   max-width: 450px;
   margin: 4rem auto;
   padding: 2.5rem;
-  background: #ffffff10;
   border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
   color: white;
-
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: black;
-  }
 `;
 
 const Title = styled.h2`
@@ -140,7 +131,6 @@ const ResetPasswordForm = () => {
           {({ isSubmitting, errors, touched }) => (
             <Form>
               <div>
-                <label>New Password</label>
                 <Input
                   type="password"
                   name="newPassword"
@@ -150,7 +140,6 @@ const ResetPasswordForm = () => {
               </div>
 
               <div>
-                <label>Confirm Password</label>
                 <Input
                   type="password"
                   name="confirmPassword"

@@ -5,28 +5,25 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../../../api/api";
 import { useState } from "react";
+import { device } from "../../../assets/device";
+import { logo } from "../../SignIn/logo";
+import Footer from "../../SignIn/Footer";
 
 const Section = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-`;
-
-const Container = styled.div`
-  max-width: 450px;
-  margin: 3rem auto;
-  padding: 2.5rem;
-  background: #ffffff15;
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
+  width: 95%;
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-
-  @media (max-width: 500px) {
-    margin: 2rem 1rem;
-    padding: 2rem 1.5rem;
+  margin: auto;
+  @media ${device.tablet} {
+    width: 400px;
+    padding: 2rem;
+  }
+  @media ${device.laptop} {
+    width: 550px;
+    padding: 2rem;
+  }
+  h2 {
+    color: black;
+    font-weight: 400;
   }
 `;
 
@@ -47,51 +44,55 @@ const StyledForm = styled(Form)`
   flex-direction: column;
 `;
 
-const Label = styled.label`
-  display: block;
-  margin-top: 1rem;
-  font-weight: 400;
-  color: black;
-`;
-
 const Input = styled(Field)<{ $hasError?: boolean }>`
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.9rem 1rem;
   margin-top: 0.3rem;
-  border-radius: 8px;
-  border: 1px solid ${({ $hasError }) => ($hasError ? "#ff8181" : "#ccc")};
+  border-radius: 33px;
+  margin-bottom: 0.8rem;
+  border: 1px solid ${({ $error }) => ($error ? "#ff8181" : "#DCDCE1")};
   font-size: 1rem;
   transition: all 200ms;
 
   &:focus {
     outline: none;
-    border-color: ${({ $hasError }) => ($hasError ? "#ff8181" : "#5069d41")};
+    border-color: ${({ $error }) => ($error ? "#ff8181" : "#2D50DC")};
+  }
+  &::placeholder {
+    text-align: center;
   }
 `;
 
 const ErrorText = styled(ErrorMessage)`
   color: #ff8181;
-  font-size: 0.85rem;
-  margin-top: 0.35rem;
-  margin-left: 0.2rem;
+  font-size: 1rem;
+  margin-top: 1rem;
+  text-align: center;
+  background: #f3f4f6;
+  padding: 0.8rem;
+  border-radius: 8px;
 `;
 
 const Button = styled.button<{ $loading?: boolean; $sent?: boolean }>`
-  margin-top: 1.6rem;
+  margin-top: 1.5rem;
+  width: 100%;
   padding: 1rem;
-  background: ${({ $sent }) => ($sent ? "#4caf50" : "#5069d4")};
+  background-color: black;
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1.05rem;
+  border-radius: 33px;
+  font-size: 1rem;
   font-weight: 600;
-  cursor: ${({ $loading, $sent }) =>
-    $loading || $sent ? "not-allowed" : "pointer"};
-  opacity: ${({ $loading, $sent }) => ($loading || $sent ? 0.75 : 1)};
-  transition: all 0.2s;
+  cursor: ${({ $loading }) => ($loading ? "not-allowed" : "pointer")};
+  opacity: ${({ $loading }) => ($loading ? 0.7 : 1)};
+  transition: 0.2s;
+  font-weight: 400;
 
-  &:hover:not(:disabled) {
-    background: ${({ $sent }) => ($sent ? "#43a047" : "#3955ce")};
+  &:hover {
+    transform: scale(1.01);
+  }
+  &:active {
+    transform: scale(0.98);
   }
 `;
 
@@ -120,6 +121,16 @@ const BackLink = styled(Link)`
   }
 `;
 
+const LogoContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  width: 50%;
+  margin: auto;
+  margin-bottom: 6rem;
+`;
+
+
 const ForgotSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address")
@@ -147,7 +158,7 @@ const ForgotPasswordForm = () => {
 
   return (
     <Section>
-      <Container>
+      <LogoContainer>{logo}</LogoContainer>
         <Title>Reset Password</Title>
         <Description>
           Enter the email address associated with your account.
@@ -168,7 +179,6 @@ const ForgotPasswordForm = () => {
           onSubmit={(values) => mutation.mutate(values.email)}>
           {({ errors, touched, isSubmitting }) => (
             <StyledForm>
-              <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 name="email"
@@ -193,9 +203,8 @@ const ForgotPasswordForm = () => {
             </StyledForm>
           )}
         </Formik>
-
         <BackLink to="/sign-in">Back to Sign In</BackLink>
-      </Container>
+        <Footer/>
     </Section>
   );
 };

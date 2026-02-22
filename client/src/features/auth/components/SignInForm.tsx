@@ -64,12 +64,13 @@ const Button = styled.button<{ $loading?: boolean }>`
   cursor: ${({ $loading }) => ($loading ? "not-allowed" : "pointer")};
   opacity: ${({ $loading }) => ($loading ? 0.7 : 1)};
   transition: 0.2s;
+  font-weight: 400;
 
   &:hover {
     transform: scale(1.01);
   }
   &:active {
-    transform: scale(.98);
+    transform: scale(0.98);
   }
 `;
 

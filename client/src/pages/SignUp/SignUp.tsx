@@ -76,7 +76,7 @@ const Button = styled.button<{ $loading?: boolean }>`
   border: none;
   border-radius: 33px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 400;
   cursor: ${({ $loading }) => ($loading ? "not-allowed" : "pointer")};
   opacity: ${({ $loading }) => ($loading ? 0.7 : 1)};
   transition: 0.2s;
