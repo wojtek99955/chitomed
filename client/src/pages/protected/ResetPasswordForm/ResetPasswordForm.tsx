@@ -62,6 +62,7 @@ const SuccessMessage = styled.div`
   background: rgba(0, 100, 0, 0.11);
   padding: 0.8rem;
   border-radius: 8px;
+  margin-bottom: 1rem;
 `;
 
 const ResetSchema = Yup.object().shape({
