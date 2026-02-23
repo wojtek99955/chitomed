@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import {
-  FaSpinner,
   FaExclamationTriangle,
   FaEnvelope,
   FaTrashAlt,
@@ -8,6 +7,7 @@ import {
 import { useUsers, type User, useDeleteUser } from "../api/useUser";
 import { format } from "date-fns";
 import { toast } from "react-hot-toast";
+import Loader from "./Loader";
 
 // --- STYLED COMPONENTS ---
 
@@ -36,20 +36,6 @@ const InfoBox = styled.div`
   font-size: 1.1rem;
   font-weight: 600;
   margin-top: 1rem;
-`;
-
-const LoadingBox = styled(InfoBox)`
-  background-color: #e0f7fa;
-  color: #00bcd4;
-  svg {
-    animation: spin 1s linear infinite;
-    margin-right: 0.8rem;
-  }
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
 `;
 
 const ErrorBox = styled(InfoBox)`
@@ -183,9 +169,7 @@ const UsersList = () => {
     return (
       <Container>
         <Title>Lista Użytkowników</Title>
-        <LoadingBox>
-          <FaSpinner /> Ładowanie danych użytkowników...
-        </LoadingBox>
+        <Loader/>
       </Container>
     );
   }
@@ -193,10 +177,10 @@ const UsersList = () => {
   if (isError) {
     return (
       <Container>
-        <Title>Lista Użytkowników</Title>
+        <Title>Users list</Title>
         <ErrorBox>
           <div>
-            <FaExclamationTriangle /> Wystąpił błąd podczas ładowania danych.
+            <FaExclamationTriangle /> Error
           </div>
           <span style={{ fontSize: "0.85rem", opacity: 0.8 }}>
             {error?.message || "Nieznany błąd."}
@@ -209,10 +193,10 @@ const UsersList = () => {
   if (users.length === 0) {
     return (
       <Container>
-        <Title>Lista Użytkowników</Title>
+        <Title>Users list</Title>
         <InfoBox style={{ backgroundColor: "#fffbe0", color: "#a16207" }}>
           <FaExclamationTriangle style={{ marginRight: "0.5rem" }} />
-          Brak użytkowników do wyświetlenia.
+          No users
         </InfoBox>
       </Container>
     );
