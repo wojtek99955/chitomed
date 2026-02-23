@@ -42,7 +42,9 @@ const Nav = styled.div`
 const Container = styled.div`
   height: 100vh;
   display: none;
+  position: fixed;
   min-width: 15rem;
+  z-index: 1000;
   background-color: #f3f4f6;
 
   @media ${device.laptop} {

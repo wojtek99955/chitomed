@@ -1,32 +1,31 @@
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
-import {
-  FaExclamationTriangle,
-  // FaChevronCircleLeft,
-} from "react-icons/fa";
+import { FaExclamationTriangle } from "react-icons/fa";
 import { useMaterials, type Material } from "../api/useMaterial";
-import Header from "../../../Dashboard/Header";
-import BottomNav from "../../../BottomNav";
 import { device } from "../../../../../assets/device";
 import { useEffect, useState, useMemo } from "react";
 import { BlockNoteEditor } from "@blocknote/core";
 import Loader from "./Loader";
 import { useGetCategories } from "../../categories/api/useGetCategories";
+import BottomNav from "../../../BottomNav"; // ← dodajemy BottomNav
 
-// GŁÓWNY WRAPPER: zajmuje całą wysokość ekranu i blokuje scroll na body
+// Główny wrapper – pozwala na naturalny wzrost strony
 const Wrapper = styled.div`
   display: flex;
-  height: 100vh;
-  overflow: hidden; /* Sidebar nie będzie uciekać */
+  min-height: 100vh;
+  flex-direction: column;
+  position: relative;
+  width: calc(100% - 15rem);
+  left: 15rem;
+  top: 10rem;
 `;
 
-// KONTENER NA TREŚĆ (Header + Content): zajmuje resztę szerokości i ma własny scroll
+// Kontener na treść – też rośnie naturalnie
 const MainContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  position: relative;
+  min-height: 100vh;
 `;
 
 const Container = styled.div`
@@ -36,16 +35,12 @@ const Container = styled.div`
   grid-template-columns: 1fr;
   padding: 1rem;
   gap: 1rem;
-  position: relative;
-  height: calc(100vh - 160px);
-  top: 160px;
-  overflow-y: auto; /* To sprawia, że tylko treść się przewija */
+  padding-bottom: 90px; /* miejsce na BottomNav na mobile */
 
   @media ${device.laptop} {
     grid-template-columns: 1fr 800px 1fr;
-
     padding: 2rem 1rem;
-    padding-bottom: 5rem; /* Miejsce na BottomNav na mobile/laptop */
+    padding-bottom: 5rem;
   }
 `;
 
@@ -57,38 +52,32 @@ const BackButton = styled(Link)`
   height: fit-content;
   padding: 0.7rem 2em;
   color: white;
-  background-color: #d6dcf8;
   background-color: black;
-  border: none;
+  border: 1px solid black;
   border-radius: 33px;
   font-size: 1.1rem;
   font-weight: 500;
   cursor: pointer;
-  border: 1px solid black;
   transition: all 0.2s;
   margin-bottom: 2rem;
-  color: #000;
-  color: white;
   text-decoration: none;
   width: fit-content;
+
   &:hover {
     background: #2c50dc;
     border: 1px solid #2c50dc;
-
     color: white;
     transform: scale(1.02);
   }
+
   &:active {
     transform: scale(1.01);
   }
+
   @media ${device.laptop} {
     display: flex;
   }
 `;
-
-// const BackIcon = styled(FaChevronCircleLeft)`
-//   font-size: 1.3rem;
-// `;
 
 const ContentWrapper = styled.div`
   background: white;
@@ -190,6 +179,7 @@ const LoadingBox = styled.div`
   svg {
     animation: spin 1.2s linear infinite;
   }
+
   @keyframes spin {
     to {
       transform: rotate(360deg);
@@ -211,25 +201,22 @@ const Category = styled.div`
   width: fit-content;
   margin-top: 1rem;
   border-radius: 8px;
+
   @media ${device.laptop} {
     margin-left: auto;
   }
 `;
-
 
 const MaterialPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading, isError } = useMaterials(id);
   const material = data as Material | undefined;
 
-
   const { data: categoriesData = [] } = useGetCategories();
 
-  // 2. Znajdź nazwę kategorii na podstawie ID zapisanego w materiale
   const categoryName =
     categoriesData.find((cat: any) => cat._id === material?.categoryId)?.name ||
     "Brak kategorii";
-
 
   const [htmlContent, setHtmlContent] = useState<string | null>(null);
 
@@ -314,7 +301,6 @@ const MaterialPage = () => {
     return (
       <Wrapper>
         <MainContent>
-          <Header />
           <Container>
             <div></div>
             <Loader />
@@ -326,11 +312,10 @@ const MaterialPage = () => {
     );
   }
 
-  if (isError || !material) {
+  if (isLoading || isError || !material) {
     return (
       <Wrapper>
         <MainContent>
-          <Header />
           <Container>
             <ErrorBox>
               <FaExclamationTriangle /> Error
@@ -345,12 +330,9 @@ const MaterialPage = () => {
   return (
     <Wrapper>
       <MainContent>
-        <Header />
         <Container>
-          <BackButton to="/dashboard">
-            {/* <BackIcon />  */}
-            Back
-          </BackButton>
+          <BackButton to="/dashboard">Back</BackButton>
+
           <Meta mobile>
             Created:{" "}
             {new Date(material.createdAt).toLocaleDateString("en-EN", {
@@ -360,6 +342,7 @@ const MaterialPage = () => {
             })}
             <Category>{categoryName}</Category>
           </Meta>
+
           <ContentWrapper>
             <Title>{material.title}</Title>
             <ArticleContent>
@@ -370,6 +353,7 @@ const MaterialPage = () => {
               )}
             </ArticleContent>
           </ContentWrapper>
+
           <Meta>
             Created:{" "}
             {new Date(material.createdAt).toLocaleDateString("en-EN", {
@@ -380,6 +364,7 @@ const MaterialPage = () => {
             <Category>{categoryName}</Category>
           </Meta>
         </Container>
+
         <BottomNav />
       </MainContent>
     </Wrapper>

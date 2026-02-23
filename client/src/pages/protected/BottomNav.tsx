@@ -62,7 +62,7 @@ const BottomNav = () => {
       as={motion.div}
       initial={false}
       animate={{
-        width: isOpen ? "85%" : "60px",
+        width: isOpen ? "calc(100% - 2rem)" : "60px",
         borderRadius: isOpen ? "33px" : "30px",
       }}
       transition={{

@@ -2,6 +2,8 @@
 import styled from "styled-components";
 import Sidebar from "../../pages/protected/Dashboard/Sidebar";
 import { Outlet } from "react-router-dom";
+import BottomNav from "../../pages/protected/BottomNav";
+import Header from "../../pages/protected/Dashboard/Header";
 
 const LayoutWrapper = styled.div`
   display: flex;
@@ -17,10 +19,12 @@ const Content = styled.main`
 const MainLayout = () => {
   return (
     <LayoutWrapper>
+      <Header/>
       <Sidebar /> {/* Sidebar jest stały, niezależny od zmiany route */}
       <Content>
         <Outlet /> {/* Tu zmienia się treść */}
       </Content>
+      <BottomNav/>
     </LayoutWrapper>
   );
 };

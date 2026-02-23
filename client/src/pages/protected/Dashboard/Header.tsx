@@ -30,9 +30,8 @@ const Container = styled.header<any>`
   z-index: 100;
   border-bottom: 1px solid #e9eaed;
   @media ${device.laptop} {
-    width: calc(100% - 18rem);
     width: ${({ isAdmin }) =>
-      isAdmin ? "calc(100% - 18rem)" : "calc(100% - 2rem)"};
+      isAdmin ? "calc(100% - 17rem)" : "calc(100% - 2rem)"};
     left: ${({ isAdmin }) => (isAdmin ? "15rem" : "0")};
   }
 `;

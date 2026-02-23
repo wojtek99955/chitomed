@@ -7,9 +7,12 @@ import { device } from "../../../../../assets/device";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap:1rem;
+  gap: 1rem;
   width: 100%;
-  @media ${device.laptop}{
+  position: relative;
+  width: calc(100% - 15rem);
+  left: 15rem;
+  @media ${device.laptop} {
     flex-direction: row;
   }
 `;
