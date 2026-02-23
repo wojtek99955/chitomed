@@ -29,7 +29,6 @@ const ContentIcon = styled(MdMovieEdit)`
   color: white;
 `;
 
-const ACTIVE_BG_COLOR = "#f3f4f6";
 
 // Update Nav styled component to accept the active path prop
 const Nav = styled.div`
