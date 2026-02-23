@@ -50,7 +50,7 @@ const Categories = () => {
       <DropdownContainer ref={dropdownRef}>
         <DropdownButton onClick={() => setIsOpen(!isOpen)} $active={isOpen}>
           <Arrows/>
-          <span>{isLoading ? "Ładowanie..." : selectedCategoryName}</span>
+          <span>{isLoading ? "" : selectedCategoryName}</span>
 
         </DropdownButton>
 
