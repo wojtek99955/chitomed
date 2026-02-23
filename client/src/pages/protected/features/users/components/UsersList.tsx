@@ -10,7 +10,7 @@ import { device } from "../../../../../assets/device";
 
 const Container = styled.div`
   padding: 2rem;
-  width: 100%;
+  width: 100vw;
   height: calc(100vh - 4.5rem);
   position: relative;
   top: 4.5rem;
@@ -50,7 +50,7 @@ const ErrorBox = styled(InfoBox)`
 const TableContainer = styled.div`
   background: white;
   border-radius: 8px;
-  overflow: hidden;
+  overflow-x: scroll;
 `;
 
 const Table = styled.table`
