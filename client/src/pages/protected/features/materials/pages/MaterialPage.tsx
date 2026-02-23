@@ -15,9 +15,12 @@ const Wrapper = styled.div`
   min-height: 100vh;
   flex-direction: column;
   position: relative;
-  width: calc(100% - 15rem);
-  left: 15rem;
   top: 10rem;
+  @media ${device.laptop} {
+    flex-direction: row;
+    width: calc(100% - 15rem);
+    left: 15rem;
+  }
 `;
 
 // Kontener na treść – też rośnie naturalnie

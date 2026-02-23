@@ -10,10 +10,11 @@ const Container = styled.div`
   gap: 1rem;
   width: 100%;
   position: relative;
-  width: calc(100% - 15rem);
-  left: 15rem;
+
   @media ${device.laptop} {
     flex-direction: row;
+    width: calc(100% - 15rem);
+    left: 15rem;
   }
 `;
 export const AddButton = styled(Link)`
