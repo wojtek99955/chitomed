@@ -89,14 +89,16 @@ const BottomNav = () => {
                 data-is-active={
                   currentPath === dashboardPath ? "true" : "false"
                 }
-                onClick={() => setIsOpen(false)}>
+                // onClick={() => setIsOpen(false)}
+                >
                 <ContentIcon /> <span>Treść</span>
               </Link>
 
               <Link
                 to={usersPath}
                 data-is-active={currentPath === usersPath ? "true" : "false"}
-                onClick={() => setIsOpen(false)}>
+                // onClick={() => setIsOpen(false)}
+                >
                 <PeopleIcon />
                 <span>Użytkownicy</span>
               </Link>
