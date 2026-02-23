@@ -165,7 +165,7 @@ const Spinner = styled(Loader2)`
   top: 0;
   bottom: 0;
   margin: auto;
-  animation: spin 3s linear infinite;
+  animation: spin 1s linear infinite;
   z-index: 1000;
   color:white !important;
 
