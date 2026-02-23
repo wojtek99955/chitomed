@@ -1,17 +1,21 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import styled from "styled-components";
-import { PlFlag } from "../../assets/icons/PlFlag";
-import { UsaFlag } from "../../assets/icons/UsaFlag";
-import { FrFlag } from "../../assets/icons/FrFlag";
 
+
+const Wrapper = styled.div`
+  border-right: 1px solid grey;
+  margin-left: auto;
+  margin-right: 1rem;
+  padding-right: 1rem;
+`;
 const Container = styled.div`
   position: relative;
   z-index: 1;
-  border-right: 1px solid white;
   height: 100%;
   display: flex;
   align-items: center;
+
 `;
 
 const CurrentLanguage = styled.div<any>`
@@ -63,6 +67,7 @@ const LanguagesList = styled(motion.div)`
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   overflow: hidden;
+  top: 3rem;
 `;
 
 const Language = styled.div`
@@ -83,52 +88,40 @@ const Language = styled.div`
   }
 `;
 
-const Flag = styled.div`
-  width: 1.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 const LanguageChangeDropdown = () => {
   const [showList, setShowList] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState("PL");
 
-    const handleLanguageChange = (lang: string) => {
-      setCurrentLanguage(lang);
-      setShowList(false);
-    };
+  const handleLanguageChange = (lang: string) => {
+    setCurrentLanguage(lang);
+    setShowList(false);
+  };
 
   return (
-    <Container>
-      <CurrentLanguage
-        showList={showList}
-        onMouseEnter={() => setShowList(true)}
-        onMouseLeave={() => setShowList(false)}>
-        {currentLanguage}
-      </CurrentLanguage>
-      <AnimatePresence>
-        {showList && (
-          <LanguagesList
-            onMouseEnter={() => setShowList(true)}
-            onMouseLeave={() => setShowList(false)}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2, delay: 0.03 }}>
-            <Language onClick={() => handleLanguageChange("PL")}>
-              <Flag>{PlFlag}</Flag>PL
-            </Language>
-            <Language onClick={() => handleLanguageChange("EN")}>
-              <Flag>{UsaFlag}</Flag>EN
-            </Language>
-            <Language onClick={() => handleLanguageChange("FR")}>
-              <Flag>{FrFlag}</Flag>FR
-            </Language>
-          </LanguagesList>
-        )}
-      </AnimatePresence>
-    </Container>
+    <Wrapper>
+      <Container>
+        <CurrentLanguage
+          showList={showList}
+          onMouseEnter={() => setShowList(true)}
+          onMouseLeave={() => setShowList(false)}>
+          {currentLanguage}
+        </CurrentLanguage>
+        <AnimatePresence>
+          {showList && (
+            <LanguagesList
+              onMouseEnter={() => setShowList(true)}
+              onMouseLeave={() => setShowList(false)}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2, delay: 0.03 }}>
+              <Language onClick={() => handleLanguageChange("PL")}>PL</Language>
+              <Language onClick={() => handleLanguageChange("EN")}>EN</Language>
+            </LanguagesList>
+          )}
+        </AnimatePresence>
+      </Container>
+    </Wrapper>
   );
 };
 

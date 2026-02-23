@@ -10,6 +10,7 @@ import Logo1 from "../../../assets/icons/Logo1";
 import Categories from "../features/categories/components/Categories";
 import Searchbar from "../features/Searchbar/Searchbar";
 import { device } from "../../../assets/device";
+import LanguageChangeDropdown from "../../../features/language/LanguageChangeDropdown";
 
 const Container = styled.header`
   padding: 10px 1rem;
@@ -141,7 +142,6 @@ const LogoutBtn = styled.button`
 
 const Profile = styled.div`
   background-color: black;
-  margin-left: auto;
   margin-right: 1rem;
   padding: 0.9rem;
   border-radius: 50%;
@@ -226,6 +226,7 @@ const Header = () => {
         <div onClick={goDashboard} style={{ cursor: "pointer" }}>
           <Logo1 />
         </div>
+        <LanguageChangeDropdown/>
         <Profile onClick={goToProfile}>
           <UserIcon />
         </Profile>
