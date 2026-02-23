@@ -1,7 +1,18 @@
+import styled from "styled-components";
+import { device } from "../device";
+
+const Container = styled.div`
+width: 200px;
+align-items: center;
+justify-content: center;
+display: none;
+@media ${device.laptop}{
+  display: flex;
+}
+`
 
 const Logo1 = () => (
-  <div style={{ width: "200px", display:"flex", alignItems:"center", justifyContent:"center"
-   }}>
+  <Container>
     <svg
       width="100%"
       height="auto"
@@ -45,7 +56,7 @@ const Logo1 = () => (
         fill="#2B2F5C"
       />
     </svg>
-  </div>
+  </Container>
 );
 
 export default Logo1;

@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import UsersList from "../components/UsersList";
-import Header from "../../../Dashboard/Header";
 import { device } from "../../../../../assets/device";
-import BottomNav from "../../../BottomNav";
 
 const Section = styled.section`
   display: flex;
@@ -14,9 +12,7 @@ const Section = styled.section`
 const UsersPage = () => {
   return (
     <Section>
-      <Header />
       <UsersList />
-      <BottomNav/>
     </Section>
   );
 };

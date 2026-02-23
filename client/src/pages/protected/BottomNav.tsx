@@ -147,7 +147,6 @@ const LinksContainer = styled.div`
   flex: 1;
   justify-content: space-around;
   align-items: center;
-  padding-right: 10px;
 
   a {
     text-decoration: none;
@@ -161,6 +160,7 @@ const LinksContainer = styled.div`
     padding: 0.5rem;
     border-radius: 28px;
     width: 100%;
+    max-height: 50px;
 
     span {
       margin-top: 2px;

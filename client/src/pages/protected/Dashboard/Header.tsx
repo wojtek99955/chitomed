@@ -12,6 +12,7 @@ import Searchbar from "../features/Searchbar/Searchbar";
 import { device } from "../../../assets/device";
 import LanguageChangeDropdown from "../../../features/language/LanguageChangeDropdown";
 import { useAuthData } from "../../../features/auth/useAuthData";
+import { ChitomedIcon } from "../../../assets/icons/ChitomedIcon";
 
 const Container = styled.header<any>`
   padding: 10px 1rem;
@@ -90,6 +91,10 @@ const Profile = styled.div`
   }
 `;
 
+const LogoWrapper = styled.div`
+
+`
+
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const queryClient = useQueryClient();
@@ -155,9 +160,10 @@ const Header = () => {
   return (
     <Container isAdmin={isAdmin}>
       <Wrapper>
-        <div onClick={goDashboard} style={{ cursor: "pointer" }}>
+        <LogoWrapper onClick={goDashboard} style={{ cursor: "pointer" }}>
           <Logo1 />
-        </div>
+          {ChitomedIcon}
+        </LogoWrapper>
         <LanguageChangeDropdown />
         <Profile onClick={goToProfile}>
           <UserIcon />

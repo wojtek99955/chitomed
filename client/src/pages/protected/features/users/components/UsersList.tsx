@@ -1,13 +1,10 @@
 import styled from "styled-components";
-import {
-  FaExclamationTriangle,
-  FaEnvelope,
-  FaTrashAlt,
-} from "react-icons/fa";
+import { FaExclamationTriangle, FaEnvelope, FaTrashAlt } from "react-icons/fa";
 import { useUsers, type User, useDeleteUser } from "../api/useUser";
 import { format } from "date-fns";
 import { toast } from "react-hot-toast";
 import Loader from "./Loader";
+import { device } from "../../../../../assets/device";
 
 // --- STYLED COMPONENTS ---
 
@@ -17,6 +14,10 @@ const Container = styled.div`
   height: calc(100vh - 4.5rem);
   position: relative;
   top: 4.5rem;
+  @media ${device.laptop} {
+    width: calc(100% - 15rem);
+    left: 15rem;
+  }
 `;
 
 const Title = styled.h2`
@@ -169,7 +170,7 @@ const UsersList = () => {
     return (
       <Container>
         <Title>Lista Użytkowników</Title>
-        <Loader/>
+        <Loader />
       </Container>
     );
   }
