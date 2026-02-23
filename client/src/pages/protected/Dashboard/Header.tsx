@@ -15,7 +15,7 @@ import { useAuthData } from "../../../features/auth/useAuthData";
 import { ChitomedIcon } from "../../../assets/icons/ChitomedIcon";
 
 const Container = styled.header<any>`
-  padding: 10px 1rem;
+  padding: 10px 0;
   position: fixed;
   width: 100%;
   left: 0;
