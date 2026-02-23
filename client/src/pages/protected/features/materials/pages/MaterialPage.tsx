@@ -2,7 +2,6 @@ import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import {
   FaExclamationTriangle,
-  FaSpinner,
   // FaChevronCircleLeft,
 } from "react-icons/fa";
 import { useMaterials, type Material } from "../api/useMaterial";
@@ -11,6 +10,7 @@ import BottomNav from "../../../BottomNav";
 import { device } from "../../../../../assets/device";
 import { useEffect, useState, useMemo } from "react";
 import { BlockNoteEditor } from "@blocknote/core";
+import Loader from "./Loader";
 
 // GŁÓWNY WRAPPER: zajmuje całą wysokość ekranu i blokuje scroll na body
 const Wrapper = styled.div`
@@ -292,9 +292,9 @@ const MaterialPage = () => {
         <MainContent>
           <Header />
           <Container>
-            <LoadingBox>
-              <FaSpinner /> loading...
-            </LoadingBox>
+            <div></div>
+            <Loader />
+            <div></div>
           </Container>
           <BottomNav />
         </MainContent>

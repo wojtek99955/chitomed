@@ -29,15 +29,14 @@ function App() {
 
           {/* Protected routes */}
           <Route element={<ProtectedRoute />}>
-            {/* MainLayout zawiera Sidebar, niezależny od Routes */}
             <Route element={<MainLayout />}>
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="users" element={<UsersPage />} />
               <Route path="users/:id" element={<User />} />
               <Route path="material/:id" element={<MaterialPage />} />
               <Route path="profile" element={<ProfilePage />} />
-              <Route path="add-material" element={<AddMaterialModal />} />
             </Route>
+            <Route path="add-material" element={<AddMaterialModal />} />
           </Route>
         </Routes>
       </Router>
