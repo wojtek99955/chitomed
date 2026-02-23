@@ -12,8 +12,9 @@ import EditMaterial from "./EditMaterial";
 
 const MaterialItemContainer = styled.div`
   background: white;
+  background-color: #f3f4f6;
   position: relative;
-  /* border-radius: 10px; */
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   transition: all 0.2s;
@@ -46,15 +47,6 @@ const Category = styled.div`
   background-color: white;
   color: #2d50dc;
   text-transform: uppercase;
-`;
-
-const Metadata = styled.div`
-  font-size: 0.9rem;
-  color: #6b7280;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
 `;
 
 const Actions = styled.div`
@@ -91,7 +83,7 @@ const IconButton = styled.button`
 const Cover = styled.div`
   border-radius: 6px;
   width: 100%;
-  height: 10rem;
+  height: 12rem;
   background-image: url("https://chitomed-files.b-cdn.net/background-gradient-tiny.webp");
   background-size: cover;
   overflow: hidden; /* Opcjonalnie, żeby nic nie wystawało */
@@ -143,11 +135,6 @@ const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
         </Cover>
         <ContentInfo>
           <Title>{material.title}</Title>
-          <Metadata>
-            <span>
-              Created: {new Date(material.createdAt).toLocaleDateString()}
-            </span>
-          </Metadata>
         </ContentInfo>
 
         {role === "admin" && (
