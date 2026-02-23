@@ -7,6 +7,7 @@ interface MyJwtPayload {
   email: string;
   role: string;
   exp: number;
+  createdAt:string;
 }
 
 interface AuthData {
@@ -16,6 +17,7 @@ interface AuthData {
   isAuthenticated: boolean;
   isChecking: boolean;
   isRefreshing: boolean;
+  createdAt:string,
 }
 
 const AUTH_QUERY_KEY = ["authUser"];
@@ -65,6 +67,7 @@ export const useAuthData = (): AuthData => {
       isAuthenticated: false,
       isChecking: true,
       isRefreshing: false,
+      createdAt:"",
     };
   }
 
@@ -76,6 +79,7 @@ export const useAuthData = (): AuthData => {
       isAuthenticated: false,
       isChecking: false,
       isRefreshing: false,
+      createdAt: "",
     };
   }
 
@@ -86,5 +90,6 @@ export const useAuthData = (): AuthData => {
     isAuthenticated: true,
     isChecking: false,
     isRefreshing: isFetching, // Jeśli React Query pobiera dane w tle
+    createdAt: data.createdAt,
   };
 };

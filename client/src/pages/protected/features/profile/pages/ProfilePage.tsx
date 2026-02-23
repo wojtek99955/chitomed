@@ -8,8 +8,8 @@ import { FaUser } from "react-icons/fa";
 const Container = styled.div``;
 
 const Wrapper = styled.div`
-display: flex;
-`
+  display: flex;
+`;
 
 const ProfileContainer = styled.div`
   height: calc(100vh - 180.59px);
@@ -22,19 +22,29 @@ const ProfileContainer = styled.div`
 `;
 
 const Email = styled.div`
-font-size: 1.3rem;
-margin: auto;
-font-weight: 500;
-`
+  font-size: 1.3rem;
+  margin: auto;
+  font-weight: 500;
+  text-align: center; // Dodane dla lepszego wyśrodkowania
+`;
+
+// Nowy styl dla daty dołączenia
+const Joined = styled.div`
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-top: 0.5rem;
+  text-align: center;
+`;
 
 const UserIcon = styled(FaUser)`
-font-size: 3rem;
+  font-size: 3rem;
+  color:white;
 `;
 
 const IconContainer = styled.div`
   padding: 1rem;
   border-radius: 50%;
-  background-color: #ccd0d9;
+  background-color: #2d50dc;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,20 +54,31 @@ const IconContainer = styled.div`
   margin-bottom: 1.5rem;
 `;
 
-const UserData = styled.div`
-
-`
+const UserData = styled.div``;
 
 const ProfilePage = () => {
-  const { email } = useAuthData();
+  const { email, createdAt } = useAuthData();
+
+  const formattedDate = createdAt
+    ? new Date(createdAt).toLocaleDateString("pl-PL")
+    : "No data";
+
   return (
     <Container>
       <Header />
       <Wrapper>
         <Sidebar />
-        <ProfileContainer><UserData><IconContainer><UserIcon/></IconContainer><Email>{email}</Email></UserData></ProfileContainer>
+        <ProfileContainer>
+          <UserData>
+            <IconContainer>
+              <UserIcon />
+            </IconContainer>
+            <Email>{email}</Email>
+            <Joined>Joined: {formattedDate}</Joined>
+          </UserData>
+        </ProfileContainer>
       </Wrapper>
-      <BottomNav/>
+      <BottomNav />
     </Container>
   );
 };

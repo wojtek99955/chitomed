@@ -41,6 +41,7 @@ exports.login = async (req, res) => {
       id: foundUser._id,
       email: foundUser.email,
       role: foundUser.role,
+      createdAt: foundUser.createdAt
     },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: "365d" }, // ← 365 dni to bardzo długo – rozważ 60m / 12h / 30d
@@ -92,6 +93,7 @@ exports.handleRefreshToken = async (req, res) => {
             id: foundUser._id,
             email: foundUser.email,
             role: foundUser.role,
+            createdAt:foundUser.createdAt
           },
         },
         process.env.ACCESS_TOKEN_SECRET,

@@ -86,7 +86,7 @@ const DropdownContainer = styled.div`
 
 const DropdownButton = styled.button<{ $active: boolean }>`
   width: 100%;
-  padding: 0.8rem 1.2rem;
+  padding: 0.7rem 1.2rem;
   background-color: white;
   border-radius: 33px;
   border: none;

@@ -12,7 +12,7 @@ import EditMaterial from "./EditMaterial";
 
 const MaterialItemContainer = styled.div`
   background: white;
-  background-color: #f3f4f6;
+  background-color: #f8f8fa;
   position: relative;
   border-radius: 10px;
   display: flex;
@@ -37,7 +37,8 @@ const ContentInfo = styled.div`
 const Title = styled.h4`
   font-size: 1.25rem;
   margin-bottom: 0.5rem;
-  color: #1f2937;
+  color: black;
+  font-weight: 600;
 `;
 
 const Category = styled.div`

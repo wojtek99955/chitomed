@@ -50,7 +50,7 @@ const IconWrapper = styled.div`
 
 const StyledInput = styled.input`
   width: 100%;
-  padding: 0.8rem 1rem 0.8rem 2.8rem;
+  padding: 0.7rem 1rem 0.7rem 2.8rem;
   font-size: 1rem;
   border: 1px solid #e2e8f0;
   border-radius: 33px;
