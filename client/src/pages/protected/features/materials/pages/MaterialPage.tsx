@@ -16,7 +16,6 @@ import { BlockNoteEditor } from "@blocknote/core";
 const Wrapper = styled.div`
   display: flex;
   height: 100vh;
-  width: 100vw;
   overflow: hidden; /* Sidebar nie będzie uciekać */
 `;
 
