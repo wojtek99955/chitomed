@@ -13,6 +13,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { logo } from "../../../pages/SignIn/logo";
 import { FaArrowRight } from "react-icons/fa6";
+import { Loader2 } from "lucide-react";
 
 const FormContainer = styled.div`
   width: 95%;
@@ -37,7 +38,7 @@ const Input = styled(Field)<{ $error?: boolean }>`
   padding: 0.9rem 1rem;
   margin-top: 0.3rem;
   border-radius: 33px;
-  margin-bottom: .8rem;
+  margin-bottom: 0.8rem;
   border: 1px solid ${({ $error }) => ($error ? "#ff8181" : "#DCDCE1")};
   font-size: 1rem;
   transition: all 200ms;
@@ -65,6 +66,8 @@ const Button = styled.button<{ $loading?: boolean }>`
   opacity: ${({ $loading }) => ($loading ? 0.7 : 1)};
   transition: 0.2s;
   font-weight: 400;
+  position: relative;
+  color: ${({ $loading }) => ($loading ? "transparent" : "white")};
 
   &:hover {
     transform: scale(1.01);
@@ -117,8 +120,8 @@ const LogoContainer = styled.div`
 const SignUpLink = styled(Link)`
   display: flex;
   margin: auto;
-text-align: center;
-justify-content: center;
+  text-align: center;
+  justify-content: center;
   margin-top: 1rem;
   align-items: center;
   text-align: center;
@@ -148,9 +151,30 @@ const ForgotPasswordLink = styled(Link)`
 `;
 
 const Arrow = styled(FaArrowRight)`
-font-size: 1rem;
-margin-left: .5rem;
-`
+  font-size: 1rem;
+  margin-left: 0.5rem;
+`;
+
+const Spinner = styled(Loader2)`
+  width: 27px;
+  height: 27px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string()
@@ -220,9 +244,18 @@ const SignInForm = () => {
             />
             <ErrorMessage name="email" component={ErrorText} />
             <ErrorMessage name="password" component={ErrorText} />
-            <Button type="submit" $loading={mutation.isPending}>
-              {mutation.isPending ? "Signing in..." : "Sign in"}
+            <Button
+              type="submit"
+              $loading={mutation.isPending}
+              disabled={mutation.isPending}>
+              {mutation.isPending && (
+                <>
+                  <Spinner />
+                </>
+              )}
+              Sign in
             </Button>
+
             <SignUpLink to="/sign-up">
               Don’t have an account? Sign up
               <Arrow />
