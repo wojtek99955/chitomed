@@ -64,9 +64,7 @@ const ContentIcon = styled(RxVideo)`
 
 const Name = styled.div`
   height: 160px;
-  display: flex;
-  align-items: center;
-  padding: 0 1.2rem;
+  padding: 1rem 1.2rem;
   text-transform: uppercase;
   font-weight: bold;
   font-size: 0.8rem;
@@ -81,12 +79,13 @@ const Sidebar = () => {
 
   const dashboardPath = "/dashboard";
   const usersPath = "/users";
-
+console.log("Rola w Sidebar:", role);
   console.log("Sidebar render"); // Log do testów optymalizacji
+  
 
   return (
     <>
-      {role === "admin" && (
+      {/* {role === "admin" && ( */}
         <Container>
           <Name>
             Administrator <br />
@@ -95,7 +94,8 @@ const Sidebar = () => {
           <Nav>
             <Link
               to={dashboardPath}
-              data-is-active={currentPath === dashboardPath ? "true" : "false"}>
+              // data-is-active={currentPath === dashboardPath ? "true" : "false"}
+              >
               <ContentIcon /> Treść
             </Link>
             <Link
@@ -106,7 +106,7 @@ const Sidebar = () => {
             </Link>
           </Nav>
         </Container>
-      )}
+      {/* )} */}
     </>
   );
 };
@@ -120,4 +120,4 @@ const Sidebar = () => {
   wyrenderuje się przy każdej zmianie trasy (co jest poprawne, 
   bo musi zmienić aktywny link).
 */
-export default memo(Sidebar);
+export default memo(Sidebar, () => true); // ← brutalnie blokuje rerendery

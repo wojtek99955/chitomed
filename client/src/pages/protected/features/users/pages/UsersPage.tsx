@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import UsersList from "../components/UsersList";
 import Header from "../../../Dashboard/Header";
-import Sidebar from "../../../Dashboard/Sidebar";
 import { device } from "../../../../../assets/device";
 import BottomNav from "../../../BottomNav";
 
@@ -15,7 +14,6 @@ const Section = styled.section`
 const UsersPage = () => {
   return (
     <Section>
-      <Sidebar />
       <Header />
       <UsersList />
       <BottomNav/>

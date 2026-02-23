@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import Header from "./Header";
-import Sidebar from "./Sidebar";
 import BottomNav from "../BottomNav";
-import { Outlet } from "react-router-dom";
 import { useAuthData } from "../../../features/auth/useAuthData";
+import MaterialsPage from "../features/materials/pages/MaterialsPage";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -29,9 +28,8 @@ const Dashboard = () => {
     <>
       <Header />
       <Section>
-        <Sidebar />
         <Wrapper>
-          <Outlet />
+          <MaterialsPage/>
         </Wrapper>
       </Section>
       {role === "admin" && <BottomNav />}

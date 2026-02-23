@@ -1,57 +1,47 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// App.tsx
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import GlobalStyle from "./assets/GlobalStyle";
 import SignIn from "./pages/SignIn/SignIn";
-import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
-import Dashboard from "./pages/protected/Dashboard/Dashboard";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import SignUp from "./pages/SignUp/SignUp";
 import ProtectedRoute from "./features/auth/ProtectedRoute";
-import MaterialPage from "./pages/protected/features/materials/pages/MaterialPage";
+import MainLayout from "./components/layout/MainLayout";
+import Dashboard from "./pages/protected/Dashboard/Dashboard";
 import UsersPage from "./pages/protected/features/users/pages/UsersPage";
 import User from "./pages/protected/features/users/pages/User";
-import SignUp from "./pages/SignUp/SignUp";
+import MaterialPage from "./pages/protected/features/materials/pages/MaterialPage";
 import ProfilePage from "./pages/protected/features/profile/pages/ProfilePage";
-
-import MaterialsPage from "./pages/protected/features/materials/pages/MaterialsPage";
 import AddMaterialModal from "./pages/protected/features/materials/components/AddMaterial";
-import ResetPasswordForm from "./pages/protected/ResetPasswordForm/ResetPasswordForm";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import InProgressPage from "./pages/InProgressPage/InProgressPage";
-import ForgotPassword from "./pages/SignIn/ForgotPasswordForm";
+
+const queryClient = new QueryClient();
 
 function App() {
-  const queryClient = new QueryClient();
   return (
-    <>
-      <QueryClientProvider client={queryClient}>
-        <GlobalStyle />
-        <Router>
-          <Routes>
-            {/* <Route path="/" element={<Home />} /> */}
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            {/* <Route path="/" element={<SignIn />} /> */}
-            <Route path="/" element={<InProgressPage />} />
+    <QueryClientProvider client={queryClient}>
+      <GlobalStyle />
+      <Router>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/" element={<InProgressPage />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
 
-            <Route path="/sign-in" element={<SignIn />} />
-            <Route path="/sign-up" element={<SignUp />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route
-              path="/reset-password/:token?"
-              element={<ResetPasswordForm />}
-            />
-
-            <Route element={<ProtectedRoute />}>
-              <Route path="/dashboard" element={<Dashboard />}>
-                <Route index element={<MaterialsPage />} />
-              </Route>
-              <Route path="material/:id" element={<MaterialPage />} />
+          {/* Protected routes */}
+          <Route element={<ProtectedRoute />}>
+            {/* MainLayout zawiera Sidebar, niezależny od Routes */}
+            <Route element={<MainLayout />}>
+              <Route path="dashboard" element={<Dashboard />} />
               <Route path="users" element={<UsersPage />} />
               <Route path="users/:id" element={<User />} />
+              <Route path="material/:id" element={<MaterialPage />} />
               <Route path="profile" element={<ProfilePage />} />
               <Route path="add-material" element={<AddMaterialModal />} />
             </Route>
-          </Routes>
-        </Router>
-      </QueryClientProvider>
-    </>
+          </Route>
+        </Routes>
+      </Router>
+    </QueryClientProvider>
   );
 }
 

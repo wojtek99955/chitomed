@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useAuthData } from "../../../../../features/auth/useAuthData";
 import Header from "../../../Dashboard/Header";
-import Sidebar from "../../../Dashboard/Sidebar";
 import BottomNav from "../../../BottomNav";
 import { FaUser } from "react-icons/fa";
 
@@ -67,7 +66,6 @@ const ProfilePage = () => {
     <Container>
       <Header />
       <Wrapper>
-        <Sidebar />
         <ProfileContainer>
           <UserData>
             <IconContainer>

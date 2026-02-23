@@ -52,10 +52,6 @@ export const useAuthData = (): AuthData => {
         return null;
       }
     },
-    staleTime: 1000 * 60 * 15, // 15 minut spokoju
-    gcTime: 1000 * 60 * 60,
-    retry: false,
-    refetchOnWindowFocus: false,
   });
 
   // Mapujemy dane z React Query na Twój format AuthData

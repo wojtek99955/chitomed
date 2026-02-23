@@ -11,7 +11,6 @@ import BottomNav from "../../../BottomNav";
 import { device } from "../../../../../assets/device";
 import { useEffect, useState, useMemo } from "react";
 import { BlockNoteEditor } from "@blocknote/core";
-import Sidebar from "../../../Dashboard/Sidebar";
 
 // GŁÓWNY WRAPPER: zajmuje całą wysokość ekranu i blokuje scroll na body
 const Wrapper = styled.div`
@@ -48,27 +47,36 @@ const Container = styled.div`
 `;
 
 const BackButton = styled(Link)`
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.6rem;
-  background: black;
+  justify-content: center;
+  gap: 0.5rem;
+  height: fit-content;
+  padding: 0.7rem 2em;
   color: white;
-  padding: 0.7rem 2.2rem;
+  background-color: #d6dcf8;
+  background-color: black;
+  border: none;
   border-radius: 33px;
-  text-decoration: none;
+  font-size: 1.1rem;
   font-weight: 500;
-  transition: all 0.2s ease;
-  margin-bottom: 1.5rem;
+  cursor: pointer;
+  border: 1px solid black;
+  transition: all 0.2s;
+  margin-bottom: 2rem;
+  color: #000;
+  color: white;
+  text-decoration: none;
   width: fit-content;
-  transition: all 200ms;
-
   &:hover {
-    /* background: #2563eb; */
-    background-color: #262626;
+    background: #2c50dc;
+    border: 1px solid #2c50dc;
+
+    color: white;
     transform: scale(1.02);
   }
   &:active {
-    transform: scale(0.95);
+    transform: scale(1.01);
   }
 `;
 
@@ -282,7 +290,6 @@ const MaterialPage = () => {
   if (isLoading) {
     return (
       <Wrapper>
-        <Sidebar />
         <MainContent>
           <Header />
           <Container>
@@ -299,7 +306,6 @@ const MaterialPage = () => {
   if (isError || !material) {
     return (
       <Wrapper>
-        <Sidebar />
         <MainContent>
           <Header />
           <Container>
@@ -315,7 +321,6 @@ const MaterialPage = () => {
 
   return (
     <Wrapper>
-      <Sidebar />
       <MainContent>
         <Header />
         <Container>
