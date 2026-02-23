@@ -6,11 +6,14 @@ import { device } from "../../assets/device";
 const Container = styled.div`
   position: fixed;
   left: 0;
-  bottom: 0;
+  bottom: .5rem;
   display: block;
-  width: 100%;
-  background-color: white;
-  border-top: 1px solid #e9eaed;
+  /* width: %; */
+  background-color: rgba(0,0,0,0.80);
+  margin: 0 1rem;
+  border-radius: 33px;
+  padding: .1rem;
+  width: 50%;
   @media ${device.laptop} {
     display: none;
   }
@@ -18,12 +21,12 @@ const Container = styled.div`
 
 const PeopleIcon = styled(MdOutlinePeopleOutline)`
   font-size: 1.5rem;
-  color: #1f2937;
+  color: white;
 `;
 
 const ContentIcon = styled(MdMovieEdit)`
   font-size: 1.5rem;
-  color: #1f2937;
+  color: white;
 `;
 
 const ACTIVE_BG_COLOR = "#f3f4f6";
@@ -34,10 +37,12 @@ const Nav = styled.div`
 
   // The 'a' selector is modified to check for the 'data-is-active' attribute
   a {
+    margin: 0.5rem;
+    border-radius: 33px;
     text-decoration: none;
     display: block;
-    padding: 0.3rem 0.6rem;
-    font-size: .8rem;
+    padding: 0.3rem 1rem;
+    font-size: 0.8rem;
     color: unset;
     transition: all 200ms;
     display: flex;
@@ -45,23 +50,22 @@ const Nav = styled.div`
     align-items: center;
     justify-content: center;
     gap: 0.2rem;
-    color: #1f2937;
+    color: white;
     width: 100%;
     background-color: transparent;
     &:first-of-type {
-      border-right: 1px solid #e9eaed;
     }
 
     &:hover {
-      background-color: ${ACTIVE_BG_COLOR}; // Use constant
+      background-color: #2d50dc; // Use constant
     }
     &:active {
-      background-color: #dde0e5;
+      background-color: #2d50dc;
     }
 
     // Conditional styling based on the data-is-active attribute
     &[data-is-active="true"] {
-      background-color: ${ACTIVE_BG_COLOR}; // Apply hover background for active link
+      background-color: #2d50dc; // Apply hover background for active link
     }
   }
 `;

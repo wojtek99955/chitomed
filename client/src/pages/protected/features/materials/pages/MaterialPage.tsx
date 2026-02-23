@@ -33,7 +33,8 @@ const Container = styled.div`
   width: 100%;
   display: grid;
   align-items: flex-start;
-  grid-template-columns: 1fr 800px 1fr;
+  grid-template-columns: 1fr;
+  padding: 1rem;
   gap: 1rem;
   position: relative;
   height: calc(100vh - 160px);
@@ -41,13 +42,15 @@ const Container = styled.div`
   overflow-y: auto; /* To sprawia, że tylko treść się przewija */
 
   @media ${device.laptop} {
+    grid-template-columns: 1fr 800px 1fr;
+
     padding: 2rem 1rem;
     padding-bottom: 5rem; /* Miejsce na BottomNav na mobile/laptop */
   }
 `;
 
 const BackButton = styled(Link)`
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
@@ -78,6 +81,9 @@ const BackButton = styled(Link)`
   &:active {
     transform: scale(1.01);
   }
+  @media ${device.laptop} {
+    display: flex;
+  }
 `;
 
 // const BackIcon = styled(FaChevronCircleLeft)`
@@ -99,11 +105,18 @@ const Title = styled.h1`
   line-height: 1.2;
 `;
 
-const Meta = styled.p`
+const Meta = styled.p<any>`
   color: #6b7280;
   font-size: 0.95rem;
   margin: 0 0 2rem 0;
   text-align: right;
+  display: ${({ mobile }) => (mobile ? "flex" : "none")};
+  flex-direction: column;
+  align-items: start;
+
+  @media ${device.laptop} {
+    display: ${({ mobile }) => (mobile ? "none" : "block")};
+  }
 `;
 
 const ArticleContent = styled.div`
@@ -193,13 +206,14 @@ const ErrorBox = styled(LoadingBox)`
 const Category = styled.div`
   background-color: #f3f4f6;
   color: #2d50dc;
-  text-transform:uppercase;
-  padding:.3rem;
+  text-transform: uppercase;
+  padding: 0.3rem;
   width: fit-content;
   margin-top: 1rem;
   border-radius: 8px;
-  margin-left: auto;
-
+  @media ${device.laptop} {
+    margin-left: auto;
+  }
 `;
 
 
@@ -337,7 +351,15 @@ const MaterialPage = () => {
             {/* <BackIcon />  */}
             Back
           </BackButton>
-
+          <Meta mobile>
+            Created:{" "}
+            {new Date(material.createdAt).toLocaleDateString("en-EN", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+            <Category>{categoryName}</Category>
+          </Meta>
           <ContentWrapper>
             <Title>{material.title}</Title>
             <ArticleContent>

@@ -2,11 +2,16 @@ import styled from "styled-components";
 import MaterialsList from "../components/MaterialsList";
 import { useAuthData } from "../../../../../features/auth/useAuthData";
 import { Link } from "react-router-dom";
+import { device } from "../../../../../assets/device";
 // import { FaPlus } from "react-icons/fa";
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
   gap:1rem;
   width: 100%;
+  @media ${device.laptop}{
+    flex-direction: row;
+  }
 `;
 export const AddButton = styled(Link)`
   display: flex;
