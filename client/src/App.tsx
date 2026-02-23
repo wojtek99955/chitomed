@@ -13,6 +13,8 @@ import ProfilePage from "./pages/protected/features/profile/pages/ProfilePage";
 import AddMaterialModal from "./pages/protected/features/materials/components/AddMaterial";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import InProgressPage from "./pages/InProgressPage/InProgressPage";
+import ForgotPassword from "./pages/SignIn/ForgotPasswordForm";
+import ResetPasswordForm from "./pages/protected/ResetPasswordForm/ResetPasswordForm";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +28,8 @@ function App() {
           <Route path="/" element={<InProgressPage />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
 
           {/* Protected routes */}
           <Route element={<ProtectedRoute />}>
