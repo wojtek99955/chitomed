@@ -1,96 +1,193 @@
+import { useState, useRef, useEffect } from "react";
 import { MdMovieEdit, MdOutlinePeopleOutline } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { device } from "../../assets/device";
+import { HiOutlineMenuAlt1 } from "react-icons/hi";
+import { motion, AnimatePresence } from "framer-motion";
 
-const Container = styled.div`
-  position: fixed;
-  left: 0;
-  bottom: .5rem;
-  display: block;
-  /* width: %; */
-  background-color: rgba(0,0,0,0.80);
-  margin: 0 1rem;
-  border-radius: 33px;
-  padding: .1rem;
-  width: 50%;
-  @media ${device.laptop} {
-    display: none;
-  }
-`;
-
-const PeopleIcon = styled(MdOutlinePeopleOutline)`
-  font-size: 1.5rem;
-  color: white;
-`;
-
-const ContentIcon = styled(MdMovieEdit)`
-  font-size: 1.5rem;
-  color: white;
-`;
-
-
-// Update Nav styled component to accept the active path prop
-const Nav = styled.div`
-  display: flex;
-
-  // The 'a' selector is modified to check for the 'data-is-active' attribute
-  a {
-    margin: 0.5rem;
-    border-radius: 33px;
-    text-decoration: none;
-    display: block;
-    padding: 0.3rem 1rem;
-    font-size: 0.8rem;
-    color: unset;
-    transition: all 200ms;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.2rem;
-    color: white;
-    width: 100%;
-    background-color: transparent;
-    &:first-of-type {
-    }
-
-    &:hover {
-      background-color: #2d50dc; // Use constant
-    }
-    &:active {
-      background-color: #2d50dc;
-    }
-
-    // Conditional styling based on the data-is-active attribute
-    &[data-is-active="true"] {
-      background-color: #2d50dc; // Apply hover background for active link
-    }
-  }
-`;
 const BottomNav = () => {
-  const dashboardPath = "/dashboard";
-  const usersPath = "/users";
+  const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const currentPath = location.pathname;
+  const navRef = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
+
+  const dashboardPath = "/dashboard";
+  const usersPath = "/users";
+
+  // 1. Logika wykrywania kierunku scrollowania
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Jeśli scrollujemy w górę i nie jesteśmy na samym szczycie strony
+      if (currentScrollY < lastScrollY.current && currentScrollY > 10) {
+        setIsOpen(true);
+      }
+      // Jeśli scrollujemy w dół
+      else if (currentScrollY > lastScrollY.current) {
+        setIsOpen(false);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // 2. Zamknij menu po kliknięciu poza nim
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <Container>
+    <Container
+      ref={navRef}
+      as={motion.div}
+      initial={false}
+      animate={{
+        width: isOpen ? "85%" : "60px",
+        // Używamy stałych px zamiast %, aby uniknąć elipsy podczas animacji
+        borderRadius: isOpen ? "33px" : "30px",
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 450,
+        damping: 40,
+        restDelta: 0.06,
+      }}>
       <Nav>
-        {/* 2. Check if the current path matches the link's 'to' prop and pass it as a data attribute */}
-        <Link
-          to={dashboardPath}
-          data-is-active={currentPath === dashboardPath ? "true" : "false"}>
-          <ContentIcon /> Treść
-        </Link>
-        <Link
-          to={usersPath}
-          data-is-active={currentPath === usersPath ? "true" : "false"}>
-          <PeopleIcon />
-          Użytkownicy
-        </Link>
+        <HamburgerWrapper onClick={() => setIsOpen(!isOpen)} $active={isOpen}>
+          <Hamburger />
+        </HamburgerWrapper>
+
+        <AnimatePresence>
+          {isOpen && (
+            <LinksContainer
+              as={motion.div}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -5 }}
+              transition={{ duration: 0.2 }}>
+              <Link
+                to={dashboardPath}
+                data-is-active={
+                  currentPath === dashboardPath ? "true" : "false"
+                }
+                onClick={() => setIsOpen(false)}>
+                <ContentIcon /> <span>Treść</span>
+              </Link>
+              <Link
+                to={usersPath}
+                data-is-active={currentPath === usersPath ? "true" : "false"}
+                onClick={() => setIsOpen(false)}>
+                <PeopleIcon />
+                <span>Użytkownicy</span>
+              </Link>
+            </LinksContainer>
+          )}
+        </AnimatePresence>
       </Nav>
     </Container>
   );
 };
 
 export default BottomNav;
+
+// --- STYLED COMPONENTS ---
+
+const Container = styled.div`
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  overflow: hidden;
+  height: 60px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+
+  @media ${device.laptop} {
+    display: none;
+  }
+`;
+
+const Nav = styled.div`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 0 5px;
+  white-space: nowrap; /* Zapobiega łamaniu tekstu w trakcie animacji */
+`;
+
+const LinksContainer = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: space-around;
+  align-items: center;
+  gap: 0.5rem;
+  padding-right: 10px;
+
+  a {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.7rem;
+    transition: all 0.2s;
+    padding: 0.5rem;
+    border-radius: 20px;
+    width: 100%;
+
+    span {
+      margin-top: 2px;
+    }
+
+    &[data-is-active="true"] {
+      background-color: #2d50dc;
+      color: white;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+`;
+
+const HamburgerWrapper = styled.div<{ $active: boolean }>`
+  min-width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: ${(props) => (props.$active ? "#2d50dc" : "transparent")};
+  transition: background-color 0.3s;
+`;
+
+const Hamburger = styled(HiOutlineMenuAlt1)`
+  font-size: 1.6rem;
+  color: white;
+`;
+
+const PeopleIcon = styled(MdOutlinePeopleOutline)`
+  font-size: 1.4rem;
+`;
+
+const ContentIcon = styled(MdMovieEdit)`
+  font-size: 1.4rem;
+`;
