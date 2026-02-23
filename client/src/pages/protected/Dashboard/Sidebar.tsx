@@ -94,7 +94,7 @@ console.log("Rola w Sidebar:", role);
           <Nav>
             <Link
               to={dashboardPath}
-              // data-is-active={currentPath === dashboardPath ? "true" : "false"}
+              data-is-active={currentPath === dashboardPath ? "true" : "false"}
               >
               <ContentIcon /> Treść
             </Link>
