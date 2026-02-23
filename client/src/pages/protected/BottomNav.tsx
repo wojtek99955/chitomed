@@ -16,28 +16,36 @@ const BottomNav = () => {
   const dashboardPath = "/dashboard";
   const usersPath = "/users";
 
-  // 1. Logika wykrywania kierunku scrollowania
+  // Logika scrollowania – pokazuje przy scroll w górę, chowa przy scroll w dół
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
 
-      // Jeśli scrollujemy w górę i nie jesteśmy na samym szczycie strony
-      if (currentScrollY < lastScrollY.current && currentScrollY > 10) {
-        setIsOpen(true);
-      }
-      // Jeśli scrollujemy w dół
-      else if (currentScrollY > lastScrollY.current) {
-        setIsOpen(false);
-      }
+          // Scroll w górę → pokazujemy
+          if (currentScrollY < lastScrollY.current) {
+            setIsOpen(true);
+          }
+          // Scroll w dół → chowamy
+          else if (currentScrollY > lastScrollY.current) {
+            setIsOpen(false);
+          }
 
-      lastScrollY.current = currentScrollY;
+          lastScrollY.current = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 2. Zamknij menu po kliknięciu poza nim
+  // Zamknij menu po kliknięciu poza nim
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (navRef.current && !navRef.current.contains(event.target as Node)) {
@@ -55,7 +63,6 @@ const BottomNav = () => {
       initial={false}
       animate={{
         width: isOpen ? "85%" : "60px",
-        // Używamy stałych px zamiast %, aby uniknąć elipsy podczas animacji
         borderRadius: isOpen ? "33px" : "30px",
       }}
       transition={{
@@ -85,6 +92,7 @@ const BottomNav = () => {
                 onClick={() => setIsOpen(false)}>
                 <ContentIcon /> <span>Treść</span>
               </Link>
+
               <Link
                 to={usersPath}
                 data-is-active={currentPath === usersPath ? "true" : "false"}
@@ -102,7 +110,9 @@ const BottomNav = () => {
 
 export default BottomNav;
 
-// --- STYLED COMPONENTS ---
+// ────────────────────────────────────────────────
+// Styled Components
+// ────────────────────────────────────────────────
 
 const Container = styled.div`
   position: fixed;
@@ -128,7 +138,8 @@ const Nav = styled.div`
   height: 100%;
   width: 100%;
   padding: 0 5px;
-  white-space: nowrap; /* Zapobiega łamaniu tekstu w trakcie animacji */
+  gap: 0.5rem;
+  white-space: nowrap;
 `;
 
 const LinksContainer = styled.div`
@@ -136,7 +147,6 @@ const LinksContainer = styled.div`
   flex: 1;
   justify-content: space-around;
   align-items: center;
-  gap: 0.5rem;
   padding-right: 10px;
 
   a {
@@ -149,7 +159,7 @@ const LinksContainer = styled.div`
     font-size: 0.7rem;
     transition: all 0.2s;
     padding: 0.5rem;
-    border-radius: 20px;
+    border-radius: 28px;
     width: 100%;
 
     span {
