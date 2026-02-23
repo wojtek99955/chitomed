@@ -11,6 +11,7 @@ import { device } from "../../../../../assets/device";
 import { useEffect, useState, useMemo } from "react";
 import { BlockNoteEditor } from "@blocknote/core";
 import Loader from "./Loader";
+import { useGetCategories } from "../../categories/api/useGetCategories";
 
 // GŁÓWNY WRAPPER: zajmuje całą wysokość ekranu i blokuje scroll na body
 const Wrapper = styled.div`
@@ -207,6 +208,15 @@ const MaterialPage = () => {
   const { data, isLoading, isError } = useMaterials(id);
   const material = data as Material | undefined;
 
+
+  const { data: categoriesData = [] } = useGetCategories();
+
+  // 2. Znajdź nazwę kategorii na podstawie ID zapisanego w materiale
+  const categoryName =
+    categoriesData.find((cat: any) => cat._id === material?.categoryId)?.name ||
+    "Brak kategorii";
+
+
   const [htmlContent, setHtmlContent] = useState<string | null>(null);
 
   const converterEditor = useMemo(() => {
@@ -345,7 +355,7 @@ const MaterialPage = () => {
               month: "long",
               year: "numeric",
             })}
-            <Category>Category</Category>
+            <Category>{categoryName}</Category>
           </Meta>
         </Container>
         <BottomNav />

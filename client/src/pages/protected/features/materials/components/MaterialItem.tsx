@@ -9,6 +9,7 @@ import { useDeleteMaterial } from "../api/useDeleteMaterial";
 import DeleteConfirmation from "./DeleteConfirmation";
 import { useAuthData } from "../../../../../features/auth/useAuthData";
 import EditMaterial from "./EditMaterial";
+import { useGetCategories } from "../../categories/api/useGetCategories";
 
 const MaterialItemContainer = styled.div`
   background: white;
@@ -48,6 +49,7 @@ const Category = styled.div`
   background-color: white;
   color: #2d50dc;
   text-transform: uppercase;
+  max-width: 150px;
 `;
 
 const Actions = styled.div`
@@ -127,10 +129,17 @@ const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
   };
   const { role } = useAuthData();
 
+  const { data: categoriesData = [] } = useGetCategories();
+
+  // 2. Znajdź nazwę kategorii na podstawie ID zapisanego w materiale
+  const categoryName =
+    categoriesData.find((cat: any) => cat._id === material.categoryId)?.name ||
+    "Brak kategorii";
+
   return (
     <>
       <MaterialItemContainer onClick={openMaterial}>
-        <Category>{material.categoryId}</Category>
+        <Category>{categoryName}</Category>
         <Cover>
           <img src="https://chitomed-files.b-cdn.net/Vector%20(1).svg" alt="" />
         </Cover>
