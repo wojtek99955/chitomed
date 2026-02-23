@@ -62,6 +62,7 @@ const Button = styled.button<{ $loading?: boolean }>`
   border-radius: 33px;
   font-size: 1rem;
   font-weight: 600;
+  position: relative;
   cursor: ${({ $loading }) => ($loading ? "not-allowed" : "pointer")};
   opacity: ${({ $loading }) => ($loading ? 0.7 : 1)};
   transition: 0.2s;
@@ -164,7 +165,9 @@ const Spinner = styled(Loader2)`
   top: 0;
   bottom: 0;
   margin: auto;
-  animation: spin 1s linear infinite;
+  animation: spin 3s linear infinite;
+  z-index: 1000;
+  color:white !important;
 
   @keyframes spin {
     from {
@@ -255,6 +258,7 @@ const SignInForm = () => {
               )}
               Sign in
             </Button>
+            {mutation.isPending? "Tak":"nie"}
 
             <SignUpLink to="/sign-up">
               Don’t have an account? Sign up

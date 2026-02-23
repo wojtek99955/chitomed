@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { signUp } from "../../features/user/api/userApi";
 import { logo } from "../SignIn/logo";
 import AuthSectionText from "./AuthSectionText";
+import { Loader2 } from "lucide-react";
 
 const Container = styled.section`
   min-height: 100vh;
@@ -80,6 +81,7 @@ const Button = styled.button<{ $loading?: boolean }>`
   cursor: ${({ $loading }) => ($loading ? "not-allowed" : "pointer")};
   opacity: ${({ $loading }) => ($loading ? 0.7 : 1)};
   transition: 0.2s;
+  color: ${({ $loading }) => ($loading ? "transparent" : "white")};
 
   &:hover {
     transform: scale(1.01);
@@ -127,6 +129,28 @@ const LogoContainer = styled.div`
   width: 50%;
   margin: auto;
   margin-bottom: 3rem;
+`;
+
+const Spinner = styled(Loader2)`
+  width: 27px;
+  height: 27px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  animation: spin 1s linear infinite;
+  color:white !important;
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 `;
 
 const SignUpSchema = Yup.object().shape({
@@ -203,7 +227,12 @@ const SignUp = () => {
                   type="submit"
                   disabled={mutation.isPending}
                   $loading={mutation.isPending}>
-                  {mutation.isPending ? "Sending..." : "Send Password"}
+                  {mutation.isPending && (
+                    <>
+                      <Spinner />
+                    </>
+                  )}
+                  Send password
                 </Button>
               </Form>
             )}
