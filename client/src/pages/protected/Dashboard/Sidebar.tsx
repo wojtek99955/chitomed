@@ -12,7 +12,7 @@ const Nav = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding:1rem;
+  padding: 1rem;
 
   a {
     text-decoration: none;
@@ -79,13 +79,10 @@ const Sidebar = () => {
 
   const dashboardPath = "/dashboard";
   const usersPath = "/users";
-console.log("Rola w Sidebar:", role);
-  console.log("Sidebar render"); // Log do testów optymalizacji
-  
 
   return (
     <>
-      {/* {role === "admin" && ( */}
+      {role === "admin" && (
         <Container>
           <Name>
             Administrator <br />
@@ -94,8 +91,7 @@ console.log("Rola w Sidebar:", role);
           <Nav>
             <Link
               to={dashboardPath}
-              data-is-active={currentPath === dashboardPath ? "true" : "false"}
-              >
+              data-is-active={currentPath === dashboardPath ? "true" : "false"}>
               <ContentIcon /> Treść
             </Link>
             <Link
@@ -106,7 +102,7 @@ console.log("Rola w Sidebar:", role);
             </Link>
           </Nav>
         </Container>
-      {/* )} */}
+      )}{" "}
     </>
   );
 };

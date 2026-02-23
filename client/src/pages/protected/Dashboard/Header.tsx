@@ -11,8 +11,9 @@ import Categories from "../features/categories/components/Categories";
 import Searchbar from "../features/Searchbar/Searchbar";
 import { device } from "../../../assets/device";
 import LanguageChangeDropdown from "../../../features/language/LanguageChangeDropdown";
+import { useAuthData } from "../../../features/auth/useAuthData";
 
-const Container = styled.header`
+const Container = styled.header<any>`
   padding: 10px 1rem;
   position: fixed;
   width: 100%;
@@ -30,12 +31,14 @@ const Container = styled.header`
   border-bottom: 1px solid #e9eaed;
   @media ${device.laptop} {
     width: calc(100% - 18rem);
-    left: 15rem;
+    width: ${({ isAdmin }) =>
+      isAdmin ? "calc(100% - 18rem)" : "calc(100% - 2rem)"};
+    left: ${({ isAdmin }) => (isAdmin ? "15rem" : "0")};
   }
 `;
 
 const Wrapper = styled.div`
-display: flex;
+  display: flex;
   justify-content: space-between;
   align-items: center;
 `;
@@ -45,46 +48,11 @@ const SubHeader = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-
-// const UserWrapper = styled.div`
-//   position: relative;
-//   cursor: pointer;
-//   margin-left: auto;
-//   padding: 0.6rem;
-//   border-radius: 4px;
-//   background-color: #f0f0f0;
-//   transition: background-color 0.2s;
-
-//   &:hover {
-//     background-color: #dde0e5;
-//   }
-// `;
-
 const UserIcon = styled(FaRegUser)`
   font-size: 1.2rem;
   display: block;
-  color:white;
+  color: white;
 `;
-
-// const DropdownContainer = styled(motion.div)`
-//   position: absolute;
-//   top: 100%;
-//   right: 0;
-//   margin-top: 8px;
-//   background: white;
-//   border: 1px solid #ddd;
-//   border-radius: 4px;
-//   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-//   min-width: 150px;
-//   z-index: 10;
-//   overflow: hidden;
-// `;
-// const UserIconDropdown = styled(FaRegUser)`
-// font-size: 1.2rem;
-// `;
-// const LogoutIcon = styled(MdLogout)`
-//   font-size: 1.2rem;
-// `;
 
 const LogoutBtn = styled.button`
   border-radius: 33px;
@@ -105,40 +73,6 @@ const LogoutBtn = styled.button`
     transform: scale(0.95);
   }
 `;
-
-// const DropdownItem = styled.div`
-//   padding: 0.9rem 1rem;
-//   font-size: 1.1rem;
-//   display: flex;
-//   align-items: center;
-//   gap:.5rem;
-//   color: #333;
-//   cursor: pointer;
-
-//   &:hover {
-//     background-color: #f5f5f5;
-//   }
-// `;
-
-// const dropdownVariants: any = {
-//   hidden: {
-//     opacity: 0,
-//     height: 0,
-//     transition: {
-//       when: "afterChildren",
-//       duration: 0.2,
-//     },
-//   },
-//   visible: {
-//     opacity: 1,
-//     height: "auto",
-//     transition: {
-//       when: "beforeChildren",
-//       duration: 0.2,
-//       ease: "easeOut",
-//     },
-//   },
-// };
 
 const Profile = styled.div`
   background-color: black;
@@ -161,6 +95,9 @@ const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const queryClient = useQueryClient();
   let navigate = useNavigate();
+  const { role } = useAuthData();
+  let isAdmin = role === "admin";
+
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const logoutMutationHook = useMutation({
@@ -175,12 +112,8 @@ const Header = () => {
       navigate("/login");
     },
   });
-  // const toggleDropdown = () => {
-  //   setIsDropdownOpen((prev) => !prev);
-  // };
 
   const logout = () => {
-    // setIsDropdownOpen(false);
     logoutMutationHook.mutate();
   };
 
@@ -221,34 +154,15 @@ const Header = () => {
     return "Chitomed materials"; // Tytuł domyślny
   };
   return (
-    <Container>
+    <Container isAdmin={isAdmin}>
       <Wrapper>
         <div onClick={goDashboard} style={{ cursor: "pointer" }}>
           <Logo1 />
         </div>
-        <LanguageChangeDropdown/>
+        <LanguageChangeDropdown />
         <Profile onClick={goToProfile}>
           <UserIcon />
         </Profile>
-        {/* <UserWrapper ref={dropdownRef} onClick={toggleDropdown}>
-        <UserIcon />
-        <AnimatePresence>
-          {isDropdownOpen && (
-            <DropdownContainer
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={dropdownVariants}>
-              <DropdownItem onClick={goToProfile}>
-                <UserIconDropdown /> Profile
-              </DropdownItem>
-              <DropdownItem onClick={logout}>
-                <LogoutIcon /> Log Out
-              </DropdownItem>
-            </DropdownContainer>
-          )}
-        </AnimatePresence>
-      </UserWrapper> */}
         <LogoutBtn onClick={logout}>Log out</LogoutBtn>
       </Wrapper>
       <SubHeader>
@@ -259,7 +173,7 @@ const Header = () => {
             <Searchbar />
           </>
         )}
-      </SubHeader>{" "}
+      </SubHeader>
     </Container>
   );
 };
