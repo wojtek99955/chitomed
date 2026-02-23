@@ -3,6 +3,7 @@ import SignInForm from "../../features/auth/components/SignInForm";
 import { device } from "../../assets/device";
 import AuthSectionText from "../SignUp/AuthSectionText";
 import Footer from "./Footer";
+import useRedirectWhenLogged from "../../features/auth/hooks/redirectWhenLogged";
 
 const Container = styled.section`
   min-height: 100vh;
@@ -26,11 +27,13 @@ const Container = styled.section`
 `;
 
 const SignIn = () => {
+  useRedirectWhenLogged();
+
   return (
     <Container>
       <SignInForm />
       <AuthSectionText />
-      <Footer/>
+      <Footer />
     </Container>
   );
 };

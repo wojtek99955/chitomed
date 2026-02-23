@@ -9,6 +9,7 @@ import { signUp } from "../../features/user/api/userApi";
 import { logo } from "../SignIn/logo";
 import AuthSectionText from "./AuthSectionText";
 import { Loader2 } from "lucide-react";
+import useRedirectWhenLogged from "../../features/auth/hooks/redirectWhenLogged";
 
 const Container = styled.section`
   min-height: 100vh;
@@ -141,7 +142,7 @@ const Spinner = styled(Loader2)`
   bottom: 0;
   margin: auto;
   animation: spin 1s linear infinite;
-  color:white !important;
+  color: white !important;
 
   @keyframes spin {
     from {
@@ -161,6 +162,7 @@ const SignUpSchema = Yup.object().shape({
 
 const SignUp = () => {
   const navigate = useNavigate();
+  useRedirectWhenLogged();
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
