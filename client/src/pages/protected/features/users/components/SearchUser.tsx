@@ -80,6 +80,7 @@ const StyledInput = styled.input`
   }
   &:focus {
     box-shadow: 0 0 0 3px rgba(44, 80, 220, 0.1);
+    border-color: #2c50dc;
   }
 `;
 

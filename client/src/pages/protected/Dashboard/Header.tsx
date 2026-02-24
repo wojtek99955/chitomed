@@ -130,9 +130,9 @@ const Profile = styled.div`
 const FitlersWrapper = styled.div`
   align-items: center;
   display: none;
+  gap:1rem;
   @media ${device.laptop}{
     display: flex;
-    gap:1rem;
   }
 `;
 

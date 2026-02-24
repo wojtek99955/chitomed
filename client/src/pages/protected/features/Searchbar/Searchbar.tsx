@@ -35,12 +35,11 @@ const SearchContainer = styled.div`
   align-items: center;
   width: 100%;
   max-width: 300px;
-  padding: 0 1rem;
 `;
 
 const IconWrapper = styled.div`
   position: absolute;
-  left: 2.2rem;
+  left: 1rem;
   display: flex;
   align-items: center;
   color: #2b2f5c;
@@ -51,6 +50,7 @@ const IconWrapper = styled.div`
 const StyledInput = styled.input`
   width: 100%;
   padding: 0.7rem 1rem 0.7rem 2.8rem;
+  padding-left: 3rem;
   font-size: 1rem;
   border: 1px solid #e2e8f0;
   border-radius: 33px;

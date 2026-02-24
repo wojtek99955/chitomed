@@ -74,7 +74,6 @@ const Categories = () => {
 export default Categories;
 
 const Wrapper = styled.div`
-  padding: 0 1rem;
   margin-left: auto;
 `;
 
@@ -101,7 +100,13 @@ const DropdownButton = styled.button<{ $active: boolean }>`
 
   &:hover {
     border: 1px solid #2c50dc;
+  }
+  &:focus {
     box-shadow: 0 0 0 3px rgba(44, 80, 220, 0.1);
+    border: 1px solid #2c50dc;
+  }
+  span {
+    white-space: nowrap;
   }
 `;
 
