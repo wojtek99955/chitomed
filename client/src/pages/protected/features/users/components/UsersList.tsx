@@ -51,7 +51,8 @@ const ErrorBox = styled(InfoBox)`
 const TableContainer = styled.div`
   background: white;
   border-radius: 8px;
-  overflow-x: scroll;
+  overflow-x: auto;
+  /* border: 1px solid #f1f5f9; */
 
   @media ${device.laptop} {
     overflow-x: hidden;
@@ -64,7 +65,8 @@ const Table = styled.table`
 `;
 
 const TableHead = styled.thead`
-  border-bottom: 1px solid #f5f5f7;
+  border-bottom: 2px solid #f1f5f9;
+  background-color: #f8fafc;
 `;
 
 const TableRow = styled.tr`
@@ -79,15 +81,15 @@ const TableHeader = styled.th`
   text-align: left;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  font-size: 1rem;
-  color: black;
+  font-size: 0.85rem;
+  color: #64748b;
 `;
 
 const TableData = styled.td`
   padding: 1rem 1.5rem;
   color: #374151;
-  border-bottom: 1px solid #f5f5f7;
-  vertical-align: middle; /* Gwarantuje równą wysokość w pionie */
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
 
   &:first-child {
     font-weight: 600;
@@ -133,10 +135,6 @@ const DeleteButton = styled.button`
     opacity: 0.6;
     cursor: not-allowed;
   }
-
-  svg {
-    font-size: 0.9rem;
-  }
 `;
 
 // --- COMPONENT LOGIC ---
@@ -148,17 +146,11 @@ const UsersList = () => {
   const users: User[] = Array.isArray(data) ? data : [];
 
   const handleDelete = (userId: string, email: string) => {
-    if (!window.confirm(`Na pewno chcesz usunąć użytkownika ${email}?`)) {
-      return;
-    }
+    if (!window.confirm(`Na pewno chcesz usunąć użytkownika ${email}?`)) return;
 
     deleteUser(userId, {
-      onSuccess: () => {
-        toast.success(`Użytkownik ${email} został usunięty`);
-      },
-      onError: (err: any) => {
-        toast.error(err?.message || "Nie udało się usunąć użytkownika");
-      },
+      onSuccess: () => toast.success(`Użytkownik ${email} został usunięty`),
+      onError: (err: any) => toast.error(err?.message || "Błąd usuwania"),
     });
   };
 
@@ -171,47 +163,37 @@ const UsersList = () => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <Container>
-        <Title>Lista Użytkowników</Title>
-        <Loader />
-      </Container>
-    );
-  }
+  // Helper do renderowania zawartości głównej
+  const renderContent = () => {
+    if (isLoading) return <Loader />;
 
-  if (isError) {
-    return (
-      <Container>
-        <Title>Users list</Title>
+    if (isError) {
+      const is404 = (error as any)?.response?.status === 404;
+      if (is404) {
+        return (
+          <InfoBox style={{ backgroundColor: "#fffbe0", color: "#a16207" }}>
+            <FaExclamationTriangle style={{ marginRight: "0.5rem" }} />
+            Nie znaleziono użytkownika spełniającego kryteria.
+          </InfoBox>
+        );
+      }
+      return (
         <ErrorBox>
-          <div>
-            <FaExclamationTriangle /> Error
-          </div>
-          <span style={{ fontSize: "0.85rem", opacity: 0.8 }}>
-            {error?.message || "Nieznany błąd."}
-          </span>
+          <FaExclamationTriangle />
+          <span>Błąd: {error?.message || "Nie udało się pobrać danych."}</span>
         </ErrorBox>
-      </Container>
-    );
-  }
+      );
+    }
 
-  if (users.length === 0) {
-    return (
-      <Container>
-        <Title>Users list</Title>
-        <InfoBox style={{ backgroundColor: "#fffbe0", color: "#a16207" }}>
-          <FaExclamationTriangle style={{ marginRight: "0.5rem" }} />
-          No users
+    if (users.length === 0) {
+      return (
+        <InfoBox style={{ backgroundColor: "#f1f5f9", color: "#64748b" }}>
+          Lista użytkowników jest pusta.
         </InfoBox>
-      </Container>
-    );
-  }
+      );
+    }
 
-  return (
-    <Container>
-      <Title>Users list ({users.length})</Title>
-
+    return (
       <TableContainer>
         <Table>
           <TableHead>
@@ -224,7 +206,7 @@ const UsersList = () => {
           </TableHead>
           <tbody>
             {users.map((user, index) => (
-              <TableRow key={user._id || index}>
+              <TableRow key={user._id}>
                 <TableData>{index + 1}</TableData>
                 <TableData>
                   <EmailWrapper>
@@ -246,6 +228,16 @@ const UsersList = () => {
           </tbody>
         </Table>
       </TableContainer>
+    );
+  };
+
+  return (
+    <Container>
+      <Title>
+        Lista użytkowników{" "}
+        {!isLoading && users.length > 0 && `(${users.length})`}
+      </Title>
+      {renderContent()}
     </Container>
   );
 };
