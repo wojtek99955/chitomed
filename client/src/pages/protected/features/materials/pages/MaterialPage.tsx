@@ -7,7 +7,6 @@ import { useEffect, useState, useMemo } from "react";
 import { BlockNoteEditor } from "@blocknote/core";
 import Loader from "./Loader";
 import { useGetCategories } from "../../categories/api/useGetCategories";
-import BottomNav from "../../../BottomNav"; // ← dodajemy BottomNav
 import { useAuthData } from "../../../../../features/auth/useAuthData";
 
 // Główny wrapper – pozwala na naturalny wzrost strony
@@ -313,7 +312,6 @@ const MaterialPage = () => {
             <Loader />
             <div></div>
           </Container>
-          <BottomNav />
         </MainContent>
       </Wrapper>
     );
@@ -328,7 +326,6 @@ const MaterialPage = () => {
               <FaExclamationTriangle /> Error
             </ErrorBox>
           </Container>
-          <BottomNav />
         </MainContent>
       </Wrapper>
     );
@@ -371,8 +368,6 @@ const MaterialPage = () => {
             <Category>{categoryName}</Category>
           </Meta>
         </Container>
-
-        <BottomNav />
       </MainContent>
     </Wrapper>
   );
