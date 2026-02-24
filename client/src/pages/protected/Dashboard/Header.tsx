@@ -15,11 +15,11 @@ import { useAuthData } from "../../../features/auth/useAuthData";
 import { ChitomedIcon } from "../../../assets/icons/ChitomedIcon";
 
 const Container = styled.header<any>`
-  padding: 10px 0;
+  padding: 0px 0;
   position: fixed;
   width: 100%;
   left: 0;
-  height: 160px;
+  height: 120px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -31,9 +31,11 @@ const Container = styled.header<any>`
   z-index: 100;
   border-bottom: 1px solid #e9eaed;
   @media ${device.laptop} {
+    padding: 10px 0;
     width: ${({ isAdmin }) =>
       isAdmin ? "calc(100% - 17rem)" : "calc(100% - 2rem)"};
     left: ${({ isAdmin }) => (isAdmin ? "15rem" : "0")};
+    height: 160px;
   }
 `;
 
