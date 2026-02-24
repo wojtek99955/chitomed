@@ -3,6 +3,7 @@ import { useAuthData } from "../../../../../features/auth/useAuthData";
 import Header from "../../../Dashboard/Header";
 import BottomNav from "../../../BottomNav";
 import { FaUser } from "react-icons/fa";
+import { device } from "../../../../../assets/device";
 
 const Container = styled.div``;
 
@@ -11,13 +12,18 @@ const Wrapper = styled.div`
 `;
 
 const ProfileContainer = styled.div`
-  height: calc(100vh - 180.59px);
-  top: 180.59px;
+  top: 130px;
   position: relative;
   padding: 2rem 1rem;
   display: flex;
+  margin: auto;
   justify-content: center;
-  width: 100%;
+  @media ${device.laptop} {
+    top: 180.59px;
+    width: calc(100% - 15rem);
+    left: 15rem;
+    margin: unset;
+  }
 `;
 
 const Email = styled.div`
