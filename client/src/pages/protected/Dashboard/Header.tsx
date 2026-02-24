@@ -127,7 +127,16 @@ const Profile = styled.div`
   }
 `;
 
-const LogoWrapper = styled.div``;
+const FitlersWrapper = styled.div`
+  align-items: center;
+  display: none;
+  @media ${device.laptop}{
+    display: flex;
+  }
+`;
+
+const LogoWrapper = styled.div`
+`;
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -210,16 +219,16 @@ const Header = () => {
       <SubHeader>
         {getSubHeaderTitle()}
         {location.pathname === "/dashboard" && (
-          <>
+          <FitlersWrapper>
             <Categories />
             <Searchbar />
-          </>
+          </FitlersWrapper>
         )}
         {location.pathname === "/users" && (
-          <>
+          <FitlersWrapper>
             <SortDateUsers />
             <SearchUser/>
-          </>
+          </FitlersWrapper>
         )}
       </SubHeader>
     </Container>

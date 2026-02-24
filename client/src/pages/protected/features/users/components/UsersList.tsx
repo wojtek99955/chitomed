@@ -5,11 +5,13 @@ import { format } from "date-fns";
 import { toast } from "react-hot-toast";
 import Loader from "./Loader";
 import { device } from "../../../../../assets/device";
+import SortDateUsers from "./SortDate";
+import SearchUser from "./SearchUser";
 
 // --- STYLED COMPONENTS ---
 
 const Container = styled.div`
-  padding: 2rem;
+  padding: 2rem 1rem;
   width: 100vw;
   height: calc(100vh - 4.5rem);
   position: relative;
@@ -21,13 +23,13 @@ const Container = styled.div`
   }
 `;
 
-const Title = styled.h2`
-  color: #1f2937;
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
-  border-bottom: 2px solid #e5e7eb;
-  padding-bottom: 0.5rem;
-`;
+// const Title = styled.h2`
+//   color: #1f2937;
+//   font-size: 1.5rem;
+//   margin-bottom: 1.5rem;
+//   border-bottom: 2px solid #e5e7eb;
+//   padding-bottom: 0.5rem;
+// `;
 
 const InfoBox = styled.div`
   display: flex;
@@ -137,6 +139,14 @@ const DeleteButton = styled.button`
   }
 `;
 
+const FiltersWrapper = styled.div`
+display: flex;
+margin-bottom: 1rem;
+@media ${device.laptop}{
+  display: none;
+}
+`
+
 // --- COMPONENT LOGIC ---
 
 const UsersList = () => {
@@ -233,10 +243,15 @@ const UsersList = () => {
 
   return (
     <Container>
-      <Title>
+      {/* <Title>
         Lista użytkowników{" "}
         {!isLoading && users.length > 0 && `(${users.length})`}
-      </Title>
+      </Title> */}
+      <FiltersWrapper>
+        <SortDateUsers />
+        <SearchUser />
+      </FiltersWrapper>
+
       {renderContent()}
     </Container>
   );
