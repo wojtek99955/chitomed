@@ -141,7 +141,7 @@ const DeleteButton = styled.button`
 
 const FiltersWrapper = styled.div`
 display: flex;
-margin-bottom: 1rem;
+margin-bottom: 1.5rem;
 @media ${device.laptop}{
   display: none;
 }
