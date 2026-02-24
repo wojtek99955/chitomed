@@ -13,10 +13,11 @@ const Container = styled.div`
   width: 100vw;
   height: calc(100vh - 4.5rem);
   position: relative;
-  top: 4.5rem;
+  top: 7.5rem;
   @media ${device.laptop} {
     width: calc(100% - 15rem);
     left: 15rem;
+    top: 4.5rem;
   }
 `;
 
@@ -51,6 +52,10 @@ const TableContainer = styled.div`
   background: white;
   border-radius: 8px;
   overflow-x: scroll;
+
+  @media ${device.laptop} {
+    overflow-x: hidden;
+  }
 `;
 
 const Table = styled.table`
