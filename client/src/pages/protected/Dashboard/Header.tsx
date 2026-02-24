@@ -13,6 +13,7 @@ import { device } from "../../../assets/device";
 import LanguageChangeDropdown from "../../../features/language/LanguageChangeDropdown";
 import { useAuthData } from "../../../features/auth/useAuthData";
 import { ChitomedIcon } from "../../../assets/icons/ChitomedIcon";
+import { HiOutlineLogout } from "react-icons/hi";
 
 const Container = styled.header<any>`
   padding: 0px 0;
@@ -70,6 +71,10 @@ const LogoutBtn = styled.button`
   font-weight: 400;
   cursor: pointer;
   transition: all 200ms;
+  display: none;
+  @media ${device.laptop}{
+    display: block;
+  }
 
   &:hover {
     transform: scale(1.02);
@@ -79,10 +84,33 @@ const LogoutBtn = styled.button`
     transform: scale(0.95);
   }
 `;
+const LogoutIconContainer = styled.div`
+  background-color: black;
+  padding: 0.9rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 200ms;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    transform: scale(1.02);
+    background-color: #262626;
+  }
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+const LogoutIcon = styled(HiOutlineLogout)`
+  font-size: 1.2rem;
+  color:white;
+
+`;
 
 const Profile = styled.div`
   background-color: black;
-  margin-right: 1rem;
+  margin-right: .7rem;
   padding: 0.9rem;
   border-radius: 50%;
   cursor: pointer;
@@ -94,6 +122,9 @@ const Profile = styled.div`
   }
   &:active {
     transform: scale(0.95);
+  }
+  @media ${device.laptop} {
+    margin-right: 1rem;
   }
 `;
 
@@ -175,6 +206,9 @@ const Header = () => {
           <UserIcon />
         </Profile>
         <LogoutBtn onClick={logout}>Log out</LogoutBtn>
+        <LogoutIconContainer onClick={logout}>
+          <LogoutIcon />
+        </LogoutIconContainer>
       </Wrapper>
       <SubHeader>
         {getSubHeaderTitle()}
