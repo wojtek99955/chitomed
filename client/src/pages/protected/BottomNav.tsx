@@ -120,12 +120,11 @@ const Container = styled.div`
   position: fixed;
   left: 1rem;
   bottom: 1rem;
-  background-color: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.58);
+  backdrop-filter: blur(4px);
   z-index: 1000;
   overflow: hidden;
   height: 60px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
 
