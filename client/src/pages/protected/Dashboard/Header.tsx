@@ -17,7 +17,7 @@ import { ChitomedIcon } from "../../../assets/icons/ChitomedIcon";
 const Container = styled.header<any>`
   padding: 0px 0;
   position: fixed;
-  width: 100%;
+  width: calc(100% - 2rem);
   left: 0;
   height: 120px;
   display: flex;
