@@ -120,7 +120,7 @@ const Container = styled.div`
   position: fixed;
   left: 1rem;
   bottom: 1rem;
-  background-color: rgba(0, 0, 0, 0.58);
+  background-color: rgba(0, 0, 0, 0.68);
   backdrop-filter: blur(4px);
   z-index: 1000;
   overflow: hidden;
