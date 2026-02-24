@@ -83,7 +83,7 @@ const Wrapper = styled.div`
 const DropdownContainer = styled.div`
   position: relative;
   width: 100%;
-  min-width: 180px;
+  min-width: 140px;
 `;
 
 const DropdownButton = styled.button<{ $active: boolean }>`
