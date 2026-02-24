@@ -92,6 +92,7 @@ const TableData = styled.td`
   color: #374151;
   border-bottom: 1px solid #f1f5f9;
   vertical-align: middle;
+  white-space: nowrap;
 
   &:first-child {
     font-weight: 600;
