@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import UsersList from "../components/UsersList";
 import { device } from "../../../../../assets/device";
+import { useEffect } from "react";
 
 const Section = styled.section`
   display: flex;
@@ -10,6 +11,9 @@ const Section = styled.section`
   }
 `;
 const UsersPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Section>
       <UsersList />

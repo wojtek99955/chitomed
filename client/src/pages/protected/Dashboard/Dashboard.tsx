@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import MaterialsPage from "../features/materials/pages/MaterialsPage";
 import { device } from "../../../assets/device";
+import { useEffect } from "react";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -11,8 +12,8 @@ const Wrapper = styled.div`
   bottom: 0;
   border: 100%;
   padding: 1rem;
-  @media ${device.laptop}{
-    top:160px
+  @media ${device.laptop} {
+    top: 160px;
   }
 `;
 
@@ -21,11 +22,14 @@ const Section = styled.div`
 `;
 
 const Dashboard = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <Section>
         <Wrapper>
-          <MaterialsPage/>
+          <MaterialsPage />
         </Wrapper>
       </Section>
     </>

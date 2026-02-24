@@ -3,6 +3,7 @@ import { useAuthData } from "../../../../../features/auth/useAuthData";
 import BottomNav from "../../../BottomNav";
 import { FaUser } from "react-icons/fa";
 import { device } from "../../../../../assets/device";
+import { useEffect } from "react";
 
 const Container = styled.div<any>`
   top: 130px;
@@ -12,7 +13,6 @@ const Container = styled.div<any>`
     top: 180.59px;
     width: ${({ isAdmin }) => (isAdmin ? "calc(100% - 15rem)" : "100%")};
     left: ${({ isAdmin }) => (isAdmin ? "15rem" : "0")};
-
   }
 `;
 
@@ -63,6 +63,9 @@ const IconContainer = styled.div`
 const UserData = styled.div``;
 
 const ProfilePage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { email, createdAt, role } = useAuthData();
 
   const formattedDate = createdAt
