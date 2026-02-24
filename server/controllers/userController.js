@@ -79,7 +79,7 @@ exports.deleteUser = asyncHandler(async (req, res) => {
 exports.getAllUsers = asyncHandler(async (req, res) => {
   const { email, sort } = req.query; // Pobieramy parametry z query stringa
   const filter = {};
-
+console.log(email, " sort")
   // 1. Wyszukiwanie po emailu (jeśli podano)
   if (email) {
     // Używamy wyrażenia regularnego (regex), aby wyszukiwanie było niewrażliwe na wielkość liter

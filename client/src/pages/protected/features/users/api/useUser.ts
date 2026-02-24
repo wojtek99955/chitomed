@@ -1,43 +1,40 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../../../../api/api";
+import { useEffect, useState } from "react";
 
-// Aktualizacja interfejsu zgodnie z danymi z backendu
 export interface User {
   _id: string;
   email: string;
   createdAt: string;
-  role: string; // Dodajemy pole role
-  // Dodaj inne pola, jeśli backend je zwraca (np. createdAt)
+  role: string;
 }
 
 /**
- * Funkcja asynchroniczna pobierająca dane użytkownika (pojedynczego lub listę).
- *
- * WAŻNE ZAŁOŻENIE:
- * 1. POBIERANIE LISTY (brak userId): Endpoint to /user, zwraca { users: [u1, u2, ...] }
- * 2. POBIERANIE POJEDYNCZEGO (z userId): Endpoint to /user?id={userId}, zwraca { users: [u1] }
- *
- * @param userId - Opcjonalne ID użytkownika.
- * @returns Promise, który zwraca pojedynczy obiekt User lub tablicę User[].
+ * Funkcja pobierająca dane z API
  */
-const getUsers = async (userId: string | undefined): Promise<User | User[]> => {
+const getUsers = async (
+  userId?: string,
+  email?: string,
+  sort?: string,
+): Promise<User | User[]> => {
   let url = "/user";
+  const params = new URLSearchParams();
 
-  // Jeśli podano ID, dodajemy je jako parametr zapytania
   if (userId) {
-    url = `${url}?id=${userId}`;
+    params.append("id", userId);
+  } else {
+    if (email) params.append("email", email);
+    if (sort) params.append("sort", sort);
   }
 
-  const response = await api.get(url);
+  const queryString = params.toString();
+  const finalUrl = queryString ? `${url}?${queryString}` : url;
 
-  // Struktura odpowiedzi z backendu: { count: number, message: string, users: User[] }
+  const response = await api.get(finalUrl);
   const data = response.data;
 
   if (!data || !Array.isArray(data.users)) {
-    // Rzucamy błąd, jeśli dane nie mają oczekiwanej struktury
-    throw new Error(
-      "Nieprawidłowy format danych z serwera. Oczekiwano pola 'users'.",
-    );
+    throw new Error("Nieprawidłowy format danych z serwera.");
   }
 
   const users: User[] = data.users.map((item: any) => ({
@@ -45,47 +42,67 @@ const getUsers = async (userId: string | undefined): Promise<User | User[]> => {
     email: item.email,
     role: item.role,
     createdAt: item.createdAt,
-
-    // Dodaj inne mapowane pola, jeśli są w interfejsie User
   }));
 
-  if (userId) {
-    // Jeśli szukaliśmy pojedynczego użytkownika, zwracamy pierwszy element tablicy.
-    // Jeśli lista jest pusta, rzucamy błąd (lub zwracamy undefined, zależnie od potrzeb).
-    const singleUser = users[0];
-    if (!singleUser) {
-      throw new Error(`Użytkownik o ID ${userId} nie został znaleziony.`);
-    }
-    return singleUser;
-  } else {
-    // Jeśli szukaliśmy listy, zwracamy całą tablicę.
-    return users;
-  }
+  return userId ? users[0] : users;
 };
 
+/**
+ * Hook useUsers - obsługuje reaktywne sortowanie i wyszukiwanie
+ */
 export const useUsers = (userId?: string) => {
-  // Klucz zapytania, który różnicuje cache
-  const queryKey = userId ? ["users", userId] : ["users"];
+  const queryClient = useQueryClient();
 
-  return useQuery({
+  // Pobieramy stany początkowe z localStorage
+  const [sort, setSort] = useState(
+    () => localStorage.getItem("users_sort_direction") || "newest",
+  );
+  const [email, setEmail] = useState(
+    () => localStorage.getItem("users_search_query") || "",
+  );
+
+  // Klucz zapytania reaguje na zmiany obu stanów
+  const queryKey = userId ? ["users", userId] : ["users", { email, sort }];
+
+  const query = useQuery({
     queryKey: queryKey,
-    queryFn: () => getUsers(userId),
-    enabled: true,
+    queryFn: () => getUsers(userId, email, sort),
     staleTime: 5 * 60 * 1000,
   });
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      // Przy każdej zmianie w localStorage aktualizujemy lokalne stany hooka
+      const newSort = localStorage.getItem("users_sort_direction") || "newest";
+      const newEmail = localStorage.getItem("users_search_query") || "";
+
+      setSort(newSort);
+      setEmail(newEmail);
+
+      // Odświeżamy dane w React Query
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    };
+
+    window.addEventListener("storage_change", handleStorageChange);
+    return () =>
+      window.removeEventListener("storage_change", handleStorageChange);
+  }, [queryClient]);
+
+  return query;
 };
 
+/**
+ * Hook do usuwania użytkownika
+ */
 export const useDeleteUser = () => {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (userId: string) => {
       const res = await api.delete(`/user/${userId}`);
-      console.log(res);
       return res.data;
     },
     onSuccess: () => {
-      // 🔥 TO JEST KLUCZ
       queryClient.invalidateQueries({ queryKey: ["users"] });
     },
   });

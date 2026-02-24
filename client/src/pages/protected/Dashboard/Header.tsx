@@ -12,6 +12,8 @@ import LanguageChangeDropdown from "../../../features/language/LanguageChangeDro
 import { useAuthData } from "../../../features/auth/useAuthData";
 import { ChitomedIcon } from "../../../assets/icons/ChitomedIcon";
 import { HiOutlineLogout } from "react-icons/hi";
+import SortDateUsers from "../features/users/components/SortDate";
+import SearchUser from "../features/users/components/SearchUser";
 
 const Container = styled.header<any>`
   padding: 0px 0;
@@ -211,6 +213,12 @@ const Header = () => {
           <>
             <Categories />
             <Searchbar />
+          </>
+        )}
+        {location.pathname === "/users" && (
+          <>
+            <SortDateUsers />
+            <SearchUser/>
           </>
         )}
       </SubHeader>
