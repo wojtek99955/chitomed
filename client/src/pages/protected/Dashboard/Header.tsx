@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-// import { motion, AnimatePresence } from "framer-motion";
 import { FaRegUser } from "react-icons/fa";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { logoutMutation } from "../../../features/auth/api/authApi";
 import { useLocation, useNavigate } from "react-router-dom";
-// import { MdLogout } from "react-icons/md";
 import Logo1 from "../../../assets/icons/Logo1";
 import Categories from "../features/categories/components/Categories";
 import Searchbar from "../features/Searchbar/Searchbar";
@@ -25,10 +23,7 @@ const Container = styled.header<any>`
   flex-direction: column;
   justify-content: space-around;
   margin: 0 1rem;
-
   background-color: white;
-  /* box-shadow: rgba(149, 157, 165, 0.3) 0px 8px 24px; */
-  /* border-bottom: 1px solid #e9eaed; */
   z-index: 100;
   border-bottom: 1px solid #e9eaed;
   @media ${device.laptop} {
@@ -51,7 +46,7 @@ const SubHeader = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 1.5rem;
-  @media ${device.laptop}{
+  @media ${device.laptop} {
     font-size: 1.8rem;
   }
 `;
@@ -72,7 +67,7 @@ const LogoutBtn = styled.button`
   cursor: pointer;
   transition: all 200ms;
   display: none;
-  @media ${device.laptop}{
+  @media ${device.laptop} {
     display: block;
   }
 
@@ -101,19 +96,18 @@ const LogoutIconContainer = styled.div`
   &:active {
     transform: scale(0.95);
   }
-  @media ${device.laptop}{
+  @media ${device.laptop} {
     display: none;
   }
 `;
 const LogoutIcon = styled(HiOutlineLogout)`
   font-size: 1.2rem;
-  color:white;
-
+  color: white;
 `;
 
 const Profile = styled.div`
   background-color: black;
-  margin-right: .7rem;
+  margin-right: 0.7rem;
   padding: 0.9rem;
   border-radius: 50%;
   cursor: pointer;
@@ -131,9 +125,7 @@ const Profile = styled.div`
   }
 `;
 
-const LogoWrapper = styled.div`
-
-`
+const LogoWrapper = styled.div``;
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

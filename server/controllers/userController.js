@@ -77,14 +77,31 @@ exports.deleteUser = asyncHandler(async (req, res) => {
 });
 
 exports.getAllUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({}).select("-password").sort({ createdAt: -1 });
+  const { email, sort } = req.query; // Pobieramy parametry z query stringa
+  const filter = {};
+
+  // 1. Wyszukiwanie po emailu (jeśli podano)
+  if (email) {
+    // Używamy wyrażenia regularnego (regex), aby wyszukiwanie było niewrażliwe na wielkość liter
+    // i mogło wyszukiwać fragmenty tekstu.
+    filter.email = { $regex: email, $options: "i" };
+  }
+
+  // 2. Obsługa sortowania
+  // Domyślnie ustawiamy od najnowszych (-1). Jeśli sort === 'oldest', zmieniamy na 1.
+  const sortDirection = sort === "oldest" ? 1 : -1;
+
+  const users = await User.find(filter)
+    .select("-password")
+    .sort({ createdAt: sortDirection });
+
   if (!users || users.length === 0) {
     res.status(404);
-    throw new Error("Nie znaleziono żadnych użytkowników.");
+    throw new Error("Nie znaleziono użytkowników spełniających kryteria.");
   }
 
   res.json({
-    message: "Pobrano wszystkich użytkowników.",
+    message: "Pobrano użytkowników.",
     count: users.length,
     users,
   });
