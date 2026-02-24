@@ -215,6 +215,10 @@ const MaterialPage = () => {
   const { data, isLoading, isError } = useMaterials(id);
   const material = data as Material | undefined;
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { data: categoriesData = [] } = useGetCategories();
   const { role } = useAuthData();
 
