@@ -8,9 +8,10 @@ import { BlockNoteEditor } from "@blocknote/core";
 import Loader from "./Loader";
 import { useGetCategories } from "../../categories/api/useGetCategories";
 import BottomNav from "../../../BottomNav"; // ← dodajemy BottomNav
+import { useAuthData } from "../../../../../features/auth/useAuthData";
 
 // Główny wrapper – pozwala na naturalny wzrost strony
-const Wrapper = styled.div`
+const Wrapper = styled.div<any>`
   display: flex;
   min-height: 100vh;
   flex-direction: column;
@@ -18,8 +19,8 @@ const Wrapper = styled.div`
   top: 10rem;
   @media ${device.laptop} {
     flex-direction: row;
-    width: calc(100% - 15rem);
-    left: 15rem;
+    width: ${({ isAdmin }) => (isAdmin ? "calc(100% - 15rem)" : "100%")};
+    left: ${({ isAdmin }) => (isAdmin ? "15rem" : "0")};
   }
 `;
 
@@ -216,6 +217,7 @@ const MaterialPage = () => {
   const material = data as Material | undefined;
 
   const { data: categoriesData = [] } = useGetCategories();
+  const { role } = useAuthData();
 
   const categoryName =
     categoriesData.find((cat: any) => cat._id === material?.categoryId)?.name ||
@@ -300,9 +302,11 @@ const MaterialPage = () => {
     convert();
   }, [material?.content, converterEditor]);
 
+  let isAdmin = role === "admin";
+
   if (isLoading) {
     return (
-      <Wrapper>
+      <Wrapper isAdmin={isAdmin}>
         <MainContent>
           <Container>
             <div></div>
@@ -317,7 +321,7 @@ const MaterialPage = () => {
 
   if (isLoading || isError || !material) {
     return (
-      <Wrapper>
+      <Wrapper isAdmin={isAdmin}>
         <MainContent>
           <Container>
             <ErrorBox>
@@ -331,7 +335,7 @@ const MaterialPage = () => {
   }
 
   return (
-    <Wrapper>
+    <Wrapper isAdmin={isAdmin}>
       <MainContent>
         <Container>
           <BackButton to="/dashboard">Back</BackButton>

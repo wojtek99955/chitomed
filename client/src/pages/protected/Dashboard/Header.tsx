@@ -101,6 +101,9 @@ const LogoutIconContainer = styled.div`
   &:active {
     transform: scale(0.95);
   }
+  @media ${device.laptop}{
+    display: none;
+  }
 `;
 const LogoutIcon = styled(HiOutlineLogout)`
   font-size: 1.2rem;

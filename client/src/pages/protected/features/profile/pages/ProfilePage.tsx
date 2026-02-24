@@ -1,29 +1,30 @@
 import styled from "styled-components";
 import { useAuthData } from "../../../../../features/auth/useAuthData";
-import Header from "../../../Dashboard/Header";
 import BottomNav from "../../../BottomNav";
 import { FaUser } from "react-icons/fa";
 import { device } from "../../../../../assets/device";
 
-const Container = styled.div``;
+const Container = styled.div<any>`
+  top: 130px;
+  position: relative;
+  padding: 2rem 1rem;
+  @media ${device.laptop} {
+    top: 180.59px;
+    width: ${({ isAdmin }) => (isAdmin ? "calc(100% - 15rem)" : "100%")};
+    left: ${({ isAdmin }) => (isAdmin ? "15rem" : "0")};
+
+  }
+`;
 
 const Wrapper = styled.div`
   display: flex;
 `;
 
-const ProfileContainer = styled.div`
-  top: 130px;
-  position: relative;
+const ProfileContainer = styled.div<any>`
   padding: 2rem 1rem;
   display: flex;
   margin: auto;
   justify-content: center;
-  @media ${device.laptop} {
-    top: 180.59px;
-    width: calc(100% - 15rem);
-    left: 15rem;
-    margin: unset;
-  }
 `;
 
 const Email = styled.div`
@@ -43,7 +44,7 @@ const Joined = styled.div`
 
 const UserIcon = styled(FaUser)`
   font-size: 3rem;
-  color:white;
+  color: white;
 `;
 
 const IconContainer = styled.div`
@@ -62,15 +63,15 @@ const IconContainer = styled.div`
 const UserData = styled.div``;
 
 const ProfilePage = () => {
-  const { email, createdAt } = useAuthData();
+  const { email, createdAt, role } = useAuthData();
 
   const formattedDate = createdAt
     ? new Date(createdAt).toLocaleDateString("pl-PL")
     : "No data";
 
+  const isAdmin = role === "admin";
   return (
-    <Container>
-      <Header />
+    <Container isAdmin={isAdmin}>
       <Wrapper>
         <ProfileContainer>
           <UserData>

@@ -4,7 +4,7 @@ import { useAuthData } from "../../../../../features/auth/useAuthData";
 import { Link } from "react-router-dom";
 import { device } from "../../../../../assets/device";
 // import { FaPlus } from "react-icons/fa";
-const Container = styled.div`
+const Container = styled.div<any>`
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -15,6 +15,8 @@ const Container = styled.div`
     flex-direction: row;
     width: calc(100% - 15rem);
     left: 15rem;
+    width: ${({ isAdmin }) => (isAdmin ? "calc(100% - 15rem)" : "100%")};
+    left: ${({ isAdmin }) => (isAdmin ? "15rem" : "0")};
   }
 `;
 export const AddButton = styled(Link)`
@@ -23,7 +25,7 @@ export const AddButton = styled(Link)`
   justify-content: center;
   gap: 0.5rem;
   height: fit-content;
-  padding: .7rem 2em;
+  padding: 0.7rem 2em;
   color: white;
   background-color: #d6dcf8;
   background-color: #2c50dc;
@@ -51,15 +53,17 @@ export const AddButton = styled(Link)`
 const MaterialsPage = () => {
   const { role } = useAuthData();
 
+  const isAdmin = role === "admin";
+
   return (
-    <Container>
-      {role === "admin" && (
+    <Container isAdmin={isAdmin}>
+      {isAdmin && (
         <AddButton to={"/add-material"}>
           {/* <FaPlus />  */}
           Add
         </AddButton>
       )}
-        <MaterialsList />
+      <MaterialsList />
     </Container>
   );
 };
