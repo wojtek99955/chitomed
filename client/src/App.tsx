@@ -15,6 +15,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import InProgressPage from "./pages/InProgressPage/InProgressPage";
 import ForgotPassword from "./pages/SignIn/ForgotPasswordForm";
 import ResetPasswordForm from "./pages/protected/ResetPasswordForm/ResetPasswordForm";
+import AdminRoute from "./features/auth/AdminRoute";
 
 const queryClient = new QueryClient();
 
@@ -29,18 +30,35 @@ function App() {
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
+          <Route
+            path="/reset-password/:token"
+            element={<ResetPasswordForm />}
+          />
 
           {/* Protected routes */}
           <Route element={<ProtectedRoute />}>
             <Route element={<MainLayout />}>
               <Route path="dashboard" element={<Dashboard />} />
-              <Route path="users" element={<UsersPage />} />
+              <Route
+                path="users"
+                element={
+                  <AdminRoute>
+                    <UsersPage />
+                  </AdminRoute>
+                }
+              />
               <Route path="users/:id" element={<User />} />
               <Route path="material/:id" element={<MaterialPage />} />
               <Route path="profile" element={<ProfilePage />} />
             </Route>
-            <Route path="add-material" element={<AddMaterialModal />} />
+            <Route
+              path="add-material"
+              element={
+                <AdminRoute>
+                  <AddMaterialModal />
+                </AdminRoute>
+              }
+            />
           </Route>
         </Routes>
       </Router>
