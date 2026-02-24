@@ -67,7 +67,7 @@ const IconButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: .9rem;
+  font-size: 0.9rem;
   transition: color 0.2s;
   aspect-ratio: 1/1;
   background-color: #2d50dc;
@@ -90,11 +90,13 @@ const Cover = styled.div`
   background-image: url("https://chitomed-files.b-cdn.net/background-gradient-tiny.webp");
   background-size: cover;
   overflow: hidden; /* Opcjonalnie, żeby nic nie wystawało */
-
+  user-select: none;
   img {
     width: 100%;
     height: 100%; /* TO JEST KLUCZOWE */
     object-fit: contain;
+    user-select: none;
+    pointer-events: none;
   }
 `;
 
