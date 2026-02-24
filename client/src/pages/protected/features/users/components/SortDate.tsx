@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { PiArrowsDownUp } from "react-icons/pi";
+import { device } from "../../../../../assets/device";
 
 // Klucz do localStorage dla sortowania
 const SORT_STORAGE_KEY = "users_sort_direction";
@@ -76,14 +77,17 @@ export default SortDateUsers;
 // --- STYLE (Spójne z Twoim komponentem Categories) ---
 
 const Wrapper = styled.div`
-  padding: 0 1rem;
   margin-left: auto;
+  width: 55%;
+  @media ${device.laptop}{
+    min-width: 150px;
+  }
 `;
 
 const DropdownContainer = styled.div`
   position: relative;
   width: 100%;
-  min-width: 140px;
+  /* min-width: 140px; */
 `;
 
 const DropdownButton = styled.button<{ $active: boolean }>`
@@ -110,7 +114,7 @@ const DropdownButton = styled.button<{ $active: boolean }>`
 
 const Arrows = styled(PiArrowsDownUp)`
   font-size: 1.2rem;
-  color: #64748b;
+  color: #2b2f5c;
 `;
 
 const Menu = styled.div`

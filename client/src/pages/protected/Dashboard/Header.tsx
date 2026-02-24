@@ -132,6 +132,7 @@ const FitlersWrapper = styled.div`
   display: none;
   @media ${device.laptop}{
     display: flex;
+    gap:1rem;
   }
 `;
 
