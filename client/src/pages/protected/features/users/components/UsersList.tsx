@@ -143,7 +143,6 @@ const FiltersWrapper = styled.div`
 display: flex;
 margin-bottom: 1.5rem;
 gap:1rem;
-border:1px solid red;
 @media ${device.laptop}{
   display: none;
 }
