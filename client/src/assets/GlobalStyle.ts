@@ -48,6 +48,10 @@ const GlobalStyle = createGlobalStyle`
     /* inne ustawienia */
   }
 
+  button,div{
+    -webkit-tap-highlight-color: transparent;
+  }
+
   h1 {
     font-size: 2.1rem;
     color: #444444;
