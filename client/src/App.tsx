@@ -8,7 +8,7 @@ import MainLayout from "./components/layout/MainLayout";
 import Dashboard from "./pages/protected/Dashboard/Dashboard";
 import UsersPage from "./pages/protected/features/users/pages/UsersPage";
 import User from "./pages/protected/features/users/pages/User";
-import MaterialPage from "./pages/protected/features/materials/pages/MaterialPage";
+import MaterialPage from "./pages/protected/features/materials/pages/MaterialPage/MaterialPage";
 import ProfilePage from "./pages/protected/features/profile/pages/ProfilePage";
 import AddMaterialModal from "./pages/protected/features/materials/components/AddMaterial";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

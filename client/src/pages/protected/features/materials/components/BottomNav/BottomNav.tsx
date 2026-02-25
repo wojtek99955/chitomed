@@ -2,12 +2,14 @@ import { useState, useRef, useEffect } from "react";
 import { MdOutlinePeopleOutline } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { device } from "../../assets/device";
+import { device } from "../../../../../../assets/device";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
-import { useAuthData } from "../../features/auth/useAuthData";
+import { useAuthData } from "../../../../../../features/auth/useAuthData";
 import { FaRegUser } from "react-icons/fa";
 import { RxVideo } from "react-icons/rx";
+import { useLanguage } from "../../../../../../features/auth/hooks/useLanguage";
+import { languages } from "./languages";
 
 const BottomNav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,6 +63,7 @@ const BottomNav = () => {
 
   const { role } = useAuthData();
   let isAdmin = role === "admin";
+  const lang = useLanguage()
 
   return (
     <Container
@@ -97,7 +100,7 @@ const BottomNav = () => {
                 }
                 // onClick={() => setIsOpen(false)}
               >
-                <ContentIcon /> <span>Treść</span>
+                <ContentIcon /> <span>{languages.content[lang]}</span>
               </Link>
               {isAdmin && (
                 <Link
@@ -106,7 +109,7 @@ const BottomNav = () => {
                   // onClick={() => setIsOpen(false)}
                 >
                   <PeopleIcon />
-                  <span>Użytkownicy</span>
+                  <span>{languages.users[lang]}</span>
                 </Link>
               )}
               <Link
@@ -115,7 +118,7 @@ const BottomNav = () => {
                 // onClick={() => setIsOpen(false)}
               >
                 <ProfileIcon />
-                <span>Profil</span>
+                <span>{languages.profile[lang]}</span>
               </Link>
             </LinksContainer>
           )}

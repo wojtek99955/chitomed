@@ -2,7 +2,7 @@
 import styled from "styled-components";
 import Sidebar from "../../pages/protected/Dashboard/Sidebar";
 import { Outlet } from "react-router-dom";
-import BottomNav from "../../pages/protected/BottomNav";
+import BottomNav from "../../pages/protected/features/materials/components/BottomNav/BottomNav";
 import Header from "../../pages/protected/Dashboard/Header";
 
 const LayoutWrapper = styled.div`

@@ -1,14 +1,15 @@
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { FaExclamationTriangle } from "react-icons/fa";
-import { useMaterials, type Material } from "../api/useMaterial";
-import { device } from "../../../../../assets/device";
+import { useMaterials, type Material } from "../../api/useMaterial";
+import { device } from "../../../../../../assets/device";
 import { useEffect, useState, useMemo } from "react";
 import { BlockNoteEditor } from "@blocknote/core";
-import Loader from "./Loader";
-import { useGetCategories } from "../../categories/api/useGetCategories";
-import { useAuthData } from "../../../../../features/auth/useAuthData";
-import { useLanguage } from "../../../../../features/auth/hooks/useLanguage";
+import Loader from "../Loader";
+import { useGetCategories } from "../../../categories/api/useGetCategories";
+import { useAuthData } from "../../../../../../features/auth/useAuthData";
+import { useLanguage } from "../../../../../../features/auth/hooks/useLanguage";
+import { languages } from "./languages";
 
 const Wrapper = styled.div<any>`
   display: flex;
@@ -347,7 +348,7 @@ const categoryName = getCategoryDisplayName();
     <Wrapper isAdmin={isAdmin}>
       <MainContent>
         <Container>
-          <BackButton to="/dashboard">Back</BackButton>
+          <BackButton to="/dashboard"> {languages.back[lang]}</BackButton>
 
           <Meta mobile>
             Created:{" "}
@@ -371,7 +372,7 @@ const categoryName = getCategoryDisplayName();
           </ContentWrapper>
 
           <Meta>
-            Created:{" "}
+            {languages.created[lang]}
             {new Date(material.createdAt).toLocaleDateString("en-EN", {
               day: "numeric",
               month: "long",

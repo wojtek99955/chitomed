@@ -14,6 +14,8 @@ import { ChitomedIcon } from "../../../assets/icons/ChitomedIcon";
 import { HiOutlineLogout } from "react-icons/hi";
 import SortDateUsers from "../features/users/components/SortDate";
 import SearchUser from "../features/users/components/SearchUser";
+import { useLanguage } from "../../../features/auth/hooks/useLanguage";
+import { languages } from "./Header/languages";
 
 const Container = styled.header<any>`
   padding: 0px 0;
@@ -145,7 +147,7 @@ const Header = () => {
   let navigate = useNavigate();
   const { role } = useAuthData();
   let isAdmin = role === "admin";
-
+let lang = useLanguage();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const logoutMutationHook = useMutation({
@@ -192,9 +194,9 @@ const Header = () => {
   const getSubHeaderTitle = () => {
     const path = location.pathname;
 
-    if (path.startsWith("/dashboard")) return "Chitomed materials";
-    if (path.startsWith("/profile")) return "Profile";
-    if (path.startsWith("/users")) return "Users list";
+    if (path.startsWith("/dashboard")) return languages.materialsTitle[lang];
+    if (path.startsWith("/profile")) return languages.profile[lang];
+    if (path.startsWith("/users")) return languages.users[lang];;
 
     // Opcjonalnie: obsługa detali materiału (np. /material/123)
     if (path.startsWith("/material")) return "Material details";
