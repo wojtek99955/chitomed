@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useGetCategories } from "../api/useGetCategories";
 import Category from "./Category";
@@ -37,12 +37,31 @@ const Categories = () => {
     ? "..."
     : getSafeName(selectedCategory);
 
-    const handleSelect = (id: string) => {
-      localStorage.setItem(STORAGE_KEY, id);
-      setSelectedId(id);
-      setIsOpen(false);
-      window.dispatchEvent(new Event("storage_change"));
+  const handleSelect = (id: string) => {
+    localStorage.setItem(STORAGE_KEY, id);
+    setSelectedId(id);
+    setIsOpen(false);
+    window.dispatchEvent(new Event("storage_change"));
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
     };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
     <Wrapper>
@@ -110,9 +129,9 @@ const DropdownButton = styled.button<{ $active: boolean }>`
 `;
 
 const Arrows = styled(PiArrowsDownUp)`
-font-size: 1.3rem;
-color:black;
-`
+  font-size: 1.3rem;
+  color: black;
+`;
 
 const Menu = styled.div`
   position: absolute;

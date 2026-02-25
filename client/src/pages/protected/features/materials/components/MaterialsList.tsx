@@ -74,11 +74,8 @@ const MaterialsList = () => {
     const handleFilterChange = () => {
       setFilterId(localStorage.getItem(STORAGE_KEY));
     };
-
     window.addEventListener("click", handleFilterChange);
-    // Opcjonalnie: nasłuchiwanie zmian z innych kart/okien
     window.addEventListener("storage", handleFilterChange);
-
     return () => {
       window.removeEventListener("click", handleFilterChange);
       window.removeEventListener("storage", handleFilterChange);

@@ -51,6 +51,9 @@ const Category = styled.div`
   color: #2d50dc;
   text-transform: uppercase;
   max-width: 150px;
+  border-radius: 6px;
+  font-size: .8rem;
+  padding:.3rem;
 `;
 
 const Actions = styled.div`
@@ -90,11 +93,11 @@ const Cover = styled.div`
   height: 12rem;
   background-image: url("https://chitomed-files.b-cdn.net/background-gradient-tiny.webp");
   background-size: cover;
-  overflow: hidden; /* Opcjonalnie, żeby nic nie wystawało */
+  overflow: hidden; 
   user-select: none;
   img {
     width: 100%;
-    height: 100%; /* TO JEST KLUCZOWE */
+    height: 100%;
     object-fit: contain;
     user-select: none;
     pointer-events: none;
