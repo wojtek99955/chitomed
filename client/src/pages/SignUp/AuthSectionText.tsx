@@ -6,6 +6,7 @@ const Wrapper = styled.div`
   height: 100%;
   position: relative;
   display: none;
+  overflow: hidden;
   img {
     width: 100%;
     height: 100%;
@@ -28,14 +29,15 @@ const Wrapper = styled.div`
 
 const PillIcon = styled.div`
   svg {
-    filter: blur(17px);
-    width: 90%;
+    filter: blur(14px);
+    width: 100%;
+    transform: rotate(180deg);
   }
    position: absolute;
-   left: 0;
-   width: 100%;
-   height: 100%;
-   top: 0;
+   left: -30%;
+   width: 120%;
+   height: 120%;
+   top: 10%;
    display: flex;
    justify-content: center;
 `;
