@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import MaterialsPage from "../features/materials/pages/MaterialsPage";
+import MaterialsPage from "../features/materials/pages/MaterialsPage/MaterialsPage";
 import { device } from "../../../assets/device";
 import { useEffect } from "react";
 
