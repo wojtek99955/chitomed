@@ -3,7 +3,7 @@ import { device } from "./device";
 
 import Regular from "../assets/fonts/telegraf/PPTelegraf-Regular.otf";
 import Ultralight from "../assets/fonts/telegraf/PPTelegraf-Ultralight.otf";
-import Ultrabold from "../assets/fonts/telegraf/PPTelegraf-Ultrabold.otf";
+import Medium from "../assets/fonts/telegraf/PPTelegraf-Medium.otf";
 
 const GlobalStyle = createGlobalStyle`
   /* Reset / Normalize */
@@ -32,8 +32,8 @@ const GlobalStyle = createGlobalStyle`
 
   @font-face {
     font-family: 'PP Telegraf';
-    src: url(${Ultrabold}) format('opentype');
-    font-weight: 800; /* Ultrabold */
+    src: url(${Medium}) format('opentype');
+    font-weight: 500; /* Ultrabold */
     font-style: normal;
     font-display: swap;
   }
