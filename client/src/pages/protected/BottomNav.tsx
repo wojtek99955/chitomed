@@ -1,10 +1,13 @@
 import { useState, useRef, useEffect } from "react";
-import { MdMovieEdit, MdOutlinePeopleOutline } from "react-icons/md";
+import { MdOutlinePeopleOutline } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { device } from "../../assets/device";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuthData } from "../../features/auth/useAuthData";
+import { FaRegUser } from "react-icons/fa";
+import { RxVideo } from "react-icons/rx";
 
 const BottomNav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,8 +18,8 @@ const BottomNav = () => {
 
   const dashboardPath = "/dashboard";
   const usersPath = "/users";
+  const profilePath = "/profile";
 
-  // Logika scrollowania – pokazuje przy scroll w górę, chowa przy scroll w dół
   useEffect(() => {
     let ticking = false;
 
@@ -56,6 +59,9 @@ const BottomNav = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const { role } = useAuthData();
+  let isAdmin = role === "admin";
+
   return (
     <Container
       ref={navRef}
@@ -90,17 +96,26 @@ const BottomNav = () => {
                   currentPath === dashboardPath ? "true" : "false"
                 }
                 // onClick={() => setIsOpen(false)}
-                >
+              >
                 <ContentIcon /> <span>Treść</span>
               </Link>
-
-              <Link
-                to={usersPath}
-                data-is-active={currentPath === usersPath ? "true" : "false"}
-                // onClick={() => setIsOpen(false)}
+              {isAdmin && (
+                <Link
+                  to={usersPath}
+                  data-is-active={currentPath === usersPath ? "true" : "false"}
+                  // onClick={() => setIsOpen(false)}
                 >
-                <PeopleIcon />
-                <span>Użytkownicy</span>
+                  <PeopleIcon />
+                  <span>Użytkownicy</span>
+                </Link>
+              )}
+              <Link
+                to={profilePath}
+                data-is-active={currentPath === profilePath ? "true" : "false"}
+                // onClick={() => setIsOpen(false)}
+              >
+                <ProfileIcon />
+                <span>Profil</span>
               </Link>
             </LinksContainer>
           )}
@@ -199,6 +214,9 @@ const PeopleIcon = styled(MdOutlinePeopleOutline)`
   font-size: 1.4rem;
 `;
 
-const ContentIcon = styled(MdMovieEdit)`
+const ContentIcon = styled(RxVideo)`
   font-size: 1.4rem;
+`;
+const ProfileIcon = styled(FaRegUser)`
+  font-size: 1rem;
 `;

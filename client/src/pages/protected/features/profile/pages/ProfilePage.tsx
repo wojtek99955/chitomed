@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useAuthData } from "../../../../../features/auth/useAuthData";
-import BottomNav from "../../../BottomNav";
 import { FaUser } from "react-icons/fa";
 import { device } from "../../../../../assets/device";
 import { useEffect } from "react";
@@ -86,7 +85,6 @@ const ProfilePage = () => {
           </UserData>
         </ProfileContainer>
       </Wrapper>
-      <BottomNav />
     </Container>
   );
 };
