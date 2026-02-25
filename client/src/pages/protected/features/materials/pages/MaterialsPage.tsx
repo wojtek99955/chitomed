@@ -3,6 +3,8 @@ import MaterialsList from "../components/MaterialsList";
 import { useAuthData } from "../../../../../features/auth/useAuthData";
 import { Link } from "react-router-dom";
 import { device } from "../../../../../assets/device";
+import Categories from "../../categories/components/Categories";
+import Searchbar from "../../Searchbar/Searchbar";
 // import { FaPlus } from "react-icons/fa";
 const Container = styled.div<any>`
   display: flex;
@@ -50,6 +52,14 @@ export const AddButton = styled(Link)`
     transform: scale(1.01);
   }
 `;
+
+const Filters = styled.div`
+display: flex;
+gap: .5rem;
+@media ${device.laptop}{
+  display: none;
+}
+`
 const MaterialsPage = () => {
   const { role } = useAuthData();
 
@@ -63,6 +73,10 @@ const MaterialsPage = () => {
           Add
         </AddButton>
       )}
+      <Filters>
+        <Categories />
+        <Searchbar/>
+      </Filters>
       <MaterialsList />
     </Container>
   );
