@@ -1,9 +1,12 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
+import { useLanguage } from "../../../../features/auth/hooks/useLanguage";
+import { languages } from "./languages";
 
 const Searchbar = () => {
   const [query, setQuery] = useState("");
+  const lang = useLanguage();
 
   const handleClear = () => {
     setQuery("");
@@ -16,7 +19,7 @@ const Searchbar = () => {
       </IconWrapper>
       <StyledInput
         type="text"
-        placeholder="Search..."
+        placeholder={languages.placeholder[lang]}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
