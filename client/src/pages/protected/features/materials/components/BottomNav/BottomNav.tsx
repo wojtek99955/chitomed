@@ -98,7 +98,6 @@ const BottomNav = () => {
                 data-is-active={
                   currentPath === dashboardPath ? "true" : "false"
                 }
-                // onClick={() => setIsOpen(false)}
               >
                 <ContentIcon /> <span>{languages.content[lang]}</span>
               </Link>
@@ -106,7 +105,6 @@ const BottomNav = () => {
                 <Link
                   to={usersPath}
                   data-is-active={currentPath === usersPath ? "true" : "false"}
-                  // onClick={() => setIsOpen(false)}
                 >
                   <PeopleIcon />
                   <span>{languages.users[lang]}</span>
@@ -115,7 +113,6 @@ const BottomNav = () => {
               <Link
                 to={profilePath}
                 data-is-active={currentPath === profilePath ? "true" : "false"}
-                // onClick={() => setIsOpen(false)}
               >
                 <ProfileIcon />
                 <span>{languages.profile[lang]}</span>

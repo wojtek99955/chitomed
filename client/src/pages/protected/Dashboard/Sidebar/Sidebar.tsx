@@ -1,10 +1,12 @@
 import styled from "styled-components";
-import { device } from "../../../assets/device";
+import { device } from "../../../../assets/device";
 import { Link, useLocation } from "react-router-dom";
 import { RxVideo } from "react-icons/rx";
 import { PiUsersFour } from "react-icons/pi";
-import { useAuthData } from "../../../features/auth/useAuthData";
+import { useAuthData } from "../../../../features/auth/useAuthData";
 import { memo } from "react";
+import { languages } from "./languages";
+import { useLanguage } from "../../../../features/auth/hooks/useLanguage";
 
 const ACTIVE_BG_COLOR = "white";
 
@@ -78,6 +80,7 @@ const Sidebar = () => {
   const { role } = useAuthData();
   const location = useLocation();
   const currentPath = location.pathname;
+  const lang = useLanguage();
 
   const dashboardPath = "/dashboard";
   const usersPath = "/users";
@@ -94,28 +97,19 @@ const Sidebar = () => {
             <Link
               to={dashboardPath}
               data-is-active={currentPath === dashboardPath ? "true" : "false"}>
-              <ContentIcon /> Treść
+              <ContentIcon /> {languages.content[lang]}
             </Link>
             <Link
               to={usersPath}
               data-is-active={currentPath === usersPath ? "true" : "false"}>
               <PeopleIcon />
-              Użytkownicy
+              {languages.users[lang]}
             </Link>
           </Nav>
         </Container>
-      )}{" "}
+      )}
     </>
   );
 };
 
-/* Customowa funkcja porównująca:
-  Komponent NIE wyrenderuje się ponownie, jeśli propsy (których tu nie ma) 
-  się nie zmienią. 
-  
-  UWAGA: React.memo chroni przed renderem wywołanym przez rodzica. 
-  Ponieważ używasz useLocation() WEWNĄTRZ Sidebaru, Sidebar I TAK 
-  wyrenderuje się przy każdej zmianie trasy (co jest poprawne, 
-  bo musi zmienić aktywny link).
-*/
 export default memo(Sidebar, () => true); // ← brutalnie blokuje rerendery

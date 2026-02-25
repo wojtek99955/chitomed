@@ -159,7 +159,7 @@ const EditMaterial: React.FC<EditMaterialProps> = ({ material, setIsOpen }) => {
                 </option>
                 {categories.map((cat: any) => (
                   <option key={cat._id} value={cat._id}>
-                    {cat.name}
+                    {cat.name.pl}
                   </option>
                 ))}
               </Field>

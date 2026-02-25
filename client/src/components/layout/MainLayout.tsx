@@ -1,6 +1,6 @@
 // MainLayout.tsx
 import styled from "styled-components";
-import Sidebar from "../../pages/protected/Dashboard/Sidebar";
+import Sidebar from "../../pages/protected/Dashboard/Sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
 import BottomNav from "../../pages/protected/features/materials/components/BottomNav/BottomNav";
 import Header from "../../pages/protected/Dashboard/Header";
