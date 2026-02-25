@@ -17,6 +17,7 @@ import ForgotPassword from "./pages/SignIn/ForgotPasswordForm";
 import ResetPasswordForm from "./pages/protected/ResetPasswordForm/ResetPasswordForm";
 import AdminRoute from "./features/auth/AdminRoute";
 import { useEffect } from "react";
+import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ function App() {
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<InProgressPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
