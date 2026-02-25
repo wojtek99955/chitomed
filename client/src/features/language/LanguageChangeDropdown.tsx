@@ -2,7 +2,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import styled from "styled-components";
 
-
 const Wrapper = styled.div`
   border-right: 1px solid grey;
   margin-left: auto;
@@ -11,14 +10,13 @@ const Wrapper = styled.div`
 `;
 const Container = styled.div`
   position: relative;
-  z-index: 1;
+  z-index: 10;
   height: 100%;
   display: flex;
   align-items: center;
-
 `;
 
-const CurrentLanguage = styled.div<any>`
+const CurrentLanguage = styled.div<{ showList: boolean }>`
   border: 2px solid white;
   border-radius: 40px;
   padding: 0.7rem 1.8rem;
@@ -28,31 +26,18 @@ const CurrentLanguage = styled.div<any>`
   color: white;
   position: relative;
   z-index: 1;
-  background-color: #34186e;
   background-color: #58585a;
 
-  /* &:hover {
-    color: #322683;
-    background-color: white;
-    border-color: white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom: 1px solid #4339a2;
-  } */
   ${(props) =>
     props.showList &&
     `
     color: #34186E;
     background-color: white;
-    border-color: white;
+    border-color: #58585A;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    border: 2px solid #34186E;
-    border: 2px solid #58585A;
   `}
 `;
 
@@ -67,7 +52,7 @@ const LanguagesList = styled(motion.div)`
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   overflow: hidden;
-  top: 3rem;
+  top: 100%;
 `;
 
 const Language = styled.div`
@@ -79,44 +64,47 @@ const Language = styled.div`
   padding: 1rem 0;
   cursor: pointer;
   transition: all 200ms;
-  cursor: pointer;
+  color: #58585a;
   &:hover {
     background-color: #f3f2fa;
-  }
-  &:active {
-    background-color: #e9e7f6;
+    color: #34186e;
   }
 `;
 
 const LanguageChangeDropdown = () => {
   const [showList, setShowList] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState("PL");
+
+  const [currentLanguage, setCurrentLanguage] = useState(() => {
+    return localStorage.getItem("language") || "pl";
+  });
 
   const handleLanguageChange = (lang: string) => {
-    setCurrentLanguage(lang);
+    const lowerLang = lang.toLowerCase();
+    localStorage.setItem("language", lowerLang);
+    setCurrentLanguage(lowerLang);
     setShowList(false);
+    window.dispatchEvent(new Event("language_change"));
+    window.dispatchEvent(new Event("storage_change"));
   };
 
   return (
     <Wrapper>
-      <Container>
+      <Container onMouseLeave={() => setShowList(false)}>
         <CurrentLanguage
           showList={showList}
-          onMouseEnter={() => setShowList(true)}
-          onMouseLeave={() => setShowList(false)}>
-          {currentLanguage}
+          onMouseEnter={() => setShowList(true)}>
+          {currentLanguage.toUpperCase()}
         </CurrentLanguage>
+
         <AnimatePresence>
           {showList && (
             <LanguagesList
-              onMouseEnter={() => setShowList(true)}
-              onMouseLeave={() => setShowList(false)}
-              initial={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: -5 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2, delay: 0.03 }}>
-              <Language onClick={() => handleLanguageChange("PL")}>PL</Language>
-              <Language onClick={() => handleLanguageChange("EN")}>EN</Language>
+              exit={{ opacity: 0, y: -5 }}
+              transition={{ duration: 0.2 }}>
+              <Language onClick={() => handleLanguageChange("pl")}>PL</Language>
+              <Language onClick={() => handleLanguageChange("en")}>EN</Language>
             </LanguagesList>
           )}
         </AnimatePresence>

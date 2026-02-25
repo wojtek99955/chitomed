@@ -10,6 +10,7 @@ import DeleteConfirmation from "./DeleteConfirmation";
 import { useAuthData } from "../../../../../features/auth/useAuthData";
 import EditMaterial from "./EditMaterial";
 import { useGetCategories } from "../../categories/api/useGetCategories";
+import { useLanguage } from "../../../../../features/auth/hooks/useLanguage";
 
 const MaterialItemContainer = styled.div`
   background: white;
@@ -103,12 +104,36 @@ const Cover = styled.div`
 const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const lang = useLanguage();
+  const { mutate } = useDeleteMaterial();
+  const { role } = useAuthData();
+  const navigate = useNavigate();
+
+  const { data: categoriesData = [] } = useGetCategories();
+
+  const getCategoryDisplayName = () => {
+    const category = categoriesData.find(
+      (cat: any) => cat._id === material.categoryId,
+    );
+
+    if (!category) return lang === "pl" ? "Brak kategorii" : "No category";
+
+    if (typeof category.name === "string") return category.name;
+
+    return (
+      category.name?.[lang as "pl" | "en"] ||
+      category.name?.["pl"] ||
+      "Category"
+    );
+  };
+
+  const categoryName = getCategoryDisplayName();
+
   const handleEdit = (e: any) => {
     e.stopPropagation();
     setIsEditOpen(true);
-    console.log(`Editing material: ${material._id}`);
   };
-  const { mutate } = useDeleteMaterial();
 
   const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -124,27 +149,20 @@ const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
     setIsDeleteModalOpen(false);
   };
 
-  let navigate = useNavigate();
-
   const openMaterial = () => {
     navigate(`/material/${material._id}`);
   };
-  const { role } = useAuthData();
-
-  const { data: categoriesData = [] } = useGetCategories();
-
-  // 2. Znajdź nazwę kategorii na podstawie ID zapisanego w materiale
-  const categoryName =
-    categoriesData.find((cat: any) => cat._id === material.categoryId)?.name ||
-    "Brak kategorii";
 
   return (
     <>
       <MaterialItemContainer onClick={openMaterial}>
+        {/* Tutaj renderujemy już czysty string, nie obiekt */}
         <Category>{categoryName}</Category>
+
         <Cover>
           <img src="https://chitomed-files.b-cdn.net/Vector%20(1).svg" alt="" />
         </Cover>
+
         <ContentInfo>
           <Title>{material.title}</Title>
         </ContentInfo>
@@ -156,18 +174,20 @@ const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
             </IconButton>
             <IconButton
               className="delete-btn"
-              onClick={(e) => handleDeleteClick(e)}
+              onClick={handleDeleteClick}
               aria-label="Delete Material">
               <FaTrashAlt />
             </IconButton>
           </Actions>
         )}
       </MaterialItemContainer>
+
       <AnimatePresence>
         {isEditOpen && (
           <EditMaterial setIsOpen={setIsEditOpen} material={material} />
         )}
       </AnimatePresence>
+
       <AnimatePresence>
         {isDeleteModalOpen && (
           <DeleteConfirmation

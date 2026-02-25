@@ -16,10 +16,18 @@ import InProgressPage from "./pages/InProgressPage/InProgressPage";
 import ForgotPassword from "./pages/SignIn/ForgotPasswordForm";
 import ResetPasswordForm from "./pages/protected/ResetPasswordForm/ResetPasswordForm";
 import AdminRoute from "./features/auth/AdminRoute";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient();
 
 function App() {
+  useEffect(() => {
+    let language = localStorage.getItem("language");
+
+    if (!language) {
+      localStorage.setItem("language", "en");
+    }
+  });
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalStyle />

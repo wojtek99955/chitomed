@@ -8,8 +8,8 @@ import { BlockNoteEditor } from "@blocknote/core";
 import Loader from "./Loader";
 import { useGetCategories } from "../../categories/api/useGetCategories";
 import { useAuthData } from "../../../../../features/auth/useAuthData";
+import { useLanguage } from "../../../../../features/auth/hooks/useLanguage";
 
-// Główny wrapper – pozwala na naturalny wzrost strony
 const Wrapper = styled.div<any>`
   display: flex;
   min-height: 100vh;
@@ -23,7 +23,6 @@ const Wrapper = styled.div<any>`
   }
 `;
 
-// Kontener na treść – też rośnie naturalnie
 const MainContent = styled.div`
   flex: 1;
   display: flex;
@@ -38,7 +37,7 @@ const Container = styled.div`
   grid-template-columns: 1fr;
   padding: 1rem;
   gap: 1rem;
-  padding-bottom: 90px; /* miejsce na BottomNav na mobile */
+  padding-bottom: 90px; 
 
   @media ${device.laptop} {
     grid-template-columns: 1fr 800px 1fr;
@@ -214,7 +213,7 @@ const MaterialPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading, isError } = useMaterials(id);
   const material = data as Material | undefined;
-
+const lang = useLanguage();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -222,9 +221,18 @@ const MaterialPage = () => {
   const { data: categoriesData = [] } = useGetCategories();
   const { role } = useAuthData();
 
-  const categoryName =
-    categoriesData.find((cat: any) => cat._id === material?.categoryId)?.name ||
-    "Brak kategorii";
+const getCategoryDisplayName = () => {
+  const category = categoriesData.find(
+    (cat: any) => cat._id === material?.categoryId,
+  );
+  if (!category) return lang === "pl" ? "Brak kategorii" : "No category";
+
+  if (typeof category.name === "object") {
+    return category.name[lang] || category.name["pl"];
+  }
+};
+
+const categoryName = getCategoryDisplayName();
 
   const [htmlContent, setHtmlContent] = useState<string | null>(null);
 

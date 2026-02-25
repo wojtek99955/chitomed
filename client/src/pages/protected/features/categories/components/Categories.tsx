@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import styled from "styled-components";
 import { useGetCategories } from "../api/useGetCategories";
 import Category from "./Category";
 import { PiArrowsDownUp } from "react-icons/pi";
+import { useLanguage } from "../../../../../features/auth/hooks/useLanguage";
 
 const STORAGE_KEY = "selected_category_id";
 
@@ -10,48 +11,45 @@ const Categories = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const { data: categoriesData = [], isLoading } = useGetCategories();
-  const allCategories = [{ _id: "all", name: "Wszystko" }, ...categoriesData];
+  const lang = useLanguage();
 
-  // Pobieramy ID z localStorage (lub "all" jako domyślne)
+  const { data: categoriesData = [], isLoading } = useGetCategories();
+
+  const allCategories = [
+    { _id: "all", name: { en: "All", pl: "Wszystko" } },
+    ...categoriesData,
+  ];
+
   const [selectedId, setSelectedId] = useState(() => {
     return localStorage.getItem(STORAGE_KEY) || "all";
   });
 
-  // Znajdujemy nazwę wybranej kategorii do wyświetlenia na przycisku
-  const selectedCategoryName =
-    allCategories.find((c) => c._id === selectedId)?.name || "Kategoria";
+  const selectedCategory = allCategories.find((c) => c._id === selectedId);
 
-  const handleSelect = (id: string) => {
-    localStorage.setItem(STORAGE_KEY, id);
-    setSelectedId(id);
-    setIsOpen(false);
-
-    // Opcjonalnie: wymuszenie odświeżenia innych komponentów
-    window.dispatchEvent(new Event("storage_change"));
+  // PANCERNE WYCIĄGANIE NAZWY:
+  const getSafeName = (cat: any) => {
+    if (!cat || !cat.name) return "Category";
+    if (typeof cat.name === "string") return cat.name;
+    return cat.name[lang] || cat.name["pl"] || "Category";
   };
 
-  // Zamknij przy kliknięciu poza dropdownem
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
+  const selectedCategoryName = isLoading
+    ? "..."
+    : getSafeName(selectedCategory);
+
+    const handleSelect = (id: string) => {
+      localStorage.setItem(STORAGE_KEY, id);
+      setSelectedId(id);
+      setIsOpen(false);
+      window.dispatchEvent(new Event("storage_change"));
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   return (
     <Wrapper>
       <DropdownContainer ref={dropdownRef}>
         <DropdownButton onClick={() => setIsOpen(!isOpen)} $active={isOpen}>
-          <Arrows/>
-          <span>{isLoading ? "" : selectedCategoryName}</span>
-
+          <Arrows />
+          <span>{selectedCategoryName}</span>
         </DropdownButton>
 
         {isOpen && (
@@ -60,6 +58,7 @@ const Categories = () => {
               <Category
                 key={cat._id}
                 category={cat}
+                lang={lang}
                 isActive={selectedId === cat._id}
                 onSelect={() => handleSelect(cat._id)}
               />

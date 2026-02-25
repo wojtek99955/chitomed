@@ -21,15 +21,26 @@ const CategoryItem = styled.div<{ $active: boolean }>`
 `;
 
 interface CategoryProps {
-  category: { _id: string; name: string };
+  category: {
+    _id: string;
+    name: any; 
+  };
   isActive: boolean;
   onSelect: () => void;
+  lang: string;
 }
 
-const Category = ({ category, isActive, onSelect }: CategoryProps) => {
+const Category = ({ category, isActive, onSelect, lang }: CategoryProps) => {
+  const renderName = () => {
+    if (typeof category.name === "object" && category.name !== null) {
+      return category.name[lang] || category.name["pl"] || "Unnamed"; 
+    }
+    return "Unknown";
+  };
+
   return (
     <CategoryItem $active={isActive} onClick={onSelect}>
-      {category.name}
+      {renderName()}
     </CategoryItem>
   );
 };
