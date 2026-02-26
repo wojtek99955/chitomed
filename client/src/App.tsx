@@ -1,4 +1,3 @@
-// App.tsx
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import GlobalStyle from "./assets/GlobalStyle";
 import SignUp from "./features/auth/SignUp/SignUp";
@@ -13,7 +12,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import InProgressPage from "./pages/InProgressPage/InProgressPage";
 import ResetPasswordForm from "./features/auth/ResetPasswordForm/ResetPasswordForm";
 import AdminRoute from "./features/auth/AdminRoute";
-import { useEffect } from "react";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import AddMaterialModal from "./pages/protected/features/materials/components/AddMaterial/AddMaterial";
 import ForgotPassword from "./features/auth/SignIn/ForgotPasswordForm";
@@ -22,13 +20,6 @@ import SignIn from "./features/auth/SignIn/SignIn";
 const queryClient = new QueryClient();
 
 function App() {
-  useEffect(() => {
-    let language = localStorage.getItem("language");
-
-    if (!language) {
-      localStorage.setItem("language", "en");
-    }
-  });
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalStyle />
