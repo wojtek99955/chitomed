@@ -32,14 +32,15 @@ const LanguageChangeDropdown = () => {
     };
   }, [showList]);
 
-  const handleLanguageChange = (lang: string) => {
-    const lowerLang = lang.toLowerCase();
-    localStorage.setItem("language", lowerLang);
-    setCurrentLanguage(lowerLang);
-    setShowList(false);
-    window.dispatchEvent(new Event("language_change"));
-    window.dispatchEvent(new Event("storage_change"));
-  };
+const handleLanguageChange = (e: React.MouseEvent, lang: string) => {
+  e.stopPropagation(); // To kluczowa zmiana
+  const lowerLang = lang.toLowerCase();
+  localStorage.setItem("language", lowerLang);
+  setCurrentLanguage(lowerLang);
+  window.dispatchEvent(new Event("language_change"));
+  window.dispatchEvent(new Event("storage_change"));
+  setShowList(false);
+};
 
   return (
     <S.Wrapper ref={dropdownRef}>
@@ -60,10 +61,10 @@ const LanguageChangeDropdown = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -5 }}
               transition={{ duration: 0.2 }}>
-              <S.Language onClick={() => handleLanguageChange("pl")}>
+              <S.Language onClick={(e) => handleLanguageChange(e, "pl")}>
                 PL
               </S.Language>
-              <S.Language onClick={() => handleLanguageChange("en")}>
+              <S.Language onClick={(e) => handleLanguageChange(e, "en")}>
                 EN
               </S.Language>
             </S.LanguagesList>
