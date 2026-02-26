@@ -19,15 +19,21 @@ const BottomNav = () => {
 
   useEffect(() => {
     let ticking = false;
+
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const currentScrollY = window.scrollY;
+
+          // Scroll w górę → pokazujemy
           if (currentScrollY < lastScrollY.current) {
             setIsOpen(true);
-          } else if (currentScrollY > lastScrollY.current) {
+          }
+          // Scroll w dół → chowamy
+          else if (currentScrollY > lastScrollY.current) {
             setIsOpen(false);
           }
+
           lastScrollY.current = currentScrollY;
           ticking = false;
         });
@@ -39,6 +45,7 @@ const BottomNav = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Zamknij menu po kliknięciu poza nim
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (navRef.current && !navRef.current.contains(event.target as Node)) {
@@ -50,7 +57,7 @@ const BottomNav = () => {
   }, []);
 
   const { role } = useAuthData();
-  const isAdmin = role === "admin";
+  let isAdmin = role === "admin";
   const lang = useLanguage();
 
   return (
@@ -86,30 +93,27 @@ const BottomNav = () => {
                 data-is-active={
                   currentPath === dashboardPath ? "true" : "false"
                 }>
-                <S.IconWrapper>
-                  <S.ContentIcon />
-                </S.IconWrapper>
-                <span>{languages.content[lang]}</span>
+                <S.LinkContent>
+                  <S.ContentIcon /> <span>{languages.content[lang]}</span>
+                </S.LinkContent>
               </Link>
-
               {isAdmin && (
                 <Link
                   to={usersPath}
                   data-is-active={currentPath === usersPath ? "true" : "false"}>
-                  <S.IconWrapper>
+                  <S.LinkContent>
                     <S.PeopleIcon />
-                  </S.IconWrapper>
-                  <span>{languages.users[lang]}</span>
+                    <span>{languages.users[lang]}</span>
+                  </S.LinkContent>
                 </Link>
               )}
-
               <Link
                 to={profilePath}
                 data-is-active={currentPath === profilePath ? "true" : "false"}>
-                <S.IconWrapper>
+                <S.LinkContent>
                   <S.ProfileIcon />
-                </S.IconWrapper>
-                <span>{languages.profile[lang]}</span>
+                  <span>{languages.profile[lang]}</span>
+                </S.LinkContent>
               </Link>
             </S.LinksContainer>
           )}

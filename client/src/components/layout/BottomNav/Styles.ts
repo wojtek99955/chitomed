@@ -9,11 +9,11 @@ export const Container = styled.div`
   position: fixed;
   left: 1rem;
   bottom: 1rem;
-  background-color: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.68);
+  backdrop-filter: blur(4px);
   z-index: 1000;
   overflow: hidden;
-  height: 65px; /* Stała wysokość kontenera głównego */
+  min-height: 60px; /* Ustal minimalną wysokość */
   display: flex;
   align-items: center;
 
@@ -27,17 +27,9 @@ export const Nav = styled.div`
   align-items: center;
   height: 100%;
   width: 100%;
-  padding: 0 6px;
-  gap: 0.2rem;
+  padding: 0 5px;
+  gap: 0.5rem;
   white-space: nowrap;
-`;
-
-export const IconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 30px;
-  width: 100%;
 `;
 
 export const LinksContainer = styled.div`
@@ -45,25 +37,20 @@ export const LinksContainer = styled.div`
   flex: 1;
   justify-content: space-around;
   align-items: center;
-  height: 100%;
 
   a {
     text-decoration: none;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     color: white;
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     transition: all 0.2s;
-    padding: 4px;
     border-radius: 28px;
-    flex: 1;
-    height: 54px;
+    width: 100%;
+    height: 50px;
 
     span {
-      margin-top: 2px;
-      font-weight: 500;
     }
 
     &[data-is-active="true"] {
@@ -78,8 +65,8 @@ export const LinksContainer = styled.div`
 `;
 
 export const HamburgerWrapper = styled.div<{ $active: boolean }>`
-  min-width: 48px;
-  height: 48px;
+  min-width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -95,13 +82,22 @@ export const Hamburger = styled(HiOutlineMenuAlt1)`
 `;
 
 export const PeopleIcon = styled(MdOutlinePeopleOutline)`
-  font-size: 1.8rem;
-`;
-
-export const ContentIcon = styled(RxVideo)`
   font-size: 1.5rem;
 `;
 
+export const ContentIcon = styled(RxVideo)`
+  font-size: 1.4rem;
+`;
 export const ProfileIcon = styled(FaRegUser)`
-  font-size: 1.25rem;
+  font-size: 1rem;
+`;
+
+export const LinkContent = styled.div`
+  height: 39px;
+  /* border:1px solid yellow; */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 `;
