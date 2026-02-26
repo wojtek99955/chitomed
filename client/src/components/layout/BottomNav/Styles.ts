@@ -89,7 +89,7 @@ export const ContentIcon = styled(RxVideo)`
   font-size: 1.4rem;
 `;
 export const ProfileIcon = styled(FaRegUser)`
-  font-size: 1rem;
+  font-size: 1.15rem;
 `;
 
 export const LinkContent = styled.div`
