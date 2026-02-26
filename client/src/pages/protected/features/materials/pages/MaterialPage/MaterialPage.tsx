@@ -7,8 +7,8 @@ import { useEffect, useState, useMemo } from "react";
 import { BlockNoteEditor } from "@blocknote/core";
 import Loader from "../Loader";
 import { useGetCategories } from "../../../categories/api/useGetCategories";
-import { useAuthData } from "../../../../../../features/auth/useAuthData";
-import { useLanguage } from "../../../../../../features/auth/hooks/useLanguage";
+import { useAuthData } from "../../../../../../features/auth/hooks/useAuthData";
+import { useLanguage } from "../../../../../../features/language/useLanguage";
 import { languages } from "./languages";
 
 const Wrapper = styled.div<any>`

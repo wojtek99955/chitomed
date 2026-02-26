@@ -2,13 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import { MdOutlinePeopleOutline } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { device } from "../../../../../../assets/device";
+import { device } from "../../../assets/device";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
-import { useAuthData } from "../../../../../../features/auth/useAuthData";
+import { useAuthData } from "../../../features/auth/hooks/useAuthData";
 import { FaRegUser } from "react-icons/fa";
 import { RxVideo } from "react-icons/rx";
-import { useLanguage } from "../../../../../../features/auth/hooks/useLanguage";
+import { useLanguage } from "../../../features/language/useLanguage";
 import { languages } from "./languages";
 
 const BottomNav = () => {

@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { pillIcon } from "../../features/auth/SignIn/pillIcon";
-import { device } from "../../assets/device";
+import { device } from "../../../assets/device";
+import { pillIcon } from "../SignIn/pillIcon";
 
 const Wrapper = styled.div`
   height: 100%;

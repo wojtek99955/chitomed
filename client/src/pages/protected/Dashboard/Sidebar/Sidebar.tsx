@@ -3,10 +3,10 @@ import { device } from "../../../../assets/device";
 import { Link, useLocation } from "react-router-dom";
 import { RxVideo } from "react-icons/rx";
 import { PiUsersFour } from "react-icons/pi";
-import { useAuthData } from "../../../../features/auth/useAuthData";
+import { useAuthData } from "../../../../features/auth/hooks/useAuthData";
 import { memo } from "react";
 import { languages } from "./languages";
-import { useLanguage } from "../../../../features/auth/hooks/useLanguage";
+import { useLanguage } from "../../../../features/language/useLanguage";
 
 const ACTIVE_BG_COLOR = "white";
 

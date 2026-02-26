@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 import { FaArrowRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { device } from "../../../assets/device";
+import { device } from "../../../../assets/device";
 
 export const FormContainer = styled.div`
   width: 95%;

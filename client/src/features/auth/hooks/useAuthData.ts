@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { jwtDecode } from "jwt-decode";
-import { api } from "../../api/api";
+import { api } from "../../../api/api";
 
 interface MyJwtPayload {
   id: string;

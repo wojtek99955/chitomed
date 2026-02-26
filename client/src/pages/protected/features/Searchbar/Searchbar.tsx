@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
-import { useLanguage } from "../../../../features/auth/hooks/useLanguage";
+import { useLanguage } from "../../../../features/language/useLanguage";
 import { languages } from "./languages";
 
 const Searchbar = () => {

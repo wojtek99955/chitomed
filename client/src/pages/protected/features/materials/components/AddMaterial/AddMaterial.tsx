@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useAddMaterial } from "../api/useAddMaterial";
-import { useGetCategories } from "../../categories/api/useGetCategories";
 import { useCreateBlockNote } from "@blocknote/react";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/core/fonts/inter.css";
@@ -21,10 +19,12 @@ import {
   CloseIcon,
   ErrorText,
   SubmitButton,
-} from "./AddMaterial/Styles";
+} from "./Styles";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { pl } from "@blocknote/core/locales";
+import { useAddMaterial } from "../../api/useAddMaterial";
+import { useGetCategories } from "../../../categories/api/useGetCategories";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // ────────────────────────────────────────────────

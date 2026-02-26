@@ -3,9 +3,9 @@ import * as Yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "../../../api/api";
 import { useState } from "react";
-import { logo } from "../../SignIn/logo";
-import Footer from "../../SignIn/Footer";
 import * as S from "./Styles";
+import { logo } from "../SignIn/logo";
+import Footer from "../SignIn/Footer";
 
 const ForgotSchema = Yup.object().shape({
   email: Yup.string()

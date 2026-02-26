@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useAuthData } from "../../../../../features/auth/useAuthData";
+import { useAuthData } from "../../../../../features/auth/hooks/useAuthData";
 import { FaUser } from "react-icons/fa";
 import { device } from "../../../../../assets/device";
 import { useEffect } from "react";

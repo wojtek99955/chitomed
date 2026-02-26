@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuthData } from "./useAuthData";
+import { useAuthData } from "./hooks/useAuthData";
 
 interface AdminRouteProps {
   children: React.ReactNode;

@@ -1,8 +1,7 @@
 // App.tsx
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import GlobalStyle from "./assets/GlobalStyle";
-import SignIn from "./pages/SignIn/SignIn";
-import SignUp from "./pages/SignUp/SignUp";
+import SignUp from "./features/auth/SignUp/SignUp";
 import ProtectedRoute from "./features/auth/ProtectedRoute";
 import MainLayout from "./components/layout/MainLayout";
 import Dashboard from "./pages/protected/Dashboard/Dashboard";
@@ -10,14 +9,15 @@ import UsersPage from "./pages/protected/features/users/pages/UsersPage";
 import User from "./pages/protected/features/users/pages/User";
 import MaterialPage from "./pages/protected/features/materials/pages/MaterialPage/MaterialPage";
 import ProfilePage from "./pages/protected/features/profile/pages/ProfilePage";
-import AddMaterialModal from "./pages/protected/features/materials/components/AddMaterial";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import InProgressPage from "./pages/InProgressPage/InProgressPage";
-import ForgotPassword from "./pages/SignIn/ForgotPasswordForm";
-import ResetPasswordForm from "./pages/protected/ResetPasswordForm/ResetPasswordForm";
+import ResetPasswordForm from "./features/auth/ResetPasswordForm/ResetPasswordForm";
 import AdminRoute from "./features/auth/AdminRoute";
 import { useEffect } from "react";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
+import AddMaterialModal from "./pages/protected/features/materials/components/AddMaterial/AddMaterial";
+import ForgotPassword from "./features/auth/SignIn/ForgotPasswordForm";
+import SignIn from "./features/auth/SignIn/SignIn";
 
 const queryClient = new QueryClient();
 

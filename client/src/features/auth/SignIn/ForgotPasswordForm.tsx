@@ -1,5 +1,5 @@
-import ForgotPasswordForm from "../protected/ForgotPassword/ForgotPasswordForm";
-import AuthSectionText from "../../features/auth/SignUp/AuthSectionText";
+import AuthSectionText from "../SignUp/AuthSectionText";
+import ForgotPasswordForm from "../ForgotPassword/ForgotPasswordForm";
 import * as S from "./Styles";
 
 const ForgotPassword = () => {

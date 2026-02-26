@@ -7,10 +7,10 @@ import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useDeleteMaterial } from "../api/useDeleteMaterial";
 import DeleteConfirmation from "./DeleteConfirmation";
-import { useAuthData } from "../../../../../features/auth/useAuthData";
+import { useAuthData } from "../../../../../features/auth/hooks/useAuthData";
 import EditMaterial from "./EditMaterial";
 import { useGetCategories } from "../../categories/api/useGetCategories";
-import { useLanguage } from "../../../../../features/auth/hooks/useLanguage";
+import { useLanguage } from "../../../../../features/language/useLanguage";
 
 const MaterialItemContainer = styled.div`
   background: white;

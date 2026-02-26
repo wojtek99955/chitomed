@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import MaterialsList from "../../components/MaterialsList";
-import { useAuthData } from "../../../../../../features/auth/useAuthData";
+import { useAuthData } from "../../../../../../features/auth/hooks/useAuthData";
 import { Link } from "react-router-dom";
 import { device } from "../../../../../../assets/device";
 import Categories from "../../../categories/components/Categories";
 import Searchbar from "../../../Searchbar/Searchbar";
 import { languages } from "./languages";
-import { useLanguage } from "../../../../../../features/auth/hooks/useLanguage";
+import { useLanguage } from "../../../../../../features/language/useLanguage";
 const Container = styled.div<any>`
   display: flex;
   flex-direction: column;

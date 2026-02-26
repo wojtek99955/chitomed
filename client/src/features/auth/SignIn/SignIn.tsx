@@ -1,7 +1,7 @@
-import SignInForm from "../../features/auth/components/SignInForm";
 import AuthSectionText from "../SignUp/AuthSectionText";
+import SignInForm from "../components/SignInForm/SignInForm";
+import useRedirectWhenLogged from "../hooks/redirectWhenLogged";
 import Footer from "./Footer";
-import useRedirectWhenLogged from "../../features/auth/hooks/redirectWhenLogged";
 import * as S from "./Styles";
 
 const SignIn = () => {

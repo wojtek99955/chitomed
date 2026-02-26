@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { device } from "../../assets/device";
+import { device } from "../../../assets/device";
 
 export const FooterContainer = styled.div`
   display: flex;

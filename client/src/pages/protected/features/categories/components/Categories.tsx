@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useGetCategories } from "../api/useGetCategories";
 import Category from "./Category";
 import { PiArrowsDownUp } from "react-icons/pi";
-import { useLanguage } from "../../../../../features/auth/hooks/useLanguage";
+import { useLanguage } from "../../../../../features/language/useLanguage";
 
 const STORAGE_KEY = "selected_category_id";
 

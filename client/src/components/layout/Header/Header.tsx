@@ -5,17 +5,17 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { logoutMutation } from "../../../features/auth/api/authApi";
 import { useLocation, useNavigate } from "react-router-dom";
 import Logo1 from "../../../assets/icons/Logo1";
-import Categories from "../features/categories/components/Categories";
-import Searchbar from "../features/Searchbar/Searchbar";
+import Categories from "../../../pages/protected/features/categories/components/Categories";
+import Searchbar from "../../../pages/protected/features/Searchbar/Searchbar";
 import { device } from "../../../assets/device";
 import LanguageChangeDropdown from "../../../features/language/LanguageChangeDropdown";
-import { useAuthData } from "../../../features/auth/useAuthData";
+import { useAuthData } from "../../../features/auth/hooks/useAuthData";
 import { ChitomedIcon } from "../../../assets/icons/ChitomedIcon";
 import { HiOutlineLogout } from "react-icons/hi";
-import SortDateUsers from "../features/users/components/SortDate";
-import SearchUser from "../features/users/components/SearchUser";
-import { useLanguage } from "../../../features/auth/hooks/useLanguage";
-import { languages } from "./Header/languages";
+import SortDateUsers from "../../../pages/protected/features/users/components/SortDate";
+import SearchUser from "../../../pages/protected/features/users/components/SearchUser";
+import { useLanguage } from "../../../features/language/useLanguage";
+import { languages } from "./languages";
 
 const Container = styled.header<any>`
   padding: 0px 0;

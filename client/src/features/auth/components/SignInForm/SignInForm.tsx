@@ -5,12 +5,12 @@ import {
   loginMutation,
   type LoginCredentials,
   type LoginResponse,
-} from "../api/authApi";
+} from "../../api/authApi";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { logo } from "../../../pages/SignIn/logo";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import * as S from "./Styles";
+import { logo } from "../../SignIn/logo";
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string()

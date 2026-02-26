@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuthData } from "./useAuthData";
+import { useAuthData } from "./hooks/useAuthData";
 
 interface ProtectedRouteProps {
   redirectPath?: string;
