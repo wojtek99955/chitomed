@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   bottom: 0;
   border: 100%;
   padding: 1rem;
+  min-height: 100vh;
   @media ${device.laptop} {
     top: 160px;
   }
