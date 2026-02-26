@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   padding: 1rem;
   min-height: 100vh;
   @media ${device.laptop} {
-    top: 160px;
+    top: 170px;
   }
 `;
 
