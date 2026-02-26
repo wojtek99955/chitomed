@@ -56,6 +56,9 @@ export const Language = styled.div`
   color: #58585a;
   &:hover {
     color: #34186e;
+    background-color: #f4f5fa;
+  }
+  &:active {
     background-color: #e7eaf5;
   }
 `;
