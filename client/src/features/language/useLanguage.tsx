@@ -1,13 +1,18 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export const useLanguage = () => {
-  const [lang, setLang] = useState(
-    () => localStorage.getItem("language") || "pl",
-  );
+type Language = "pl" | "en";
+
+export const useLanguage = (): Language => {
+  const getValidLang = (): Language => {
+    const stored = localStorage.getItem("language");
+    return stored === "pl" || stored === "en" ? stored : "pl";
+  };
+
+  const [lang, setLang] = useState<Language>(getValidLang);
 
   useEffect(() => {
     const handleUpdate = () => {
-      setLang(localStorage.getItem("language") || "pl");
+      setLang(getValidLang());
     };
 
     window.addEventListener("language_change", handleUpdate);
@@ -19,5 +24,5 @@ export const useLanguage = () => {
     };
   }, []);
 
-  return lang as "pl" | "en";
+  return lang;
 };
