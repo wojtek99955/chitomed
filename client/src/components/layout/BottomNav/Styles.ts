@@ -1,10 +1,10 @@
-import { FaRegUser } from "react-icons/fa";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
 // import { MdOutlinePeopleOutline } from "react-icons/md";
 import { RxVideo } from "react-icons/rx";
 import styled from "styled-components";
 import { device } from "../../../assets/device";
 import { HiOutlineUsers } from "react-icons/hi2";
+import { HiOutlineUser } from "react-icons/hi";
 
 export const Container = styled.div`
   position: fixed;
@@ -89,8 +89,8 @@ export const PeopleIcon = styled(HiOutlineUsers)`
 export const ContentIcon = styled(RxVideo)`
   font-size: 1.4rem;
 `;
-export const ProfileIcon = styled(FaRegUser)`
-  font-size: 1.2rem;
+export const ProfileIcon = styled(HiOutlineUser)`
+  font-size: 1.37rem;
 `;
 
 export const LinkContent = styled.div`
