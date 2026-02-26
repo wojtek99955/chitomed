@@ -1,69 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import styled from "styled-components";
 import { api } from "../../../api/api";
-
-const Container = styled.div`
-  max-width: 450px;
-  margin: 4rem auto;
-  padding: 2.5rem;
-  border-radius: 16px;
-  color: white;
-`;
-
-const Title = styled.h2`
-  text-align: center;
-  margin-bottom: 1.5rem;
-`;
-
-const Input = styled(Field)<{ $error?: boolean }>`
-  width: 100%;
-  padding: 0.8rem 1rem;
-  margin-top: 0.3rem;
-  margin-bottom: 1rem;
-  border-radius: 8px;
-  border: 1px solid ${({ $error }) => ($error ? "#ff8181" : "#ccc")};
-  font-size: 1rem;
-  transition: all 200ms;
-
-  &:focus {
-    outline: none;
-    border-color: ${({ $error }) => ($error ? "#ff8181" : "#5069d41")};
-  }
-`;
-
-const Button = styled.button<{ $loading?: boolean }>`
-  width: 100%;
-  padding: 1rem;
-  margin-top: 2rem;
-  background: #5069d4;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: ${({ $loading }) => ($loading ? "not-allowed" : "pointer")};
-  opacity: ${({ $loading }) => ($loading ? 0.7 : 1)};
-`;
-
-const ErrorText = styled.div`
-  color: #ff8181;
-  font-size: 0.9rem;
-  margin-top: -0.5rem;
-  margin-bottom: 1rem;
-`;
-
-const SuccessMessage = styled.div`
-  color: #009a00;
-  font-size: 1rem;
-  margin-top: 1rem;
-  text-align: center;
-  background: rgba(0, 100, 0, 0.11);
-  padding: 0.8rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-`;
+import * as S from "./Styles";
 
 const ResetSchema = Yup.object().shape({
   newPassword: Yup.string()
@@ -90,22 +30,22 @@ const ResetPasswordForm = () => {
 
   if (!token && !success) {
     return (
-      <Container>
-        <Title>Reset Password</Title>
-        <ErrorText>{serverError || "Loading..."}</ErrorText>
-      </Container>
+      <S.Container>
+        <S.Title>Reset Password</S.Title>
+        <S.ErrorText>{serverError || "Loading..."}</S.ErrorText>
+      </S.Container>
     );
   }
 
   return (
-    <Container>
-      <Title>Set New Password</Title>
+    <S.Container>
+      <S.Title>Set New Password</S.Title>
 
       {success ? (
-        <SuccessMessage>
+        <S.SuccessMessage>
           Password has been changed successfully! <br />
           Redirecting to sign in...
-        </SuccessMessage>
+        </S.SuccessMessage>
       ) : (
         <Formik
           initialValues={{ newPassword: "", confirmPassword: "" }}
@@ -132,36 +72,36 @@ const ResetPasswordForm = () => {
           {({ isSubmitting, errors, touched }) => (
             <Form>
               <div>
-                <Input
+                <S.Input
                   type="password"
                   name="newPassword"
                   $error={touched.newPassword && !!errors.newPassword}
                 />
-                <ErrorMessage name="newPassword" component={ErrorText} />
+                <ErrorMessage name="newPassword" component={S.ErrorText} />
               </div>
 
               <div>
-                <Input
+                <S.Input
                   type="password"
                   name="confirmPassword"
                   $error={touched.confirmPassword && !!errors.confirmPassword}
                 />
-                <ErrorMessage name="confirmPassword" component={ErrorText} />
+                <ErrorMessage name="confirmPassword" component={S.ErrorText} />
               </div>
 
-              {serverError && <ErrorText>{serverError}</ErrorText>}
+              {serverError && <S.ErrorText>{serverError}</S.ErrorText>}
 
-              <Button
+              <S.Button
                 type="submit"
                 $loading={isSubmitting}
                 disabled={isSubmitting}>
                 {isSubmitting ? "Updating..." : "Set New Password"}
-              </Button>
+              </S.Button>
             </Form>
           )}
         </Formik>
       )}
-    </Container>
+    </S.Container>
   );
 };
 
