@@ -1,6 +1,7 @@
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import * as S from "./Styles";
+import globeIcon from "../../assets/icons/globe.svg"
 
 const LanguageChangeDropdown = () => {
   const [showList, setShowList] = useState(false);
@@ -26,6 +27,9 @@ const LanguageChangeDropdown = () => {
           onClick={() => {
             setShowList(true);
           }}>
+            <S.GlobeIconContainer>
+              <img src={globeIcon} alt="" />
+            </S.GlobeIconContainer>
           {currentLanguage.toUpperCase()}
         </S.CurrentLanguage>
 

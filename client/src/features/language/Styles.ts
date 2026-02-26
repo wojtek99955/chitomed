@@ -16,12 +16,15 @@ export const Container = styled.div`
 `;
 
 export const CurrentLanguage = styled.div<{ showList: boolean }>`
-  padding: 0.7rem 1.8rem;
+  padding: 0.7rem .5rem;
   cursor: pointer;
   font-weight: 500;
   color: black;
   position: relative;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 
   ${(props) =>
     props.showList &&
@@ -62,3 +65,13 @@ export const Language = styled.div`
     background-color: #e7eaf5;
   }
 `;
+
+export const GlobeIconContainer = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+img{
+    width: 1.4rem;
+}
+
+`
