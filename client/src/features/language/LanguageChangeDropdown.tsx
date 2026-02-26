@@ -1,6 +1,6 @@
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import * as S from "./Styles"
+import * as S from "./Styles";
 
 const LanguageChangeDropdown = () => {
   const [showList, setShowList] = useState(false);
@@ -23,7 +23,9 @@ const LanguageChangeDropdown = () => {
       <S.Container onMouseLeave={() => setShowList(false)}>
         <S.CurrentLanguage
           showList={showList}
-          onMouseEnter={() => setShowList(true)}>
+          onClick={() => {
+            setShowList(true);
+          }}>
           {currentLanguage.toUpperCase()}
         </S.CurrentLanguage>
 
@@ -34,8 +36,12 @@ const LanguageChangeDropdown = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -5 }}
               transition={{ duration: 0.2 }}>
-              <S.Language onClick={() => handleLanguageChange("pl")}>PL</S.Language>
-              <S.Language onClick={() => handleLanguageChange("en")}>EN</S.Language>
+              <S.Language onClick={() => handleLanguageChange("pl")}>
+                PL
+              </S.Language>
+              <S.Language onClick={() => handleLanguageChange("en")}>
+                EN
+              </S.Language>
             </S.LanguagesList>
           )}
         </AnimatePresence>
