@@ -44,8 +44,11 @@ export const ModalContent = styled.div`
   background: white;
   border-radius: 12px;
   width: 90%;
-  padding: 2rem;
+  padding: 1rem 0;
   margin: auto;
+  @media ${device.tablet}{
+    padding:2rem;
+  }
 `;
 
 export const Header = styled.div`
@@ -67,7 +70,7 @@ export const FormSection = styled.div`
   width: 100%;
   textarea {
     width: 100%;
-    padding: 0.8rem 1rem;
+    padding: 0.8rem .1rem;
     border: 1px solid #d1d5db;
     border-radius: 6px;
     font-size: 1rem;
@@ -78,6 +81,9 @@ export const FormSection = styled.div`
       outline: none;
       border-color: #3b82f6;
       box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+    }
+    @media ${device.tablet} {
+      padding: 0.8rem 1rem;
     }
   }
   select {
