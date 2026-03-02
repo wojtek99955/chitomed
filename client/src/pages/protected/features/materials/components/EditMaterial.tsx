@@ -9,7 +9,9 @@ import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/core/fonts/inter.css";
 import "@blocknote/mantine/style.css";
 import styled from "styled-components";
-import { motion } from "framer-motion"; // Dodane dla obsługi animacji
+import { motion } from "framer-motion";
+import { pl } from "@blocknote/core/locales";
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 import {
@@ -28,22 +30,20 @@ import {
 
 import type { Material } from "../api/useMaterial";
 
-// Zmieniamy na motion.div, aby animacje initial/animate działały
 const ModalOverlay = styled(motion.div)`
-  position: fixed; // Fixed jest lepsze dla portalu/modala
+  position: fixed;
   z-index: 999999;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5); // Dodajemy tło, żeby odciąć resztę strony
+  background: rgba(255, 255, 255, 1);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow-y: auto;
-  /* padding: 20px; */
 `;
 
 const StyledModalContent = styled(ModalContent)`
   position: relative;
-  margin: auto; // Centrowanie przy długim kontencie
+  margin: auto; 
 `;
 
 const validationSchema = Yup.object().shape({
@@ -65,6 +65,7 @@ const EditMaterial: React.FC<EditMaterialProps> = ({ material, setIsOpen }) => {
   const [content, setContent] = useState<any>(material.content || []);
 
   const editor = useCreateBlockNote({
+    dictionary: pl,
     initialContent: material.content ? (material.content as any) : undefined,
     uploadFile: async (file: File) => {
       const formData = new FormData();
@@ -183,16 +184,22 @@ const EditMaterial: React.FC<EditMaterialProps> = ({ material, setIsOpen }) => {
             <SubmitButton type="submit" disabled={isPending}>
               {isPending ? "Zapisywanie..." : "Zapisz zmiany"}
             </SubmitButton>
-<br />
-<br />
-            <CancelButton type="button" onClick={() => setIsOpen(false)}>
+            <br />
+            <br />
+            <CancelButton
+              type="button"
+              onClick={() => setIsOpen(false)}
+              style={{
+                background: "#f3f4f6",
+                color: "#4b5563",
+              }}>
               Anuluj
             </CancelButton>
           </Form>
         </Formik>
       </StyledModalContent>
     </ModalOverlay>,
-    modalRoot, // Miejsce, gdzie portal "wstrzyknie" kod
+    modalRoot,
   );
 };
 
