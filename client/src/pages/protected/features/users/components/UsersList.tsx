@@ -7,8 +7,8 @@ import Loader from "./Loader";
 import { device } from "../../../../../assets/device";
 import SortDateUsers from "./SortDate";
 import SearchUser from "./SearchUser";
-
-// --- STYLED COMPONENTS ---
+import { useState } from "react";
+import DeleteConfirmModal from "./DeleteConfirmModal";
 
 const Container = styled.div`
   padding: 2rem 1rem;
@@ -22,14 +22,6 @@ const Container = styled.div`
     top: 4.5rem;
   }
 `;
-
-// const Title = styled.h2`
-//   color: #1f2937;
-//   font-size: 1.5rem;
-//   margin-bottom: 1.5rem;
-//   border-bottom: 2px solid #e5e7eb;
-//   padding-bottom: 0.5rem;
-// `;
 
 const InfoBox = styled.div`
   display: flex;
@@ -156,15 +148,25 @@ const UsersList = () => {
   const { mutate: deleteUser, isPending: isDeleting } = useDeleteUser();
 
   const users: User[] = Array.isArray(data) ? data : [];
+const [userToDelete, setUserToDelete] = useState<{
+  id: string;
+  email: string;
+} | null>(null);
 
-  const handleDelete = (userId: string, email: string) => {
-    if (!window.confirm(`Na pewno chcesz usunąć użytkownika ${email}?`)) return;
+const confirmDelete = () => {
+  if (!userToDelete) return;
 
-    deleteUser(userId, {
-      onSuccess: () => toast.success(`Użytkownik ${email} został usunięty`),
-      onError: (err: any) => toast.error(err?.message || "Błąd usuwania"),
-    });
-  };
+  deleteUser(userToDelete.id, {
+    onSuccess: () => {
+      toast.success(`Użytkownik ${userToDelete.email} został usunięty`);
+      setUserToDelete(null); 
+    },
+    onError: (err: any) => {
+      toast.error(err?.message || "Błąd usuwania");
+      setUserToDelete(null);
+    },
+  });
+};
 
   const formatDate = (date: string | undefined) => {
     if (!date) return "—";
@@ -175,7 +177,6 @@ const UsersList = () => {
     }
   };
 
-  // Helper do renderowania zawartości głównej
   const renderContent = () => {
     if (isLoading) return <Loader />;
 
@@ -229,9 +230,10 @@ const UsersList = () => {
                 <TableData>{formatDate(user.createdAt)}</TableData>
                 <ActionCell>
                   <DeleteButton
-                    onClick={() => handleDelete(user._id, user.email)}
-                    disabled={isDeleting}
-                    title="Usuń użytkownika">
+                    onClick={() =>
+                      setUserToDelete({ id: user._id, email: user.email })
+                    }
+                    disabled={isDeleting}>
                     <FaTrashAlt />
                   </DeleteButton>
                 </ActionCell>
@@ -255,6 +257,13 @@ const UsersList = () => {
       </FiltersWrapper>
 
       {renderContent()}
+      <DeleteConfirmModal
+        isOpen={!!userToDelete}
+        email={userToDelete?.email || ""}
+        isLoading={isDeleting}
+        onClose={() => setUserToDelete(null)}
+        onConfirm={confirmDelete}
+      />
     </Container>
   );
 };
