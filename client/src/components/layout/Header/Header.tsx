@@ -12,7 +12,7 @@ import SortDateUsers from "../../../pages/protected/features/users/components/So
 import SearchUser from "../../../pages/protected/features/users/components/SearchUser";
 import { useLanguage } from "../../../features/language/useLanguage";
 import { languages } from "./languages";
-import * as S from "./Styles"
+import * as S from "./Styles";
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -20,7 +20,7 @@ const Header = () => {
   let navigate = useNavigate();
   const { role } = useAuthData();
   let isAdmin = role === "admin";
-let lang = useLanguage();
+  let lang = useLanguage();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const logoutMutationHook = useMutation({
@@ -69,7 +69,7 @@ let lang = useLanguage();
 
     if (path.startsWith("/dashboard")) return languages.materialsTitle[lang];
     if (path.startsWith("/profile")) return languages.profile[lang];
-    if (path.startsWith("/users")) return languages.users[lang];;
+    if (path.startsWith("/users")) return languages.users[lang];
 
     // Opcjonalnie: obsługa detali materiału (np. /material/123)
     if (path.startsWith("/material")) return "Material details";
@@ -103,7 +103,7 @@ let lang = useLanguage();
         {location.pathname === "/users" && (
           <S.FitlersWrapper>
             <SortDateUsers />
-            <SearchUser/>
+            <SearchUser />
           </S.FitlersWrapper>
         )}
       </S.SubHeader>

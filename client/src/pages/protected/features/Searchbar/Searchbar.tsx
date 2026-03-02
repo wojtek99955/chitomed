@@ -66,6 +66,10 @@ const StyledInput = styled.input`
     color: #94a3b8;
   }
 
+  &:hover {
+    border-color: #2d50dc;
+  }
+
   &:focus {
     border-color: #2c50dc;
     box-shadow: 0 0 0 3px rgba(44, 80, 220, 0.1);

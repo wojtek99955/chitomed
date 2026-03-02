@@ -43,18 +43,7 @@ const Title = styled.h4`
   font-weight: 600;
 `;
 
-const Category = styled.div`
-  position: absolute;
-  left: 0.5rem;
-  top: 0.5rem;
-  background-color: white;
-  color: #2d50dc;
-  text-transform: uppercase;
-  max-width: 150px;
-  border-radius: 6px;
-  font-size: .8rem;
-  padding:.3rem;
-`;
+
 
 const Actions = styled.div`
   display: flex;
@@ -102,6 +91,26 @@ const Cover = styled.div`
     user-select: none;
     pointer-events: none;
   }
+`;
+
+const Category = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  left: 0.5rem;
+  top: 0.5rem;
+  border-radius: 4px;
+  padding:0.2rem;
+`;
+
+const Word = styled.span`
+  color: #2d50dc;
+  text-transform: uppercase;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  width: 100%;
+  display: block;
 `;
 
 const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
@@ -160,8 +169,11 @@ const MaterialItem: React.FC<{ material: Material }> = ({ material }) => {
     <>
       <MaterialItemContainer onClick={openMaterial}>
         {/* Tutaj renderujemy już czysty string, nie obiekt */}
-        <Category>{categoryName}</Category>
-
+        <Category>
+          {categoryName.split(" ").map((word, i) => (
+            <Word key={i}>{word} </Word>
+          ))}
+        </Category>
         <Cover>
           <img src="https://chitomed-files.b-cdn.net/Vector%20(1).svg" alt="" />
         </Cover>

@@ -38,12 +38,15 @@ const Container = styled.div`
   grid-template-columns: 1fr;
   padding: 1rem;
   gap: 1rem;
-  padding-bottom: 90px; 
+  padding-bottom: 90px;
 
   @media ${device.laptop} {
-    grid-template-columns: 1fr 800px 1fr;
+    grid-template-columns: 1fr auto 1fr;
     padding: 2rem 1rem;
     padding-bottom: 5rem;
+  }
+  @media ${device.laptopL} {
+    grid-template-columns: 1fr 800px 1fr;
   }
 `;
 
@@ -204,7 +207,6 @@ const Category = styled.div`
   width: fit-content;
   margin-top: 1rem;
   border-radius: 8px;
-
   @media ${device.laptop} {
     margin-left: auto;
   }
@@ -352,9 +354,9 @@ const categoryName = getCategoryDisplayName();
 
           <Meta mobile>
             Created:{" "}
-            {new Date(material.createdAt).toLocaleDateString("en-EN", {
+            {new Date(material.createdAt).toLocaleDateString("pl-PL", {
               day: "numeric",
-              month: "long",
+              month: "numeric",
               year: "numeric",
             })}
             <Category>{categoryName}</Category>
@@ -373,9 +375,9 @@ const categoryName = getCategoryDisplayName();
 
           <Meta>
             {languages.created[lang]}
-            {new Date(material.createdAt).toLocaleDateString("en-EN", {
+            {new Date(material.createdAt).toLocaleDateString("pl-PL", {
               day: "numeric",
-              month: "long",
+              month: "numeric",
               year: "numeric",
             })}
             <Category>{categoryName}</Category>
