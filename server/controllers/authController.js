@@ -61,7 +61,7 @@ exports.login = async (req, res) => {
     httpOnly: true,
     secure: true, // w produkcji musi być true
     sameSite: "None", // tylko jeśli naprawdę potrzebujesz cross-site
-    maxAge: 7 * 24 * 60 * 60 * 1000,
+    maxAge: 10 * 365 * 24 * 60 * 60 * 1000, // 10 lat
   });
 
   return res.json({ accessToken });
