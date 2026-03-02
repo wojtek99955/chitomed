@@ -26,6 +26,8 @@ import {
   CloseIcon,
   ErrorText,
   SubmitButton,
+  TopInputs,
+  NotepadWrapper,
 } from "./AddMaterial/Styles";
 
 import type { Material } from "../api/useMaterial";
@@ -46,6 +48,7 @@ const StyledModalContent = styled(ModalContent)`
   margin: auto; 
   height: 100%;
 `;
+
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("Uzupełnij tytuł"),
@@ -118,8 +121,8 @@ const EditMaterial: React.FC<EditMaterialProps> = ({ material, setIsOpen }) => {
       exit={{ opacity: 0 }}
       onClick={() => setIsOpen(false)}>
       <StyledModalContent
-      style={{minHeight:"95vh"}}
-        as={motion.div} 
+        style={{ minHeight: "95vh" }}
+        as={motion.div}
         onClick={(e) => e.stopPropagation()}
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -140,47 +143,47 @@ const EditMaterial: React.FC<EditMaterialProps> = ({ material, setIsOpen }) => {
           onSubmit={handleSubmit}
           enableReinitialize>
           <Form>
-            <FormSection>
-              <Label htmlFor="title">Tytuł</Label>
-              <Field as={Input} name="title" placeholder="Tytuł materiału" />
-              <ErrorMessage name="title" component={ErrorText} />
-            </FormSection>
+            <TopInputs>
+              <FormSection>
+                <Label htmlFor="title">Tytuł</Label>
+                <Field as={Input} name="title" placeholder="Tytuł materiału" />
+                <ErrorMessage name="title" component={ErrorText} />
+              </FormSection>
 
-            <FormSection>
-              <Label htmlFor="categoryId">Kategoria</Label>
-              <Field
-                as="select"
-                name="categoryId"
-                style={{
-                  width: "100%",
-                  padding: "0.8rem",
-                  borderRadius: "6px",
-                  border: "1px solid #d1d5db",
-                }}>
-                <option value="" disabled>
-                  -- Wybierz kategorię --
-                </option>
-                {categories.map((cat: any) => (
-                  <option key={cat._id} value={cat._id}>
-                    {cat.name.pl}
+              <FormSection>
+                <Label htmlFor="categoryId">Kategoria</Label>
+                <Field
+                  as="select"
+                  name="categoryId"
+                  style={{
+                    width: "100%",
+                    padding: "0.8rem",
+                    borderRadius: "6px",
+                    border: "1px solid #d1d5db",
+                  }}>
+                  <option value="" disabled>
+                    -- Wybierz kategorię --
                   </option>
-                ))}
-              </Field>
-              <ErrorMessage name="categoryId" component={ErrorText} />
-            </FormSection>
-
+                  {categories.map((cat: any) => (
+                    <option key={cat._id} value={cat._id}>
+                      {cat.name.pl}
+                    </option>
+                  ))}
+                </Field>
+                <ErrorMessage name="categoryId" component={ErrorText} />
+              </FormSection>
+            </TopInputs>
             <FormSection>
               <Label>Treść</Label>
-              <div
+              <NotepadWrapper
                 style={{
                   border: "1px solid #d1d5db",
                   borderRadius: "6px",
-                  minHeight: "250px",
                   background: "#fff",
                   overflow: "hidden",
                 }}>
                 <BlockNoteView editor={editor} theme="light" />
-              </div>
+              </NotepadWrapper>
             </FormSection>
 
             <SubmitButton type="submit" disabled={isPending}>

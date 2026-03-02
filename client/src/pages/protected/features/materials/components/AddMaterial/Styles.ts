@@ -1,6 +1,7 @@
 import { Field } from "formik";
 import { MdClose } from "react-icons/md";
 import styled from "styled-components";
+import { device } from "../../../../../../assets/device";
 
 export const AddButton = styled.button`
   display: flex;
@@ -46,6 +47,7 @@ export const ModalContent = styled.div`
   padding: 2rem;
   margin: auto;
 `;
+
 export const Header = styled.div`
   display: flex;
   justify-content: space-between;
@@ -62,6 +64,7 @@ export const FormTitle = styled.h2`
 
 export const FormSection = styled.div`
   margin-bottom: 1.5rem;
+  width: 100%;
   textarea {
     width: 100%;
     padding: 0.8rem 1rem;
@@ -197,4 +200,21 @@ export const CloseContainer = styled.div`
 
 export const CloseIcon = styled(MdClose)`
   font-size: 1.7rem;
+`;
+
+export const TopInputs = styled.div`
+display: flex;
+flex-direction: column;
+gap:1rem;
+@media ${device.tablet}{
+  flex-direction: row;
+}
+`
+
+export const NotepadWrapper = styled.div`
+  min-height: 250px;
+  @media ${device.tablet} {
+    min-height: 400px;
+  }
+  padding: 1rem;
 `;

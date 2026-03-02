@@ -19,6 +19,8 @@ import {
   CloseIcon,
   ErrorText,
   SubmitButton,
+  TopInputs,
+  NotepadWrapper,
 } from "./Styles";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -179,6 +181,7 @@ const AddMaterialModal = () => {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}>
           <Form>
+            <TopInputs>
             <FormSection>
               <Label htmlFor="title">Tytuł</Label>
               <Field as={Input} name="title" placeholder="Tytuł materiału" />
@@ -199,19 +202,18 @@ const AddMaterialModal = () => {
               </Field>
               <ErrorMessage name="categoryId" component={ErrorText} />
             </FormSection>
-
+            </TopInputs>
             <FormSection>
               <Label>Treść</Label>
 
-              <div
+              <NotepadWrapper
                 style={{
                   border: "1px solid #d1d5db",
                   borderRadius: "6px",
-                  minHeight: "180px",
                   background: "#fff",
                 }}>
                 <BlockNoteView editor={editor} theme="light" />
-              </div>
+              </NotepadWrapper>
 
               {/* Można dodać własną informację o błędzie, jeśli treść pusta */}
               {content.length === 0 && (
