@@ -38,7 +38,7 @@ const ModalOverlay = styled(motion.div)`
   align-items: center;
   justify-content: center;
   overflow-y: auto;
-  padding: 20px;
+  /* padding: 20px; */
 `;
 
 const StyledModalContent = styled(ModalContent)`
