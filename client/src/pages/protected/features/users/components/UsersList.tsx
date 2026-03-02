@@ -10,6 +10,10 @@ import SearchUser from "./SearchUser";
 import { useState } from "react";
 import DeleteConfirmModal from "./DeleteConfirmModal";
 
+const PROTECTED_EMAIL = "office@chitomed.com";
+
+// ────────────────────────────────────────────────
+
 const Container = styled.div`
   padding: 2rem 1rem;
   width: 100vw;
@@ -46,7 +50,6 @@ const TableContainer = styled.div`
   background: white;
   border-radius: 8px;
   overflow-x: auto;
-  /* border: 1px solid #f1f5f9; */
 
   @media ${device.laptop} {
     overflow-x: hidden;
@@ -108,22 +111,22 @@ const ActionCell = styled(TableData)`
   width: 80px;
 `;
 
-const DeleteButton = styled.button`
-  background: #ef4444;
+const DeleteButton = styled.button<{ $isProtected?: boolean }>`
+  background: ${({ $isProtected }) => ($isProtected ? "#9ca3af" : "#ef4444")};
   color: white;
   border: none;
   border-radius: 50%;
   width: 32px;
   height: 32px;
-  cursor: pointer;
+  cursor: ${({ $isProtected }) => ($isProtected ? "not-allowed" : "pointer")};
   display: inline-flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
 
   &:hover {
-    background: #dc2626;
-    transform: scale(1.05);
+    background: ${({ $isProtected }) => ($isProtected ? "#9ca3af" : "#dc2626")};
+    transform: ${({ $isProtected }) => ($isProtected ? "none" : "scale(1.05)")};
   }
 
   &:disabled {
@@ -133,40 +136,47 @@ const DeleteButton = styled.button`
 `;
 
 const FiltersWrapper = styled.div`
-display: flex;
-margin-bottom: 1.5rem;
-gap:1rem;
-@media ${device.laptop}{
-  display: none;
-}
-`
+  display: flex;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  @media ${device.laptop} {
+    display: none;
+  }
+`;
 
-// --- COMPONENT LOGIC ---
+// ────────────────────────────────────────────────
 
 const UsersList = () => {
   const { data, isLoading, isError, error } = useUsers();
   const { mutate: deleteUser, isPending: isDeleting } = useDeleteUser();
 
   const users: User[] = Array.isArray(data) ? data : [];
-const [userToDelete, setUserToDelete] = useState<{
-  id: string;
-  email: string;
-} | null>(null);
+  const [userToDelete, setUserToDelete] = useState<{
+    id: string;
+    email: string;
+  } | null>(null);
 
-const confirmDelete = () => {
-  if (!userToDelete) return;
+  const confirmDelete = () => {
+    if (!userToDelete) return;
 
-  deleteUser(userToDelete.id, {
-    onSuccess: () => {
-      toast.success(`Użytkownik ${userToDelete.email} został usunięty`);
-      setUserToDelete(null); 
-    },
-    onError: (err: any) => {
-      toast.error(err?.message || "Błąd usuwania");
+    // dodatkowa ochrona na wypadek błędu w UI
+    if (userToDelete.email.toLowerCase() === PROTECTED_EMAIL.toLowerCase()) {
+      toast.error("Konto administracyjne nie może być usunięte");
       setUserToDelete(null);
-    },
-  });
-};
+      return;
+    }
+
+    deleteUser(userToDelete.id, {
+      onSuccess: () => {
+        toast.success(`Użytkownik ${userToDelete.email} został usunięty`);
+        setUserToDelete(null);
+      },
+      onError: (err: any) => {
+        toast.error(err?.message || "Błąd usuwania");
+        setUserToDelete(null);
+      },
+    });
+  };
 
   const formatDate = (date: string | undefined) => {
     if (!date) return "—";
@@ -176,6 +186,9 @@ const confirmDelete = () => {
       return "—";
     }
   };
+
+  const isProtectedAccount = (email: string) =>
+    email.toLowerCase() === PROTECTED_EMAIL.toLowerCase();
 
   const renderContent = () => {
     if (isLoading) return <Loader />;
@@ -218,27 +231,54 @@ const confirmDelete = () => {
             </TableRow>
           </TableHead>
           <tbody>
-            {users.map((user, index) => (
-              <TableRow key={user._id}>
-                <TableData>{index + 1}</TableData>
-                <TableData>
-                  <EmailWrapper>
-                    <EmailIcon />
-                    {user.email}
-                  </EmailWrapper>
-                </TableData>
-                <TableData>{formatDate(user.createdAt)}</TableData>
-                <ActionCell>
-                  <DeleteButton
-                    onClick={() =>
-                      setUserToDelete({ id: user._id, email: user.email })
-                    }
-                    disabled={isDeleting}>
-                    <FaTrashAlt />
-                  </DeleteButton>
-                </ActionCell>
-              </TableRow>
-            ))}
+            {users.map((user, index) => {
+              const protectedAcc = isProtectedAccount(user.email);
+
+              return (
+                <TableRow key={user._id}>
+                  <TableData>{index + 1}</TableData>
+                  <TableData>
+                    <EmailWrapper>
+                      <EmailIcon />
+                      {user.email}
+                      {protectedAcc && (
+                        <span
+                          style={{
+                            fontSize: "0.8rem",
+                            color: "#d97706",
+                            fontWeight: 600,
+                            marginLeft: "0.5rem",
+                          }}>
+                          ADMIN
+                        </span>
+                      )}
+                    </EmailWrapper>
+                  </TableData>
+                  <TableData>{formatDate(user.createdAt)}</TableData>
+                  <ActionCell>
+                    <DeleteButton
+                      $isProtected={protectedAcc}
+                      onClick={() => {
+                        if (protectedAcc) {
+                          toast.error(
+                            "To konto administracyjne – nie można go usunąć",
+                          );
+                          return;
+                        }
+                        setUserToDelete({ id: user._id, email: user.email });
+                      }}
+                      disabled={isDeleting || protectedAcc}
+                      title={
+                        protectedAcc
+                          ? "Konto administracyjne – chronione"
+                          : "Usuń użytkownika"
+                      }>
+                      <FaTrashAlt />
+                    </DeleteButton>
+                  </ActionCell>
+                </TableRow>
+              );
+            })}
           </tbody>
         </Table>
       </TableContainer>
@@ -247,16 +287,13 @@ const confirmDelete = () => {
 
   return (
     <Container>
-      {/* <Title>
-        Lista użytkowników{" "}
-        {!isLoading && users.length > 0 && `(${users.length})`}
-      </Title> */}
       <FiltersWrapper>
         <SortDateUsers />
         <SearchUser />
       </FiltersWrapper>
 
       {renderContent()}
+
       <DeleteConfirmModal
         isOpen={!!userToDelete}
         email={userToDelete?.email || ""}
