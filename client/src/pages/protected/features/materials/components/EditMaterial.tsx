@@ -44,6 +44,7 @@ const ModalOverlay = styled(motion.div)`
 const StyledModalContent = styled(ModalContent)`
   position: relative;
   margin: auto; 
+  height: 100%;
 `;
 
 const validationSchema = Yup.object().shape({
@@ -117,7 +118,8 @@ const EditMaterial: React.FC<EditMaterialProps> = ({ material, setIsOpen }) => {
       exit={{ opacity: 0 }}
       onClick={() => setIsOpen(false)}>
       <StyledModalContent
-        as={motion.div} // Wrażamy style w motion
+      style={{minHeight:"95vh"}}
+        as={motion.div} 
         onClick={(e) => e.stopPropagation()}
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}

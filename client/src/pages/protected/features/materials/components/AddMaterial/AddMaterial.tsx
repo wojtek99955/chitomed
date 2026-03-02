@@ -27,8 +27,6 @@ import { useAddMaterial } from "../../api/useAddMaterial";
 import { useGetCategories } from "../../../categories/api/useGetCategories";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-// ────────────────────────────────────────────────
-
 const initialValues = {
   title: "",
   categoryId: "",
@@ -39,7 +37,6 @@ const validationSchema = Yup.object().shape({
   categoryId: Yup.string().required("Wybierz kategorię"),
 });
 
-// ────────────────────────────────────────────────
 
 const AddMaterialModal = () => {
   const navigate = useNavigate();
@@ -47,8 +44,6 @@ const AddMaterialModal = () => {
     navigate("/dashboard");
   });
   const { data: categories = [] } = useGetCategories();
-
-  // Lokalny stan na treść z BlockNote
   const [content, setContent] = useState<any[]>([]);
 
   const editor = useCreateBlockNote({
