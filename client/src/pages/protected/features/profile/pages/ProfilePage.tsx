@@ -3,13 +3,14 @@ import { useAuthData } from "../../../../../features/auth/hooks/useAuthData";
 import { FaUser } from "react-icons/fa";
 import { device } from "../../../../../assets/device";
 import { useEffect } from "react";
+import DeleteAccountSection from "../feature/DeleteAccount";
 
 const Container = styled.div<any>`
   top: 130px;
   position: relative;
   padding: 2rem 1rem;
   @media ${device.laptop} {
-    top: 180.59px;
+    top: 120.59px;
     width: ${({ isAdmin }) => (isAdmin ? "calc(100% - 15rem)" : "100%")};
     left: ${({ isAdmin }) => (isAdmin ? "15rem" : "0")};
   }
@@ -17,6 +18,9 @@ const Container = styled.div<any>`
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
+  max-width: 550px;
+  margin: auto;
 `;
 
 const ProfileContainer = styled.div<any>`
@@ -65,7 +69,7 @@ const ProfilePage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const { email, createdAt, role } = useAuthData();
+  const { email, createdAt, role, id } = useAuthData();
 
   const formattedDate = createdAt
     ? new Date(createdAt).toLocaleDateString("pl-PL")
@@ -84,6 +88,7 @@ const ProfilePage = () => {
             <Joined>Joined: {formattedDate}</Joined>
           </UserData>
         </ProfileContainer>
+        {!isAdmin && <DeleteAccountSection userId={id!} />}
       </Wrapper>
     </Container>
   );
