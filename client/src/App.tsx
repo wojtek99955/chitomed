@@ -16,6 +16,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import AddMaterialModal from "./pages/protected/features/materials/components/AddMaterial/AddMaterial";
 import ForgotPassword from "./features/auth/SignIn/ForgotPasswordForm";
 import SignIn from "./features/auth/SignIn/SignIn";
+import CyberboneForm from "./iso/forms/CyberboneOrder";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ function App() {
             path="/reset-password/:token"
             element={<ResetPasswordForm />}
           />
+          <Route path="/cyberbone-order-form" element={<CyberboneForm />} />
 
           {/* Protected routes */}
           <Route element={<ProtectedRoute />}>
