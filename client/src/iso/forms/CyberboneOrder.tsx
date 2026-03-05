@@ -312,7 +312,7 @@ const CyberboneForm = () => {
             </FormGroup>
 
             <FormGroup>
-              <label>ID Pacjenta (KL22022026)</label>
+              <label>ID Pacjenta (np. KL22022026)</label>
               <Field name="patientId" placeholder="Inicjały + Data zamówienia DDMMYYYY" />
               <small>
                 UWAGA: Tworząc ID Pacjenta nie używaj polskich znaków.
