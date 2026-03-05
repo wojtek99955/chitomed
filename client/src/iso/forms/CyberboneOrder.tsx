@@ -14,7 +14,6 @@ const FormContainer = styled.div`
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   color: #333;
   @media ${device.tablet}{
@@ -114,9 +113,14 @@ const InfoBox = styled.div`
   h4 {
     margin-top: 0;
     color: #856404;
+    font-size: 1rem;
+    margin-bottom: 1rem;
   }
   ul {
     padding-left: 20px;
+  }
+  li{
+    font-size: 1rem;
   }
 `;
 
@@ -164,6 +168,7 @@ const WarningBox = styled.div`
     color: #c53030;
     font-weight: bold;
     font-size: 14px;
+    font-size: 1rem;
   }
 `;
 

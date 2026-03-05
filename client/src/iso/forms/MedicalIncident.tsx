@@ -13,7 +13,6 @@ const FormContainer = styled.div`
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   color: #333;
 `;

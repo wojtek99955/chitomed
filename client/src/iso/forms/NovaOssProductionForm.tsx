@@ -12,7 +12,6 @@ const FormContainer = styled.div`
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  font-family: "Segoe UI", sans-serif;
 `;
 
 const FormHeader = styled.div`
