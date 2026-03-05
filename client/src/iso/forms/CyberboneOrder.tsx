@@ -9,7 +9,7 @@ import { device } from "../../assets/device";
 const FormContainer = styled.div`
   max-width: 900px;
   margin: 40px auto;
-  padding: 10px;
+  padding: 13px;
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
