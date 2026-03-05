@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
+import { device } from "../../assets/device";
 
 // --- STYLED COMPONENTS ---
 
@@ -134,6 +135,19 @@ const SubmitButton = styled.button`
   }
 `;
 
+const TwoInputsGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  @media ${device.tablet} {
+    flex-direction: row;
+    justify-content: space-between;
+    gap:1rem;
+  }
+  div{
+    width: 100%;
+  }
+`;
 // --- WALIDACJA YUP ---
 
 const validationSchema = Yup.object().shape({
@@ -218,12 +232,7 @@ const CyberboneForm = () => {
               <ErrorMessage name="facilityDetails" component={ErrorText} />
             </FormGroup>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "20px",
-              }}>
+            <TwoInputsGroup>
               <FormGroup>
                 <label>Telefon kontaktowy</label>
                 <Field name="phone" />
@@ -234,7 +243,7 @@ const CyberboneForm = () => {
                 <Field name="email" type="email" />
                 <ErrorMessage name="email" component={ErrorText} />
               </FormGroup>
-            </div>
+</TwoInputsGroup>
 
             <FormGroup>
               <label>Przewidywana data zabiegu</label>
