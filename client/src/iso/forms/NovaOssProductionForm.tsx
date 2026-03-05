@@ -52,6 +52,7 @@ const FormGroup = styled.div`
     &:focus {
       border-color: #0056b3;
       outline: none;
+      box-shadow: 0 0 0 3px rgba(44, 80, 220, 0.1);
     }
   }
 `;

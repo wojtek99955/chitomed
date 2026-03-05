@@ -15,7 +15,6 @@ const FormContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   line-height: 1.6;
-  color: #333;
   @media ${device.tablet}{
     padding:40px;
   }
@@ -24,19 +23,14 @@ const FormContainer = styled.div`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  border-bottom: 2px solid #0056b3;
+  border-bottom: 2px solid #2c50dc;
   margin-bottom: 30px;
   padding-bottom: 10px;
 
   h1 {
     font-size: 24px;
-    color: #0056b3;
+    color: #2c50dc;
     margin: 0;
-  }
-  .meta {
-    font-size: 12px;
-    color: #666;
-    text-align: right;
   }
 `;
 
@@ -44,8 +38,9 @@ const SectionTitle = styled.h2`
   background: #f4f7f9;
   padding: 10px 15px;
   font-size: 18px;
-  border-left: 5px solid #0056b3;
+  border-left: 5px solid #2c50dc;
   margin: 25px 0 15px 0;
+  color:black;
 `;
 
 const FormGroup = styled.div`
@@ -66,8 +61,13 @@ const FormGroup = styled.div`
     border-radius: 4px;
     font-size: 14px;
     &:focus {
-      border-color: #0056b3;
+      border-color: #2c50dc;
       outline: none;
+      box-shadow: 0 0 0 3px rgba(44, 80, 220, 0.1);
+    }
+    &::placeholder{
+      font-weight: 300;
+      opacity: 0.7;
     }
   }
 
@@ -88,7 +88,7 @@ const DropzoneContainer = styled.div<any>`
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: #0056b3;
+    border-color: #2c50dc;
   }
   p {
     margin: 0;
@@ -125,7 +125,7 @@ const InfoBox = styled.div`
 `;
 
 const SubmitButton = styled.button`
-  background-color: #0056b3;
+  background-color: #2c50dc;
   color: white;
   padding: 15px 30px;
   border: none;
@@ -135,7 +135,7 @@ const SubmitButton = styled.button`
   font-weight: bold;
   width: 100%;
   &:hover {
-    background-color: #004494;
+    background-color: #2c50dc;
   }
   &:disabled {
     background-color: #ccc;
@@ -174,13 +174,11 @@ const WarningBox = styled.div`
 
 const InstructionsSection = styled.div`
   font-size: 13px;
-  color: #4a5568;
   line-height: 1.6;
   margin-bottom: 25px;
 
   h4 {
     margin-bottom: 10px;
-    color: #2d3748;
     border-bottom: 1px solid #edf2f7;
     padding-bottom: 5px;
   }
@@ -202,7 +200,6 @@ const ProcedureHighlight = styled.div`
   border-radius: 6px;
   font-style: italic;
   font-size: 13px;
-  color: #2d3748;
 
   p {
     margin: 5px 0;
@@ -211,12 +208,11 @@ const ProcedureHighlight = styled.div`
     gap: 10px;
     &::before {
       content: "•";
-      color: #0056b3;
+      color: #2c50dc;
       font-weight: bold;
     }
   }
 `;
-// --- WALIDACJA YUP ---
 
 const validationSchema = Yup.object().shape({
   creationDate: Yup.date().required("Data jest wymagana"),
@@ -238,9 +234,9 @@ const validationSchema = Yup.object().shape({
 
 const CyberboneForm = () => {
   const [dragActive, setDragActive] = useState(false);
-
+const today = new Date().toISOString().split("T")[0];
   const initialValues = {
-    creationDate: "",
+    creationDate: today,
     doctorName: "",
     facilityDetails: "",
     phone: "",
@@ -287,7 +283,7 @@ const CyberboneForm = () => {
             </FormGroup>
 
             <FormGroup>
-              <label>Nazwisko i imię lekarza</label>
+              <label>Imię i nazwisko lekarza</label>
               <Field name="doctorName" placeholder="Imię i nazwisko" />
               <ErrorMessage name="doctorName" component={ErrorText} />
             </FormGroup>
@@ -321,7 +317,10 @@ const CyberboneForm = () => {
 
             <FormGroup>
               <label>ID Pacjenta (np. KL22022026)</label>
-              <Field name="patientId" placeholder="Inicjały + Data zamówienia DDMMYYYY" />
+              <Field
+                name="patientId"
+                placeholder="Inicjały + Data zamówienia DDMMYYYY"
+              />
               <small>
                 UWAGA: Tworząc ID Pacjenta nie używaj polskich znaków.
               </small>
