@@ -1,218 +1,9 @@
 import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import styled from "styled-components";
-import { device } from "../../assets/device";
+import * as S from "./Styles";
 
-// --- STYLED COMPONENTS ---
 
-const FormContainer = styled.div`
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 13px;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  line-height: 1.6;
-  @media ${device.tablet}{
-    padding:40px;
-  }
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 2px solid #2c50dc;
-  margin-bottom: 30px;
-  padding-bottom: 10px;
-
-  h1 {
-    font-size: 24px;
-    color: #2c50dc;
-    margin: 0;
-  }
-`;
-
-const SectionTitle = styled.h2`
-  background: #f4f7f9;
-  padding: 10px 15px;
-  font-size: 18px;
-  border-left: 5px solid #2c50dc;
-  margin: 25px 0 15px 0;
-  color:black;
-`;
-
-const FormGroup = styled.div`
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-
-  label {
-    font-weight: bold;
-    margin-bottom: 8px;
-    font-size: 14px;
-  }
-
-  input,
-  textarea {
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    &:focus {
-      border-color: #2c50dc;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(44, 80, 220, 0.1);
-    }
-    &::placeholder{
-      font-weight: 300;
-      opacity: 0.7;
-    }
-  }
-
-  textarea {
-    min-height: 100px;
-    resize: vertical;
-  }
-`;
-
-const DropzoneContainer = styled.div<any>`
-  border: 2px dashed ${(props) => (props.$active ? "#0056b3" : "#ccc")};
-  background: ${(props) => (props.$active ? "#f0f7ff" : "#fafafa")};
-  padding: 30px;
-  text-align: center;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: all 0.2s ease;
-
-  &:hover {
-    border-color: #2c50dc;
-  }
-  p {
-    margin: 0;
-    color: ${(props) => (props.$hasFile ? "#28a745" : "#666")};
-    font-weight: ${(props) => (props.$hasFile ? "bold" : "normal")};
-  }
-`;
-
-const ErrorText = styled.div`
-  color: #d9534f;
-  font-size: 12px;
-  margin-top: 5px;
-`;
-
-const InfoBox = styled.div`
-  background: #fff9e6;
-  border: 1px solid #ffeeba;
-  padding: 15px;
-  margin: 20px 0;
-  font-size: 13px;
-  border-radius: 4px;
-  h4 {
-    margin-top: 0;
-    color: #856404;
-    font-size: 1rem;
-    margin-bottom: 1rem;
-  }
-  ul {
-    padding-left: 20px;
-  }
-  li{
-    font-size: 1rem;
-  }
-`;
-
-const SubmitButton = styled.button`
-  background-color: #2c50dc;
-  color: white;
-  padding: 15px 30px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  width: 100%;
-  &:hover {
-    background-color: #2c50dc;
-  }
-  &:disabled {
-    background-color: #ccc;
-  }
-`;
-
-const TwoInputsGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  @media ${device.tablet} {
-    flex-direction: row;
-    justify-content: space-between;
-    gap:1rem;
-  }
-  div{
-    width: 100%;
-  }
-`;
-
-const WarningBox = styled.div`
-  background: #fff5f5;
-  border: 1px solid #feb2b2;
-  padding: 15px;
-  margin: 20px 0;
-  border-radius: 4px;
-
-  p {
-    margin: 0;
-    color: #c53030;
-    font-weight: bold;
-    font-size: 14px;
-    font-size: 1rem;
-  }
-`;
-
-const InstructionsSection = styled.div`
-  font-size: 13px;
-  line-height: 1.6;
-  margin-bottom: 25px;
-
-  h4 {
-    margin-bottom: 10px;
-    border-bottom: 1px solid #edf2f7;
-    padding-bottom: 5px;
-  }
-
-  ul {
-    padding-left: 20px;
-    margin-bottom: 15px;
-  }
-
-  li {
-    margin-bottom: 8px;
-  }
-`;
-
-const ProcedureHighlight = styled.div`
-  background: #f7fafc;
-  border: 1px solid #e2e8f0;
-  padding: 15px;
-  border-radius: 6px;
-  font-style: italic;
-  font-size: 13px;
-
-  p {
-    margin: 5px 0;
-    font-size: 1rem;
-    display: flex;
-    gap: 10px;
-    &::before {
-      content: "•";
-      color: #2c50dc;
-      font-weight: bold;
-    }
-  }
-`;
 
 const validationSchema = Yup.object().shape({
   creationDate: Yup.date().required("Data jest wymagana"),
@@ -258,12 +49,12 @@ const today = new Date().toISOString().split("T")[0];
   };
 
   return (
-    <FormContainer>
-      <Header>
+    <S.FormContainer>
+      <S.Header>
         <div>
           <h1>Formularz wytycznych do projektu Cyberbone</h1>
         </div>
-      </Header>
+      </S.Header>
 
       <Formik
         initialValues={initialValues}
@@ -274,48 +65,48 @@ const today = new Date().toISOString().split("T")[0];
         }}>
         {({ setFieldValue, values, isSubmitting }) => (
           <Form>
-            <SectionTitle>Dane ogólne</SectionTitle>
+            <S.SectionTitle>Dane ogólne</S.SectionTitle>
 
-            <FormGroup>
+            <S.FormGroup>
               <label>Data utworzenia formularza</label>
               <Field name="creationDate" type="date" />
-              <ErrorMessage name="creationDate" component={ErrorText} />
-            </FormGroup>
+              <ErrorMessage name="creationDate" component={S.ErrorText} />
+            </S.FormGroup>
 
-            <FormGroup>
+            <S.FormGroup>
               <label>Imię i nazwisko lekarza</label>
               <Field name="doctorName" placeholder="Imię i nazwisko" />
-              <ErrorMessage name="doctorName" component={ErrorText} />
-            </FormGroup>
+              <ErrorMessage name="doctorName" component={S.ErrorText} />
+            </S.FormGroup>
 
-            <FormGroup>
+            <S.FormGroup>
               <label>
                 Dane miejsca zabiegu (nazwa i adres placówki medycznej)
               </label>
               <Field name="facilityDetails" component="textarea" />
-              <ErrorMessage name="facilityDetails" component={ErrorText} />
-            </FormGroup>
+              <ErrorMessage name="facilityDetails" component={S.ErrorText} />
+            </S.FormGroup>
 
-            <TwoInputsGroup>
-              <FormGroup>
+            <S.TwoInputsGroup>
+              <S.FormGroup>
                 <label>Telefon kontaktowy</label>
                 <Field name="phone" />
-                <ErrorMessage name="phone" component={ErrorText} />
-              </FormGroup>
-              <FormGroup>
+                <ErrorMessage name="phone" component={S.ErrorText} />
+              </S.FormGroup>
+              <S.FormGroup>
                 <label>E-mail</label>
                 <Field name="email" type="email" />
-                <ErrorMessage name="email" component={ErrorText} />
-              </FormGroup>
-            </TwoInputsGroup>
+                <ErrorMessage name="email" component={S.ErrorText} />
+              </S.FormGroup>
+            </S.TwoInputsGroup>
 
-            <FormGroup>
+            <S.FormGroup>
               <label>Przewidywana data zabiegu</label>
               <Field name="surgeryDate" type="date" />
-              <ErrorMessage name="surgeryDate" component={ErrorText} />
-            </FormGroup>
+              <ErrorMessage name="surgeryDate" component={S.ErrorText} />
+            </S.FormGroup>
 
-            <FormGroup>
+            <S.FormGroup>
               <label>ID Pacjenta (np. KL22022026)</label>
               <Field
                 name="patientId"
@@ -324,33 +115,33 @@ const today = new Date().toISOString().split("T")[0];
               <small>
                 UWAGA: Tworząc ID Pacjenta nie używaj polskich znaków.
               </small>
-              <ErrorMessage name="patientId" component={ErrorText} />
-            </FormGroup>
+              <ErrorMessage name="patientId" component={S.ErrorText} />
+            </S.FormGroup>
 
-            <SectionTitle>Wytyczne do projektowania</SectionTitle>
+            <S.SectionTitle>Wytyczne do projektowania</S.SectionTitle>
 
-            <FormGroup>
+            <S.FormGroup>
               <label>Opis przypadku medycznego i sposobu leczenia</label>
               <Field
                 name="medicalCase"
                 component="textarea"
                 placeholder="Opis przypadku (onkologiczny/powypadkowy/wada wrodzona) oraz wdrożone/planowane leczenie."
               />
-              <ErrorMessage name="medicalCase" component={ErrorText} />
-            </FormGroup>
+              <ErrorMessage name="medicalCase" component={S.ErrorText} />
+            </S.FormGroup>
 
-            <FormGroup>
+            <S.FormGroup>
               <label>Opis sugerowanej postaci geometrycznej implantu</label>
               <Field
                 name="geometryDescription"
                 component="textarea"
                 placeholder="- Newralgiczne miejsca&#10;- Punkty mocowania&#10;- Sposób fiksacji, średnice i długości wkrętów"
               />
-              <ErrorMessage name="geometryDescription" component={ErrorText} />
-            </FormGroup>
+              <ErrorMessage name="geometryDescription" component={S.ErrorText} />
+            </S.FormGroup>
 
             {/* SEKCJA PLIKU DICOM */}
-            <FormGroup>
+            <S.FormGroup>
               <label>
                 Przekazanie danych obrazowych (Plik DICOM w formacie .zip)
               </label>
@@ -366,7 +157,7 @@ const today = new Date().toISOString().split("T")[0];
                   }
                 }}
               />
-              <DropzoneContainer
+              <S.DropzoneContainer
                 $active={dragActive}
                 $hasFile={!!values.dicomFile}
                 onDragEnter={handleDrag}
@@ -388,16 +179,16 @@ const today = new Date().toISOString().split("T")[0];
                 ) : (
                   <p>Przeciągnij tutaj plik .zip lub kliknij</p>
                 )}
-              </DropzoneContainer>
-              <ErrorMessage name="dicomFile" component={ErrorText} />
-            </FormGroup>
+              </S.DropzoneContainer>
+              <ErrorMessage name="dicomFile" component={S.ErrorText} />
+            </S.FormGroup>
 
-            <FormGroup>
+            <S.FormGroup>
               <label>Dodatkowe uwagi</label>
               <Field name="additionalNotes" component="textarea" />
-            </FormGroup>
+            </S.FormGroup>
 
-            <InfoBox>
+            <S.InfoBox>
               <h4>WAŻNE: Wytyczne badania obrazowego</h4>
               <ul>
                 <li>
@@ -410,9 +201,9 @@ const today = new Date().toISOString().split("T")[0];
                   płaszczyzny strzałkowej
                 </li>
               </ul>
-            </InfoBox>
+            </S.InfoBox>
 
-            <WarningBox>
+            <S.WarningBox>
               <p>
                 UWAGA: Do każdego przypadku medycznego podchodzimy indywidualnie
                 w związku z czym oferujemy konsultacje w zakresie wykonania
@@ -420,9 +211,9 @@ const today = new Date().toISOString().split("T")[0];
                 wymagań wskażemy możliwe miejsce wykonania badania obrazowania
                 medycznego.
               </p>
-            </WarningBox>
+            </S.WarningBox>
 
-            <InstructionsSection>
+            <S.InstructionsSection>
               {/* <h4>Zasady przekazywania danych obrazowych Pacjenta:</h4>
               <ul>
                 <li>
@@ -449,7 +240,7 @@ const today = new Date().toISOString().split("T")[0];
                 </li>
               </ul> */}
 
-              <ProcedureHighlight>
+              <S.ProcedureHighlight>
                 <p>
                   Przed ostatecznym wydrukiem wyrobu medycznego przygotowany
                   zostanie model struktury i implantu do akceptacji lekarza.
@@ -463,10 +254,10 @@ const today = new Date().toISOString().split("T")[0];
                   Projektanci Syntplant Sp. z o.o. zastrzegają sobie prawo do
                   uczestnictwa podczas zabiegu/operacji.
                 </p>
-              </ProcedureHighlight>
-            </InstructionsSection>
+              </S.ProcedureHighlight>
+            </S.InstructionsSection>
 
-            <SectionTitle>Klauzula Danych Osobowych (RODO)</SectionTitle>
+            <S.SectionTitle>Klauzula Danych Osobowych (RODO)</S.SectionTitle>
             <div
               style={{ fontSize: "11px", color: "#666", marginBottom: "15px" }}>
               Zgodnie z Rozporządzeniem 2016/679 (RODO), masz prawo do dostępu,
@@ -475,7 +266,7 @@ const today = new Date().toISOString().split("T")[0];
               office@syntplant.com
             </div>
 
-            <FormGroup
+            <S.FormGroup
               style={{
                 flexDirection: "row",
                 alignItems: "flex-start",
@@ -493,12 +284,12 @@ const today = new Date().toISOString().split("T")[0];
                 Potwierdzam, że zapoznałem się z powyższymi informacjami oraz
                 wytycznymi technicznymi Syntplant Sp. z o.o.
               </label>
-            </FormGroup>
-            <ErrorMessage name="gdprAccepted" component={ErrorText} />
+            </S.FormGroup>
+            <ErrorMessage name="gdprAccepted" component={S.ErrorText} />
 
-            <SubmitButton type="submit" disabled={isSubmitting}>
+            <S.SubmitButton type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Wysyłanie..." : "Wyślij formularz zamówienia"}
-            </SubmitButton>
+            </S.SubmitButton>
           </Form>
         )}
       </Formik>
@@ -510,7 +301,7 @@ const today = new Date().toISOString().split("T")[0];
           borderTop: "1px solid #eee",
           paddingTop: "20px",
         }}></div>
-    </FormContainer>
+    </S.FormContainer>
   );
 };
 

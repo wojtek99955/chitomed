@@ -1,61 +1,7 @@
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
-
-// --- STYLED COMPONENTS (Spójne z poprzednimi) ---
-
-const FormContainer = styled.div`
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 40px;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-`;
-
-const FormHeader = styled.div`
-  border-bottom: 3px solid #0056b3; // Fioletowy akcent dla produkcji/technologii
-  margin-bottom: 30px;
-  padding-bottom: 10px;
-  h1 {
-    font-size: 24px;
-    color: #2d3436;
-    margin: 0;
-    text-transform: uppercase;
-  }
-`;
-
-const SectionTitle = styled.h2`
-  background: #f4f7f9;
-  padding: 10px 15px;
-  font-size: 18px;
-  border-left: 5px solid #0056b3;
-  margin: 25px 0 15px 0;
-`;
-
-const FormGroup = styled.div`
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
-  label {
-    font-weight: 600;
-    margin-bottom: 5px;
-    font-size: 14px;
-  }
-  input,
-  select,
-  textarea {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    &:focus {
-      border-color: #0056b3;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(44, 80, 220, 0.1);
-    }
-  }
-`;
+import * as S from "./Styles";
 
 const Grid = styled.div`
   display: grid;
@@ -93,24 +39,6 @@ const PrivacyBox = styled.div`
   text-align: justify;
 `;
 
-const SubmitButton = styled.button`
-  background-color: #0056b3;
-  color: white;
-  padding: 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  width: 100%;
-  margin-top: 20px;
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
-
-// --- WALIDACJA ---
-
 const validationSchema = Yup.object().shape({
   creationDate: Yup.date().required("Wymagane"),
   doctorName: Yup.string().required("Wymagane"),
@@ -144,10 +72,10 @@ const NovaOssProductionForm = () => {
   };
 
   return (
-    <FormContainer>
-      <FormHeader>
+    <S.FormContainer>
+      <S.Header>
         <h1>Wytyczne do produkcji NovaOss</h1>
-      </FormHeader>
+      </S.Header>
 
       <Formik
         initialValues={initialValues}
@@ -155,60 +83,60 @@ const NovaOssProductionForm = () => {
         onSubmit={(values) => console.log("Zlecenie produkcji:", values)}>
         {({ values }) => (
           <Form>
-            <SectionTitle>1. Dane ogólne</SectionTitle>
+            <S.SectionTitle>1. Dane ogólne</S.SectionTitle>
             <Grid>
-              <FormGroup>
+              <S.FormGroup>
                 <label>Data utworzenia</label>
                 <Field name="creationDate" type="date" />
-              </FormGroup>
-              <FormGroup>
+              </S.FormGroup>
+              <S.FormGroup>
                 <label>Imię i Nazwisko lekarza</label>
                 <Field name="doctorName" placeholder="Lek. med..." />
-              </FormGroup>
+              </S.FormGroup>
             </Grid>
 
-            <FormGroup>
+            <S.FormGroup>
               <label>Miejsce zabiegu (Nazwa i adres placówki)</label>
               <Field name="facilityData" component="textarea" rows="2" />
-            </FormGroup>
+            </S.FormGroup>
 
             <Grid>
-              <FormGroup>
+              <S.FormGroup>
                 <label>Telefon kontaktowy</label>
                 <Field name="phone" type="tel" />
-              </FormGroup>
-              <FormGroup>
+              </S.FormGroup>
+              <S.FormGroup>
                 <label>E-mail</label>
                 <Field name="email" type="email" />
-              </FormGroup>
+              </S.FormGroup>
             </Grid>
 
-            <SectionTitle>
+            <S.SectionTitle>
               2. Wytyczne do produkcji (Skład i Gęstość)
-            </SectionTitle>
+            </S.SectionTitle>
             <ProductionCard>
               <Grid>
-                <FormGroup>
+                <S.FormGroup>
                   <label>Matryca chitozanowa (%)</label>
                   <Field name="chitosanMatrix" type="number" />
-                </FormGroup>
-                <FormGroup>
+                </S.FormGroup>
+                <S.FormGroup>
                   <label>Rodzaj napełniacza</label>
                   <Field name="fillerType" placeholder="np. Hydroksyapatyt" />
-                </FormGroup>
-                <FormGroup>
+                </S.FormGroup>
+                <S.FormGroup>
                   <label>Napełniacz (%)</label>
                   <Field name="fillerPercent" type="number" />
-                </FormGroup>
+                </S.FormGroup>
               </Grid>
 
-              <FormGroup style={{ marginTop: "15px" }}>
+              <S.FormGroup style={{ marginTop: "15px" }}>
                 <label>Gęstość wyrobu</label>
                 <Field
                   name="density"
                   placeholder="Określ parametry gęstości..."
                 />
-              </FormGroup>
+              </S.FormGroup>
 
               {Number(values.chitosanMatrix) + Number(values.fillerPercent) !==
                 100 && (
@@ -225,7 +153,7 @@ const NovaOssProductionForm = () => {
               )}
             </ProductionCard>
 
-            <SectionTitle>3. Liczba i objętość wyrobu</SectionTitle>
+            <S.SectionTitle>3. Liczba i objętość wyrobu</S.SectionTitle>
             <Grid>
               <div>
                 <VolumeRow>
@@ -263,10 +191,10 @@ const NovaOssProductionForm = () => {
               </div>
             </Grid>
 
-            <FormGroup style={{ marginTop: "20px" }}>
+            <S.FormGroup style={{ marginTop: "20px" }}>
               <label>Dodatkowe uwagi do produkcji</label>
               <Field name="additionalNotes" component="textarea" rows="3" />
-            </FormGroup>
+            </S.FormGroup>
 
             <PrivacyBox>
               <strong>KLAUZULA DANYCH OSOBOWYCH:</strong>
@@ -280,13 +208,13 @@ const NovaOssProductionForm = () => {
               siedzibie firmy.
             </PrivacyBox>
 
-            <SubmitButton type="submit">
+            <S.SubmitButton type="submit">
               Prześlij wytyczne do produkcji
-            </SubmitButton>
+            </S.SubmitButton>
           </Form>
         )}
       </Formik>
-    </FormContainer>
+    </S.FormContainer>
   );
 };
 

@@ -2,41 +2,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 import { device } from "../../assets/device";
+import * as S from "./Styles";
 
-// --- STYLED COMPONENTS ---
-
-const FormContainer = styled.div`
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 40px;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  line-height: 1.6;
-  color: #333;
-`;
-
-const FormHeader = styled.div`
-  border-bottom: 3px solid #0056b3;
-  margin-bottom: 30px;
-  padding-bottom: 10px;
-  h1 {
-    font-size: 26px;
-    color: #0056b3;
-    margin: 0;
-    text-transform: uppercase;
-  }
-`;
-
-const SectionTitle = styled.h2`
-  background: #f8f9fa;
-  padding: 12px 15px;
-  font-size: 17px;
-  border-left: 5px solid #0056b3;
-  margin: 30px 0 15px 0;
-  color: #2c3e50;
-`;
 
 const FormGroup = styled.div`
   margin-bottom: 18px;
@@ -95,31 +62,6 @@ const CheckboxLabel = styled.label`
   }
 `;
 
-const ErrorText = styled.div`
-  color: #d9534f;
-  font-size: 12px;
-  margin-top: 4px;
-`;
-
-const SubmitButton = styled.button`
-  background-color: #0056b3;
-  color: white;
-  padding: 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  width: 100%;
-  margin-top: 30px;
-  transition: background 0.2s;
-  &:hover {
-    background-color: #0056b3;
-  }
-  &:disabled {
-    background-color: #ccc;
-  }
-`;
 
 // --- WALIDACJA YUP ---
 
@@ -192,10 +134,10 @@ const MedicalIncidentForm = () => {
   };
 
   return (
-    <FormContainer>
-      <FormHeader>
+    <S.FormContainer>
+      <S.Header>
         <h1>Formularz zgłoszenia incydentu medycznego</h1>
-      </FormHeader>
+      </S.Header>
 
       <Formik
         initialValues={initialValues}
@@ -203,20 +145,20 @@ const MedicalIncidentForm = () => {
         onSubmit={(values) => console.log("Incydent zgłoszony:", values)}>
         {({ values, isSubmitting }) => (
           <Form>
-            <SectionTitle>1. Informacje administracyjne (Adresat)</SectionTitle>
+            <S.SectionTitle>1. Informacje administracyjne (Adresat)</S.SectionTitle>
             <Row>
-              <FormGroup>
+              <S.FormGroup>
                 <label>Nazwa</label>
                 <Field name="recipientName" disabled />
-              </FormGroup>
-              <FormGroup>
+              </S.FormGroup>
+              <S.FormGroup>
                 <label>E-mail</label>
                 <Field name="recipientEmail" disabled />
-              </FormGroup>
+              </S.FormGroup>
             </Row>
 
-            <SectionTitle>2. Informacje o zgłaszającym</SectionTitle>
-            <FormGroup>
+            <S.SectionTitle>2. Informacje o zgłaszającym</S.SectionTitle>
+            <S.FormGroup>
               <label>Status zgłaszającego</label>
               <CheckboxGroup>
                 <CheckboxLabel>
@@ -243,87 +185,87 @@ const MedicalIncidentForm = () => {
                   <Field name="otherStatus" placeholder="Określ rolę..." />
                 )}
               </CheckboxGroup>
-              <ErrorMessage name="reporterStatus" component={ErrorText} />
-            </FormGroup>
+              <ErrorMessage name="reporterStatus" component={S.ErrorText} />
+            </S.FormGroup>
 
             <Row>
-              <FormGroup>
+              <S.FormGroup>
                 <label>Nazwa / Imię i nazwisko zgłaszającego</label>
                 <Field name="reporterName" />
-              </FormGroup>
-              <FormGroup>
+              </S.FormGroup>
+              <S.FormGroup>
                 <label>Osoba do kontaktu</label>
                 <Field name="contactPerson" />
-              </FormGroup>
+              </S.FormGroup>
             </Row>
             <Row>
-              <FormGroup>
+              <S.FormGroup>
                 <label>Adres</label>
                 <Field name="reporterAddress" />
-              </FormGroup>
-              <FormGroup>
+              </S.FormGroup>
+              <S.FormGroup>
                 <label>Kod pocztowy</label>
                 <Field name="postalCode" />
-              </FormGroup>
+              </S.FormGroup>
             </Row>
             <Row>
-              <FormGroup>
+              <S.FormGroup>
                 <label>Miejscowość</label>
                 <Field name="city" />
-              </FormGroup>
-              <FormGroup>
+              </S.FormGroup>
+              <S.FormGroup>
                 <label>E-mail</label>
                 <Field name="email" type="email" />
-              </FormGroup>
+              </S.FormGroup>
             </Row>
 
-            <SectionTitle>3. Informacje o wyrobie</SectionTitle>
+            <S.SectionTitle>3. Informacje o wyrobie</S.SectionTitle>
             <Row>
-              <FormGroup>
+              <S.FormGroup>
                 <label>Nazwa handlowa</label>
                 <Field name="productName" />
-              </FormGroup>
-              <FormGroup>
+              </S.FormGroup>
+              <S.FormGroup>
                 <label>Model lub numer wyrobu</label>
                 <Field name="modelNumber" />
-              </FormGroup>
+              </S.FormGroup>
             </Row>
             <Row>
-              <FormGroup>
+              <S.FormGroup>
                 <label>Data produkcji</label>
                 <Field name="prodDate" type="date" />
-              </FormGroup>
-              <FormGroup>
+              </S.FormGroup>
+              <S.FormGroup>
                 <label>Data ważności</label>
                 <Field name="expiryDate" type="date" />
-              </FormGroup>
+              </S.FormGroup>
             </Row>
             <Row>
-              <FormGroup>
+              <S.FormGroup>
                 <label>Data wszczepienia</label>
                 <Field name="implantDate" type="date" />
-              </FormGroup>
-              <FormGroup>
+              </S.FormGroup>
+              <S.FormGroup>
                 <label>Data usunięcia (jeśli dotyczy)</label>
                 <Field name="removalDate" type="date" />
-              </FormGroup>
+              </S.FormGroup>
             </Row>
 
-            <SectionTitle>4. Informacje o incydencie medycznym</SectionTitle>
+            <S.SectionTitle>4. Informacje o incydencie medycznym</S.SectionTitle>
             <Row>
-              <FormGroup>
+              <S.FormGroup>
                 <label>Data wystąpienia incydentu</label>
                 <Field name="incidentDate" type="date" />
-              </FormGroup>
-              <FormGroup>
+              </S.FormGroup>
+              <S.FormGroup>
                 <label>Miejsce wystąpienia</label>
                 <Field
                   name="incidentLocation"
                   placeholder="np. Sala operacyjna, Oddział..."
                 />
-              </FormGroup>
+              </S.FormGroup>
             </Row>
-            <FormGroup>
+            <S.FormGroup>
               <label>Opis incydentu</label>
               <Field
                 name="incidentDescription"
@@ -331,8 +273,8 @@ const MedicalIncidentForm = () => {
                 rows="5"
                 placeholder="Proszę szczegółowo opisać przebieg zdarzenia..."
               />
-              <ErrorMessage name="incidentDescription" component={ErrorText} />
-            </FormGroup>
+              <ErrorMessage name="incidentDescription" component={S.ErrorText} />
+            </S.FormGroup>
 
             <Row>
               <FormGroup>
@@ -357,14 +299,14 @@ const MedicalIncidentForm = () => {
               </FormGroup>
             </Row>
 
-            <FormGroup>
+            <S.FormGroup>
               <label>Skutki dla Pacjenta</label>
               <Field name="patientOutcome" component="textarea" />
-            </FormGroup>
+            </S.FormGroup>
 
-            <SectionTitle>5. Dane Pacjenta</SectionTitle>
+            <S.SectionTitle>5. Dane Pacjenta</S.SectionTitle>
             <Row>
-              <FormGroup>
+              <S.FormGroup>
                 <label>Płeć</label>
                 <div
                   style={{ display: "flex", gap: "20px", marginTop: "10px" }}>
@@ -377,21 +319,21 @@ const MedicalIncidentForm = () => {
                     Mężczyzna
                   </CheckboxLabel>
                 </div>
-              </FormGroup>
-              <FormGroup>
+              </S.FormGroup>
+              <S.FormGroup>
                 <label>Wiek Pacjenta</label>
                 <Field name="patientAge" type="number" />
-              </FormGroup>
-              <FormGroup>
+              </S.FormGroup>
+              <S.FormGroup>
                 <label>Masa ciała [kg]</label>
                 <Field name="patientWeight" type="number" />
-              </FormGroup>
+              </S.FormGroup>
             </Row>
 
-            <FormGroup>
+            <S.FormGroup>
               <label>Dodatkowe uwagi</label>
               <Field name="notes" component="textarea" />
-            </FormGroup>
+            </S.FormGroup>
 
             <CheckboxGroup style={{ background: "#fdfdfd", marginTop: "30px" }}>
               <CheckboxLabel>
@@ -401,16 +343,16 @@ const MedicalIncidentForm = () => {
                   podane według mojej najlepszej wiedzy.
                 </strong>
               </CheckboxLabel>
-              <ErrorMessage name="declaration" component={ErrorText} />
+              <ErrorMessage name="declaration" component={S.ErrorText} />
             </CheckboxGroup>
 
-            <SubmitButton type="submit" disabled={isSubmitting}>
+            <S.SubmitButton type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Wysyłanie..." : "Wyślij zgłoszenie incydentu"}
-            </SubmitButton>
+            </S.SubmitButton>
           </Form>
         )}
       </Formik>
-    </FormContainer>
+    </S.FormContainer>
   );
 };
 

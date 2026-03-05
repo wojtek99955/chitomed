@@ -1,37 +1,8 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
+import * as S from "./Styles";
 
-// --- REUŻYWALNE STYLE (zgodne z poprzednim formularzem) ---
-
-const FormContainer = styled.div`
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 40px;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  line-height: 1.6;
-  color: #333;
-`;
-
-const FormHeader = styled.div`
-  border-bottom: 3px solid #28a745; // Zielony akcent dla ankiet/feedbacku
-  margin-bottom: 30px;
-  padding-bottom: 15px;
-  h1 {
-    font-size: 24px;
-    color: #2c3e50;
-    margin: 0;
-    text-transform: uppercase;
-  }
-  p {
-    font-size: 14px;
-    color: #666;
-    margin-top: 10px;
-  }
-`;
 
 const InfoBox = styled.div`
   background: #f3fcf5;
@@ -124,7 +95,6 @@ const SubmitButton = styled.button`
   }
 `;
 
-// --- WALIDACJA ---
 
 const validationSchema = Yup.object().shape({
   effectiveness: Yup.string().required("Proszę wybrać ocenę"),
@@ -167,10 +137,10 @@ const PMCFSurvey = () => {
   );
 
   return (
-    <FormContainer>
-      <FormHeader>
+    <S.FormContainer>
+      <S.Header>
         <h1>Ankieta</h1>
-      </FormHeader>
+      </S.Header>
 
       <InfoBox>
         Dziękujemy za współpracę. Ankieta jest{" "}
@@ -345,7 +315,7 @@ const PMCFSurvey = () => {
           </Form>
         )}
       </Formik>
-    </FormContainer>
+    </S.FormContainer>
   );
 };
 
