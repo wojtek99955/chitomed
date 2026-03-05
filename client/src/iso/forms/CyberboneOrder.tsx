@@ -185,11 +185,6 @@ const CyberboneForm = () => {
         <div>
           <h1>Formularz wytycznych do projektu Cyberbone</h1>
         </div>
-        <div className="meta">
-          Nr rejestracji: F-OBK-09-02
-          <br />
-          Strona: 1 z 3
-        </div>
       </Header>
 
       <Formik
