@@ -416,7 +416,7 @@ const CyberboneForm = () => {
             </WarningBox>
 
             <InstructionsSection>
-              <h4>Zasady przekazywania danych obrazowych Pacjenta:</h4>
+              {/* <h4>Zasady przekazywania danych obrazowych Pacjenta:</h4>
               <ul>
                 <li>
                   Plik należy nazwać używając <strong>ID Pacjenta</strong>.
@@ -440,7 +440,7 @@ const CyberboneForm = () => {
                   . Plik należy zabezpieczyć hasłem i przesłać je inną drogą
                   komunikacji (np. SMS).
                 </li>
-              </ul>
+              </ul> */}
 
               <ProcedureHighlight>
                 <p>
