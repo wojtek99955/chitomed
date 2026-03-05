@@ -148,6 +148,66 @@ const TwoInputsGroup = styled.div`
     width: 100%;
   }
 `;
+
+const WarningBox = styled.div`
+  background: #fff5f5;
+  border: 1px solid #feb2b2;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 4px;
+
+  p {
+    margin: 0;
+    color: #c53030;
+    font-weight: bold;
+    font-size: 14px;
+  }
+`;
+
+const InstructionsSection = styled.div`
+  font-size: 13px;
+  color: #4a5568;
+  line-height: 1.6;
+  margin-bottom: 25px;
+
+  h4 {
+    margin-bottom: 10px;
+    color: #2d3748;
+    border-bottom: 1px solid #edf2f7;
+    padding-bottom: 5px;
+  }
+
+  ul {
+    padding-left: 20px;
+    margin-bottom: 15px;
+  }
+
+  li {
+    margin-bottom: 8px;
+  }
+`;
+
+const ProcedureHighlight = styled.div`
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  padding: 15px;
+  border-radius: 6px;
+  font-style: italic;
+  font-size: 13px;
+  color: #2d3748;
+
+  p {
+    margin: 5px 0;
+    font-size: 1rem;
+    display: flex;
+    gap: 10px;
+    &::before {
+      content: "•";
+      color: #0056b3;
+      font-weight: bold;
+    }
+  }
+`;
 // --- WALIDACJA YUP ---
 
 const validationSchema = Yup.object().shape({
@@ -243,7 +303,7 @@ const CyberboneForm = () => {
                 <Field name="email" type="email" />
                 <ErrorMessage name="email" component={ErrorText} />
               </FormGroup>
-</TwoInputsGroup>
+            </TwoInputsGroup>
 
             <FormGroup>
               <label>Przewidywana data zabiegu</label>
@@ -305,7 +365,7 @@ const CyberboneForm = () => {
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}
-                onDrop={(e:any) => {
+                onDrop={(e: any) => {
                   e.preventDefault();
                   setDragActive(false);
                   if (e.dataTransfer.files[0])
@@ -344,6 +404,60 @@ const CyberboneForm = () => {
                 </li>
               </ul>
             </InfoBox>
+
+            <WarningBox>
+              <p>
+                UWAGA: Do każdego przypadku medycznego podchodzimy indywidualnie
+                w związku z czym oferujemy konsultacje w zakresie wykonania
+                badania TK. W przypadku braku możliwości spełnienia powyższych
+                wymagań wskażemy możliwe miejsce wykonania badania obrazowania
+                medycznego.
+              </p>
+            </WarningBox>
+
+            <InstructionsSection>
+              <h4>Zasady przekazywania danych obrazowych Pacjenta:</h4>
+              <ul>
+                <li>
+                  Plik należy nazwać używając <strong>ID Pacjenta</strong>.
+                </li>
+                <li>
+                  Pliki z badania (np. TK, MRI) na płycie CD/pendrive/karcie
+                  pamięci można przesłać tradycyjną pocztą wybierając opcję
+                  listu poleconego.
+                </li>
+                <li>
+                  Pliki DICOM (.zip) można przesłać na adres:
+                  <a
+                    href="mailto:project@syntplant.com"
+                    style={{
+                      color: "#0056b3",
+                      fontWeight: "bold",
+                      marginLeft: "4px",
+                    }}>
+                    project@syntplant.com
+                  </a>
+                  . Plik należy zabezpieczyć hasłem i przesłać je inną drogą
+                  komunikacji (np. SMS).
+                </li>
+              </ul>
+
+              <ProcedureHighlight>
+                <p>
+                  Przed ostatecznym wydrukiem wyrobu medycznego przygotowany
+                  zostanie model struktury i implantu do akceptacji lekarza.
+                </p>
+                <p>
+                  Zmiana systemu mocowania implantu w trakcie zabiegu wymaga
+                  bezwarunkowego uzgodnienia z projektantami Syntplant sp. z
+                  o.o.
+                </p>
+                <p>
+                  Projektanci Syntplant Sp. z o.o. zastrzegają sobie prawo do
+                  uczestnictwa podczas zabiegu/operacji.
+                </p>
+              </ProcedureHighlight>
+            </InstructionsSection>
 
             <SectionTitle>Klauzula Danych Osobowych (RODO)</SectionTitle>
             <div
