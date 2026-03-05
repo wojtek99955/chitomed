@@ -17,6 +17,9 @@ import AddMaterialModal from "./pages/protected/features/materials/components/Ad
 import ForgotPassword from "./features/auth/SignIn/ForgotPasswordForm";
 import SignIn from "./features/auth/SignIn/SignIn";
 import CyberboneForm from "./iso/forms/CyberboneOrder";
+import MedicalIncidentForm from "./iso/forms/MedicalIncident";
+import PMCFSurvey from "./iso/forms/PMCFSurvey";
+import NovaOssProductionForm from "./iso/forms/NovaOssProductionForm";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +40,12 @@ function App() {
             element={<ResetPasswordForm />}
           />
           <Route path="/cyberbone-order-form" element={<CyberboneForm />} />
+          <Route
+            path="/medical-incident-form"
+            element={<MedicalIncidentForm />}
+          />
+          <Route path="/pmcf-survey" element={<PMCFSurvey />} />
+          <Route path="nova-oss-production-form" element={<NovaOssProductionForm />} />
 
           {/* Protected routes */}
           <Route element={<ProtectedRoute />}>
