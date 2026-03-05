@@ -9,7 +9,7 @@ import { device } from "../../assets/device";
 const FormContainer = styled.div`
   max-width: 900px;
   margin: 40px auto;
-  padding: 40px;
+  padding: 10px;
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -17,6 +17,9 @@ const FormContainer = styled.div`
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   color: #333;
+  @media ${device.tablet}{
+    padding:40px;
+  }
 `;
 
 const Header = styled.div`
