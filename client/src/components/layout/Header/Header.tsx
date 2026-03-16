@@ -71,8 +71,9 @@ const Header = () => {
     if (path.startsWith("/profile")) return languages.profile[lang];
     if (path.startsWith("/users")) return languages.users[lang];
 
-    // Opcjonalnie: obsługa detali materiału (np. /material/123)
     if (path.startsWith("/material")) return "Material details";
+    if (path.startsWith("/iso/orders")) return "Zamówienia";
+    if (path.startsWith("/iso/links")) return "Linki";
 
     return "Chitomed materials"; // Tytuł domyślny
   };

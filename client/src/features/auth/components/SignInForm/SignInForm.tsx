@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import * as S from "./Styles";
 import { logo } from "../../SignIn/logo";
+import { jwtDecode } from "jwt-decode";
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string()
@@ -33,7 +34,14 @@ const SignInForm = () => {
       localStorage.setItem("token", data.accessToken);
       setServerError(null);
       setSuccessMessage("Logged in successfully! Redirecting...");
-      navigate("/dashboard");
+      if (data.accessToken) {
+        let jwt: any = jwtDecode(data.accessToken);
+        if (jwt.role === "admin") {
+          navigate("/apps");
+        } else {
+          navigate("/dashboard");
+        }
+      }
     },
     onError: (error: any) => {
       let message = "Login failed. Please try again.";

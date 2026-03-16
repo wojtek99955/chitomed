@@ -20,7 +20,10 @@ import CyberboneForm from "./iso/forms/CyberboneOrder";
 import MedicalIncidentForm from "./iso/forms/MedicalIncident";
 import PMCFSurvey from "./iso/forms/PMCFSurvey";
 import NovaOssProductionForm from "./iso/forms/NovaOssProductionForm";
-
+import AppLauncher from "./iso/pages/AppLauncher/AppLauncher";
+import ISODashboard from "./iso/pages/Dashboard/Dashboard"
+import Links from "./iso/pages/Links/Links";
+import ISOOrders from "./iso/pages/ISOOrders/ISOOrders";
 const queryClient = new QueryClient();
 
 function App() {
@@ -45,7 +48,10 @@ function App() {
             element={<MedicalIncidentForm />}
           />
           <Route path="/pmcf-survey" element={<PMCFSurvey />} />
-          <Route path="nova-oss-production-form" element={<NovaOssProductionForm />} />
+          <Route
+            path="nova-oss-production-form"
+            element={<NovaOssProductionForm />}
+          />
 
           {/* Protected routes */}
           <Route element={<ProtectedRoute />}>
@@ -62,12 +68,23 @@ function App() {
               <Route path="users/:id" element={<User />} />
               <Route path="material/:id" element={<MaterialPage />} />
               <Route path="profile" element={<ProfilePage />} />
+              <Route path="/iso/dashboard" element={<ISODashboard />} />
+              <Route path="/iso/orders" element={<ISOOrders />} />
+              <Route path="/iso/links" element={<Links />} />
             </Route>
             <Route
               path="add-material"
               element={
                 <AdminRoute>
                   <AddMaterialModal />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="apps"
+              element={
+                <AdminRoute>
+                  <AppLauncher />
                 </AdminRoute>
               }
             />

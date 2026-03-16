@@ -7,6 +7,8 @@ import { useAuthData } from "../../../../features/auth/hooks/useAuthData";
 import { memo } from "react";
 import { languages } from "./languages";
 import { useLanguage } from "../../../../features/language/useLanguage";
+import { BsCart } from "react-icons/bs";
+import { PiLinkSimpleBold } from "react-icons/pi";
 
 const ACTIVE_BG_COLOR = "white";
 
@@ -61,6 +63,16 @@ const PeopleIcon = styled(PiUsersFour)`
   color: #1f2937;
 `;
 
+const OrdersIcon = styled(BsCart)`
+  font-size: 1.6rem;
+  color: #1f2937;
+`;
+
+const LinksIcon = styled(PiLinkSimpleBold)`
+  font-size: 1.6rem;
+  color: #1f2937;
+`;
+
 const ContentIcon = styled(RxVideo)`
   font-size: 1.6rem;
   color: #1f2937;
@@ -84,7 +96,9 @@ const Sidebar = () => {
 
   const dashboardPath = "/dashboard";
   const usersPath = "/users";
-
+  const isoOrdersPath = "/iso/orders"
+  const isIsoModule = currentPath.includes("iso");
+  const isoLinksPath ="/iso/links";
   return (
     <>
       {role === "admin" && (
@@ -94,17 +108,41 @@ const Sidebar = () => {
             menu
           </Name>
           <Nav>
-            <Link
-              to={dashboardPath}
-              data-is-active={currentPath === dashboardPath ? "true" : "false"}>
-              <ContentIcon /> {languages.content[lang]}
-            </Link>
-            <Link
-              to={usersPath}
-              data-is-active={currentPath === usersPath ? "true" : "false"}>
-              <PeopleIcon />
-              {languages.users[lang]}
-            </Link>
+            {isIsoModule ? (
+              <>
+                <Link
+                  to="/iso/orders"
+                  data-is-active={
+                    currentPath === isoOrdersPath ? "true" : "false"
+                  }>
+                  <OrdersIcon /> Zamówienia
+                </Link>
+                <Link
+                  to="/iso/links"
+                  data-is-active={
+                    currentPath === isoLinksPath ? "true" : "false"
+                  }>
+                  <LinksIcon />
+                  Linki
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  to={dashboardPath}
+                  data-is-active={
+                    currentPath === dashboardPath ? "true" : "false"
+                  }>
+                  <ContentIcon /> {languages.content[lang]}
+                </Link>
+                <Link
+                  to={usersPath}
+                  data-is-active={currentPath === usersPath ? "true" : "false"}>
+                  <PeopleIcon />
+                  {languages.users[lang]}
+                </Link>
+              </>
+            )}
           </Nav>
         </Container>
       )}
