@@ -19,8 +19,8 @@ app.use("/material", require("./routes/materialRoutes"));
 app.use("/newsletter", require("./routes/newsletterRoutes"));
 app.use("/categories", require("./routes/categoryRoutes"));
 app.use("/upload", require("./routes/upload"));
-
-
+app.use("/orderDocuments", require("./routes/orderDocuments"));
+app.use("/orders", require("./routes/orderRoutes"));
 app.use(errorHandler);
 
 mongoose.connection.once("open", () => {

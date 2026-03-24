@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import * as S from "./Styles";
-
-
+import { api } from "../../../../../api/api";
+import { useSaveOrderDocument } from "../../../orderDocuments/api/useSaveOrderDocument";
 
 const validationSchema = Yup.object().shape({
   creationDate: Yup.date().required("Data jest wymagana"),
@@ -25,7 +25,8 @@ const validationSchema = Yup.object().shape({
 
 const CyberboneForm = () => {
   const [dragActive, setDragActive] = useState(false);
-const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toISOString().split("T")[0];
+  const { mutateAsync, isPending, isSuccess } = useSaveOrderDocument();
   const initialValues = {
     creationDate: today,
     doctorName: "",
@@ -41,13 +42,88 @@ const today = new Date().toISOString().split("T")[0];
     dicomFile: null as any,
   };
 
-  const handleDrag = (e:any) => {
+  const handleDrag = (e: any) => {
     e.preventDefault();
     e.stopPropagation();
     if (e.type === "dragenter" || e.type === "dragover") setDragActive(true);
     else if (e.type === "dragleave") setDragActive(false);
   };
 
+  const handleSubmit = async (
+    values: any,
+    { setSubmitting, resetForm }: any,
+  ) => {
+    try {
+      let dicomUrl = "";
+
+      if (values.dicomFile) {
+        const fileData = new FormData();
+        fileData.append("file", values.dicomFile);
+
+        const uploadResponse = await api.post(
+          "/upload/upload-dicom",
+          fileData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          },
+        );
+
+        dicomUrl = uploadResponse.data.url;
+      }
+
+      const {
+        doctorName,
+        patientId,
+        email,
+        facilityDetails,
+        phone,
+        surgeryDate,
+        dicomFile,
+        ...dynamicData
+      } = values;
+
+      // 3. BUDUJEMY PAYLOAD Z LINKIEM DO PLIKU
+      const payload = {
+        documentType: "CyberboneOrderForm",
+        doctorName,
+        patientId,
+        doctorEmail: email,
+        ...dynamicData,
+        dicomUrl: dicomUrl,
+          facilityDetails,
+          phone,
+          surgeryDate,
+      };
+      await mutateAsync(payload);
+      console.log("Zamówienie i pliki zostały przesłane pomyślnie!");
+      resetForm();
+    } catch (error: any) {
+      console.error("Błąd procesu wysyłki:", error);
+      const errorMsg =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        error.message;
+      alert("Wystąpił błąd: " + errorMsg);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+if (isSuccess) {
+  return (
+    <S.FormContainer>
+      <S.SuccessWrapper>
+        <S.SuccessIcon>✅</S.SuccessIcon>
+        <h2>Formularz został wysłany!</h2>
+        <p>
+          Dziękujemy za przesłanie wytycznych do projektu Cyberbone.
+        </p>
+      </S.SuccessWrapper>
+    </S.FormContainer>
+  );
+}
   return (
     <S.FormContainer>
       <S.Header>
@@ -59,11 +135,9 @@ const today = new Date().toISOString().split("T")[0];
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          console.log("Dane formularza:", values);
-          //   alert("Wysłano formularz wraz z plikiem: " + values.dicomFile?.name);
-        }}>
-        {({ setFieldValue, values, isSubmitting }) => (
+        onSubmit={handleSubmit}
+      >
+        {({ setFieldValue, values }) => (
           <Form>
             <S.SectionTitle>Dane ogólne</S.SectionTitle>
 
@@ -137,7 +211,10 @@ const today = new Date().toISOString().split("T")[0];
                 component="textarea"
                 placeholder="- Newralgiczne miejsca&#10;- Punkty mocowania&#10;- Sposób fiksacji, średnice i długości wkrętów"
               />
-              <ErrorMessage name="geometryDescription" component={S.ErrorText} />
+              <ErrorMessage
+                name="geometryDescription"
+                component={S.ErrorText}
+              />
             </S.FormGroup>
 
             {/* SEKCJA PLIKU DICOM */}
@@ -151,7 +228,7 @@ const today = new Date().toISOString().split("T")[0];
                 hidden
                 accept=".zip"
                 onChange={(e) => {
-                  const file = e.target.files?.[0]; // Bezpieczne pobranie pierwszego pliku
+                  const file = e.target.files?.[0];
                   if (file) {
                     setFieldValue("dicomFile", file);
                   }
@@ -214,32 +291,6 @@ const today = new Date().toISOString().split("T")[0];
             </S.WarningBox>
 
             <S.InstructionsSection>
-              {/* <h4>Zasady przekazywania danych obrazowych Pacjenta:</h4>
-              <ul>
-                <li>
-                  Plik należy nazwać używając <strong>ID Pacjenta</strong>.
-                </li>
-                <li>
-                  Pliki z badania (np. TK, MRI) na płycie CD/pendrive/karcie
-                  pamięci można przesłać tradycyjną pocztą wybierając opcję
-                  listu poleconego.
-                </li>
-                <li>
-                  Pliki DICOM (.zip) można przesłać na adres:
-                  <a
-                    href="mailto:project@syntplant.com"
-                    style={{
-                      color: "#0056b3",
-                      fontWeight: "bold",
-                      marginLeft: "4px",
-                    }}>
-                    project@syntplant.com
-                  </a>
-                  . Plik należy zabezpieczyć hasłem i przesłać je inną drogą
-                  komunikacji (np. SMS).
-                </li>
-              </ul> */}
-
               <S.ProcedureHighlight>
                 <p>
                   Przed ostatecznym wydrukiem wyrobu medycznego przygotowany
@@ -287,8 +338,8 @@ const today = new Date().toISOString().split("T")[0];
             </S.FormGroup>
             <ErrorMessage name="gdprAccepted" component={S.ErrorText} />
 
-            <S.SubmitButton type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Wysyłanie..." : "Wyślij formularz zamówienia"}
+            <S.SubmitButton type="submit" disabled={isPending}>
+              {isPending ? "Wysyłanie..." : "Wyślij formularz zamówienia"}
             </S.SubmitButton>
           </Form>
         )}

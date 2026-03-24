@@ -2,7 +2,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 import * as S from "./Styles";
-
+import { useSaveOrderDocument } from "../../../orderDocuments/api/useSaveOrderDocument";
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -37,6 +37,7 @@ const PrivacyBox = styled.div`
   margin-top: 30px;
   line-height: 1.5;
   text-align: justify;
+  margin-bottom: 1rem;
 `;
 
 const validationSchema = Yup.object().shape({
@@ -51,6 +52,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const NovaOssProductionForm = () => {
+  const { mutateAsync } = useSaveOrderDocument();
   const initialValues = {
     creationDate: new Date().toISOString().substr(0, 10),
     doctorName: "",
@@ -71,6 +73,38 @@ const NovaOssProductionForm = () => {
     additionalNotes: "",
   };
 
+const handleSubmit = async (values: any, { setSubmitting, resetForm }: any) => {
+  try {
+    const { doctorName, email, ...restOfValues } = values;
+
+    const payload = {
+      documentType: "NovaOssOrderForm",
+      doctorName,
+      doctorEmail: email,
+      ...restOfValues, // Wszystkie dane produkcyjne wpadają do 'data' w bazie
+    };
+
+    await mutateAsync(payload);
+    resetForm();
+  } catch (error: any) {
+    console.error("Błąd wysyłki:", error);
+    alert("Wystąpił błąd podczas przesyłania wytycznych.");
+  } finally {
+    setSubmitting(false);
+  }
+};
+
+// if (isSuccess) {
+//   return (
+//     <S.FormContainer>
+//       <S.SuccessWrapper>
+//         <S.SuccessIcon>🚀</S.SuccessIcon>
+//         <h2>Wytyczne wysłane do produkcji!</h2>
+//         <p>Zlecenie zostało zarejestrowane w systemie.</p>
+//       </S.SuccessWrapper>
+//     </S.FormContainer>
+//   );
+// }
   return (
     <S.FormContainer>
       <S.Header>
@@ -80,7 +114,7 @@ const NovaOssProductionForm = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values) => console.log("Zlecenie produkcji:", values)}>
+        onSubmit={handleSubmit}>
         {({ values }) => (
           <Form>
             <S.SectionTitle>1. Dane ogólne</S.SectionTitle>

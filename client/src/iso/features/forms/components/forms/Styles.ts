@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { device } from "../../assets/device";
+import styled, { keyframes } from "styled-components";
+import { device } from "../../../../../assets/device";
 
 export const FormContainer = styled.div`
   max-width: 900px;
@@ -134,6 +134,8 @@ export const SubmitButton = styled.button`
   }
   &:disabled {
     background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.8;
   }
 `;
 
@@ -206,5 +208,53 @@ export const ProcedureHighlight = styled.div`
       color: #2c50dc;
       font-weight: bold;
     }
+  }
+`;
+
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
+export const SuccessWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  animation: ${fadeIn} 0.5s ease-out;
+
+  h2 {
+    color: #2e7d32;
+    margin-bottom: 15px;
+    font-size: 24px;
+  }
+
+  p {
+    color: #555;
+    max-width: 500px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+`;
+
+export const SuccessIcon = styled.div`
+  font-size: 64px;
+  margin-bottom: 20px;
+`;
+
+export const SuccessButton = styled.button`
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+
+  &:hover {
+    background-color: #004494;
   }
 `;

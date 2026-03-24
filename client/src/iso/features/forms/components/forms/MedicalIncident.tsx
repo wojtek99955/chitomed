@@ -1,9 +1,10 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
-import { device } from "../../assets/device";
 import * as S from "./Styles";
-
+import { device } from "../../../../../assets/device";
+import { useParams } from "react-router-dom";
+import { useSaveOrderDocument } from "../../../orderDocuments/api/useSaveOrderDocument";
 
 const FormGroup = styled.div`
   margin-bottom: 18px;
@@ -62,9 +63,6 @@ const CheckboxLabel = styled.label`
   }
 `;
 
-
-// --- WALIDACJA YUP ---
-
 const validationSchema = Yup.object().shape({
   reporterStatus: Yup.string().required("Wybierz status zgłaszającego"),
   reporterName: Yup.string().required("Wymagane"),
@@ -82,14 +80,9 @@ const validationSchema = Yup.object().shape({
 });
 
 const MedicalIncidentForm = () => {
+  const { mutateAsync, isSuccess } = useSaveOrderDocument();
+  const { id } = useParams();
   const initialValues = {
-    // Adresat
-    recipientName: "Syntplant Sp. z o.o.",
-    recipientAddress: "ul. Przykładowa 1, 00-000 Miasto",
-    recipientEmail: "office@syntplant.com",
-    recipientPhone: "+48 000 000 000",
-
-    // Zgłaszający
     reporterStatus: "",
     otherStatus: "",
     reporterName: "",
@@ -97,15 +90,9 @@ const MedicalIncidentForm = () => {
     reporterAddress: "",
     postalCode: "",
     city: "",
-    country: "Polska",
+    country: "",
     email: "",
     phone: "",
-
-    // Wytwórca
-    manufacturerName: "Syntplant Sp. z o.o.",
-    manufacturerAddress: "",
-
-    // Wyrób
     productName: "",
     modelNumber: "",
     prodDate: "",
@@ -113,8 +100,6 @@ const MedicalIncidentForm = () => {
     implantDate: "",
     removalDate: "",
     duration: "",
-
-    // Incydent
     reportToManufacturerDate: "",
     incidentDate: "",
     incidentLocation: "",
@@ -124,14 +109,42 @@ const MedicalIncidentForm = () => {
     usageOther: "",
     patientOutcome: "",
     actionsTaken: "",
-
-    // Pacjent
     patientGender: "",
     patientAge: "",
     patientWeight: "",
     notes: "",
     declaration: false,
   };
+
+  const handleSubmit = async (values: any, { setSubmitting }: any) => {
+    try {
+      const payload = {
+        documentType: "medical-event",
+        orderId: id,
+        ...values,
+      };
+
+      await mutateAsync(payload);
+      console.log("Incydent został zgłoszony pomyślnie!");
+    } catch (error: any) {
+      console.error("Błąd wysyłki incydentu:", error);
+      alert("Nie udało się wysłać zgłoszenia. Spróbuj ponownie później.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (isSuccess) {
+    return (
+      <S.FormContainer>
+        <S.SuccessWrapper>
+          <S.SuccessIcon>📩</S.SuccessIcon>
+          <h2>Zgłoszenie zostało wysłane</h2>
+          <p>Dziękujemy za przesłanie informacji o incydencie medycznym.</p>
+        </S.SuccessWrapper>
+      </S.FormContainer>
+    );
+  }
 
   return (
     <S.FormContainer>
@@ -142,22 +155,10 @@ const MedicalIncidentForm = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values) => console.log("Incydent zgłoszony:", values)}>
+        onSubmit={handleSubmit}>
         {({ values, isSubmitting }) => (
           <Form>
-            <S.SectionTitle>1. Informacje administracyjne (Adresat)</S.SectionTitle>
-            <Row>
-              <S.FormGroup>
-                <label>Nazwa</label>
-                <Field name="recipientName" disabled />
-              </S.FormGroup>
-              <S.FormGroup>
-                <label>E-mail</label>
-                <Field name="recipientEmail" disabled />
-              </S.FormGroup>
-            </Row>
-
-            <S.SectionTitle>2. Informacje o zgłaszającym</S.SectionTitle>
+            <S.SectionTitle>1. Informacje o zgłaszającym</S.SectionTitle>
             <S.FormGroup>
               <label>Status zgłaszającego</label>
               <CheckboxGroup>
@@ -219,7 +220,7 @@ const MedicalIncidentForm = () => {
               </S.FormGroup>
             </Row>
 
-            <S.SectionTitle>3. Informacje o wyrobie</S.SectionTitle>
+            <S.SectionTitle>2. Informacje o wyrobie</S.SectionTitle>
             <Row>
               <S.FormGroup>
                 <label>Nazwa handlowa</label>
@@ -251,7 +252,9 @@ const MedicalIncidentForm = () => {
               </S.FormGroup>
             </Row>
 
-            <S.SectionTitle>4. Informacje o incydencie medycznym</S.SectionTitle>
+            <S.SectionTitle>
+              3. Informacje o incydencie medycznym
+            </S.SectionTitle>
             <Row>
               <S.FormGroup>
                 <label>Data wystąpienia incydentu</label>
@@ -273,7 +276,10 @@ const MedicalIncidentForm = () => {
                 rows="5"
                 placeholder="Proszę szczegółowo opisać przebieg zdarzenia..."
               />
-              <ErrorMessage name="incidentDescription" component={S.ErrorText} />
+              <ErrorMessage
+                name="incidentDescription"
+                component={S.ErrorText}
+              />
             </S.FormGroup>
 
             <Row>
@@ -304,7 +310,7 @@ const MedicalIncidentForm = () => {
               <Field name="patientOutcome" component="textarea" />
             </S.FormGroup>
 
-            <S.SectionTitle>5. Dane Pacjenta</S.SectionTitle>
+            <S.SectionTitle>4. Dane Pacjenta</S.SectionTitle>
             <Row>
               <S.FormGroup>
                 <label>Płeć</label>

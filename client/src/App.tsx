@@ -16,14 +16,16 @@ import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import AddMaterialModal from "./pages/protected/features/materials/components/AddMaterial/AddMaterial";
 import ForgotPassword from "./features/auth/SignIn/ForgotPasswordForm";
 import SignIn from "./features/auth/SignIn/SignIn";
-import CyberboneForm from "./iso/forms/CyberboneOrder";
-import MedicalIncidentForm from "./iso/forms/MedicalIncident";
-import PMCFSurvey from "./iso/forms/PMCFSurvey";
-import NovaOssProductionForm from "./iso/forms/NovaOssProductionForm";
 import AppLauncher from "./iso/pages/AppLauncher/AppLauncher";
 import ISODashboard from "./iso/pages/Dashboard/Dashboard"
 import Links from "./iso/pages/Links/Links";
 import ISOOrders from "./iso/pages/ISOOrders/ISOOrders";
+import CyberboneForm from "./iso/features/forms/components/forms/CyberboneOrder";
+import MedicalIncidentForm from "./iso/features/forms/components/forms/MedicalIncident";
+import OrderPage from "./iso/features/orders/pages/OrderPage";
+import DocumentView from "./iso/features/orderDocuments/pages/DocumentView/DocumentView";
+import NovaOssProductionForm from "./iso/features/forms/components/forms/NovaOssProductionForm";
+import PMCFSurvey from "./iso/features/forms/components/forms/PMCFSurvey";
 const queryClient = new QueryClient();
 
 function App() {
@@ -43,13 +45,10 @@ function App() {
             element={<ResetPasswordForm />}
           />
           <Route path="/cyberbone-order-form" element={<CyberboneForm />} />
+          <Route path="/medical-event/:id" element={<MedicalIncidentForm />} />
+          <Route path="/pmcf/:id" element={<PMCFSurvey />} />
           <Route
-            path="/medical-incident-form"
-            element={<MedicalIncidentForm />}
-          />
-          <Route path="/pmcf-survey" element={<PMCFSurvey />} />
-          <Route
-            path="nova-oss-production-form"
+            path="nova-oss-order-form"
             element={<NovaOssProductionForm />}
           />
 
@@ -71,6 +70,8 @@ function App() {
               <Route path="/iso/dashboard" element={<ISODashboard />} />
               <Route path="/iso/orders" element={<ISOOrders />} />
               <Route path="/iso/links" element={<Links />} />
+              <Route path="/iso/orders/:id" element={<OrderPage />} />
+              <Route path="/iso/orders/:id/doc/:docId" element={<DocumentView />} />
             </Route>
             <Route
               path="add-material"

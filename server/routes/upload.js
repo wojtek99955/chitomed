@@ -226,7 +226,73 @@ async function uploadToBunny(buffer, originalName, folder = "lms") {
   }
 }
 
-module.exports = { uploadToBunny };
+async function uploadRawFileToBunny(buffer, originalName, folder = "dicom") {
+  const zoneName = "chitomed-files";
+  const apiKey = process.env.BUNNY_KEY;
+  const cdnUrl = "https://chitomed-files.b-cdn.net";
+
+  // Czyścimy nazwę pliku z niedozwolonych znaków i spacji
+  const safeName = `${Date.now()}-${originalName.replace(/\s+/g, "_").toLowerCase()}`;
+  const bunnyPath = `${folder}/${safeName}`;
+
+  const uploadUrl = `https://storage.bunnycdn.com/${zoneName}/${bunnyPath}`;
+
+  try {
+    const response = await fetch(uploadUrl, {
+      method: "PUT",
+      headers: {
+        AccessKey: apiKey,
+        "Content-Type": "application/octet-stream", // Traktuj jako czysty plik binarny
+      },
+      body: buffer,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Bunny Error: ${response.status} - ${errorText}`);
+    }
+
+    // Zwracamy bezpośredni link do pliku na CDN
+    return `${cdnUrl}/${bunnyPath}`;
+  } catch (err) {
+    console.error("Błąd komunikacji z Bunny Storage:", err);
+    throw err;
+  }
+}
+
+router.post("/upload-dicom", upload.single("file"), async (req, res) => {
+  console.log("coś")
+  try {
+    if (!req.file) return res.status(400).json({ error: "Brak pliku" });
+
+    const file = req.file;
+
+    // Walidacja rozszerzenia (bezpieczeństwo danych medycznych)
+    if (!file.originalname.toLowerCase().endsWith(".zip")) {
+      return res
+        .status(400)
+        .json({ error: "Badanie musi być spakowane do archiwum .zip" });
+    }
+
+    // Wysyłamy do Bunny i odbieramy publiczny URL
+    const downloadUrl = await uploadRawFileToBunny(
+      file.buffer,
+      file.originalname,
+      "dicom",
+    );
+
+    // Zwracamy URL, który można podpiąć pod <a href={url} download>
+    res.json({
+      url: downloadUrl,
+      fileName: file.originalname,
+      message: "Plik gotowy do pobrania",
+    });
+  } catch (err) {
+    console.error("Błąd uploadu DICOM:", err);
+    res.status(500).json({ error: "Błąd serwera podczas przesyłania badania" });
+  }
+});
+
 
 module.exports = router;
 
