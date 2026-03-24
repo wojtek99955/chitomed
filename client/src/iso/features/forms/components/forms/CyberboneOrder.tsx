@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import * as S from "./Styles";
@@ -20,13 +20,20 @@ const validationSchema = Yup.object().shape({
   medicalCase: Yup.string().required("Opis przypadku jest wymagany"),
   geometryDescription: Yup.string().required("Opis geometryczny jest wymagany"),
   gdprAccepted: Yup.boolean().oneOf([true], "Musisz zaakceptować klauzulę"),
-  dicomFile: Yup.mixed().required("Załącz badanie DICOM (ZIP)"),
+  dicomUrl: Yup.string().required(
+    "Załącz i poczekaj na przesłanie badania DICOM",
+  ),
 });
 
 const CyberboneForm = () => {
   const [dragActive, setDragActive] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const today = new Date().toISOString().split("T")[0];
   const { mutateAsync, isPending, isSuccess } = useSaveOrderDocument();
+
   const initialValues = {
     creationDate: today,
     doctorName: "",
@@ -39,10 +46,56 @@ const CyberboneForm = () => {
     geometryDescription: "",
     additionalNotes: "",
     gdprAccepted: false,
-    dicomFile: null as any,
+    dicomFile: null as File | null,
+    dicomUrl: "",
   };
 
-  const handleDrag = (e: any) => {
+  const uploadDicom = async (file: File, setFieldValue: any) => {
+    if (!file.name.endsWith(".zip")) {
+      alert("Dozwolone są tylko pliki .zip");
+      return;
+    }
+
+    setIsUploading(true);
+    setUploadProgress(0);
+    const fileData = new FormData();
+    fileData.append("file", file);
+
+    try {
+      const uploadResponse = await api.post("/upload/upload-dicom", fileData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress: (progressEvent) => {
+          const total = progressEvent.total || file.size;
+          const current = progressEvent.loaded;
+          let percentCompleted = Math.floor((current * 100) / total);
+
+          // Sztuczne zatrzymanie na 95%, dopóki serwer nie zwróci 200 OK
+          if (percentCompleted > 95) percentCompleted = 95;
+          setUploadProgress(percentCompleted);
+        },
+      });
+
+      setUploadProgress(100);
+      setFieldValue("dicomUrl", uploadResponse.data.url);
+      setFieldValue("dicomFile", file);
+    } catch (error: any) {
+      alert("Błąd podczas przesyłania pliku. Spróbuj ponownie.");
+      handleRemoveFile(setFieldValue);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleRemoveFile = (setFieldValue: any) => {
+    setFieldValue("dicomFile", null);
+    setFieldValue("dicomUrl", "");
+    setUploadProgress(0);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // To rozwiązuje problem ponownego wyboru tego samego pliku
+    }
+  };
+
+  const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (e.type === "dragenter" || e.type === "dragover") setDragActive(true);
@@ -54,89 +107,45 @@ const CyberboneForm = () => {
     { setSubmitting, resetForm }: any,
   ) => {
     try {
-      let dicomUrl = "";
-
-      if (values.dicomFile) {
-        const fileData = new FormData();
-        fileData.append("file", values.dicomFile);
-
-        const uploadResponse = await api.post(
-          "/upload/upload-dicom",
-          fileData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          },
-        );
-
-        dicomUrl = uploadResponse.data.url;
-      }
-
-      const {
-        doctorName,
-        patientId,
-        email,
-        facilityDetails,
-        phone,
-        surgeryDate,
-        dicomFile,
-        ...dynamicData
-      } = values;
-
-      // 3. BUDUJEMY PAYLOAD Z LINKIEM DO PLIKU
+      const { dicomFile, email, ...restOfValues } = values;
       const payload = {
         documentType: "CyberboneOrderForm",
-        doctorName,
-        patientId,
         doctorEmail: email,
-        ...dynamicData,
-        dicomUrl: dicomUrl,
-          facilityDetails,
-          phone,
-          surgeryDate,
+        ...restOfValues,
       };
+
       await mutateAsync(payload);
-      console.log("Zamówienie i pliki zostały przesłane pomyślnie!");
       resetForm();
+      setUploadProgress(0);
     } catch (error: any) {
-      console.error("Błąd procesu wysyłki:", error);
-      const errorMsg =
-        error.response?.data?.error ||
-        error.response?.data?.message ||
-        error.message;
-      alert("Wystąpił błąd: " + errorMsg);
+      alert("Wystąpił błąd podczas zapisywania formularza.");
     } finally {
       setSubmitting(false);
     }
   };
 
-if (isSuccess) {
-  return (
-    <S.FormContainer>
-      <S.SuccessWrapper>
-        <S.SuccessIcon>✅</S.SuccessIcon>
-        <h2>Formularz został wysłany!</h2>
-        <p>
-          Dziękujemy za przesłanie wytycznych do projektu Cyberbone.
-        </p>
-      </S.SuccessWrapper>
-    </S.FormContainer>
-  );
-}
+  if (isSuccess) {
+    return (
+      <S.FormContainer>
+        <S.SuccessWrapper>
+          <S.SuccessIcon>✅</S.SuccessIcon>
+          <h2>Formularz został wysłany!</h2>
+          <p>Dziękujemy za przesłanie wytycznych do projektu Cyberbone.</p>
+        </S.SuccessWrapper>
+      </S.FormContainer>
+    );
+  }
+
   return (
     <S.FormContainer>
       <S.Header>
-        <div>
-          <h1>Formularz wytycznych do projektu Cyberbone</h1>
-        </div>
+        <h1>Formularz wytycznych do projektu Cyberbone</h1>
       </S.Header>
 
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
+        onSubmit={handleSubmit}>
         {({ setFieldValue, values }) => (
           <Form>
             <S.SectionTitle>Dane ogólne</S.SectionTitle>
@@ -154,9 +163,7 @@ if (isSuccess) {
             </S.FormGroup>
 
             <S.FormGroup>
-              <label>
-                Dane miejsca zabiegu (nazwa i adres placówki medycznej)
-              </label>
+              <label>Dane miejsca zabiegu (nazwa i adres placówki)</label>
               <Field name="facilityDetails" component="textarea" />
               <ErrorMessage name="facilityDetails" component={S.ErrorText} />
             </S.FormGroup>
@@ -182,82 +189,90 @@ if (isSuccess) {
 
             <S.FormGroup>
               <label>ID Pacjenta (np. KL22022026)</label>
-              <Field
-                name="patientId"
-                placeholder="Inicjały + Data zamówienia DDMMYYYY"
-              />
-              <small>
-                UWAGA: Tworząc ID Pacjenta nie używaj polskich znaków.
-              </small>
+              <Field name="patientId" placeholder="Inicjały + DDMMYYYY" />
+              <small>UWAGA: Nie używaj polskich znaków.</small>
               <ErrorMessage name="patientId" component={S.ErrorText} />
             </S.FormGroup>
 
             <S.SectionTitle>Wytyczne do projektowania</S.SectionTitle>
 
             <S.FormGroup>
-              <label>Opis przypadku medycznego i sposobu leczenia</label>
-              <Field
-                name="medicalCase"
-                component="textarea"
-                placeholder="Opis przypadku (onkologiczny/powypadkowy/wada wrodzona) oraz wdrożone/planowane leczenie."
-              />
+              <label>Opis przypadku i sposobu leczenia</label>
+              <Field name="medicalCase" component="textarea" />
               <ErrorMessage name="medicalCase" component={S.ErrorText} />
             </S.FormGroup>
 
             <S.FormGroup>
-              <label>Opis sugerowanej postaci geometrycznej implantu</label>
-              <Field
-                name="geometryDescription"
-                component="textarea"
-                placeholder="- Newralgiczne miejsca&#10;- Punkty mocowania&#10;- Sposób fiksacji, średnice i długości wkrętów"
-              />
+              <label>Opis sugerowanej geometrii implantu</label>
+              <Field name="geometryDescription" component="textarea" />
               <ErrorMessage
                 name="geometryDescription"
                 component={S.ErrorText}
               />
             </S.FormGroup>
 
-            {/* SEKCJA PLIKU DICOM */}
             <S.FormGroup>
-              <label>
-                Przekazanie danych obrazowych (Plik DICOM w formacie .zip)
-              </label>
+              <label>Przekazanie danych obrazowych (.zip)</label>
               <input
+                ref={fileInputRef}
                 type="file"
                 id="dicom-upload"
                 hidden
                 accept=".zip"
+                disabled={isUploading}
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) {
-                    setFieldValue("dicomFile", file);
-                  }
+                  if (file) uploadDicom(file, setFieldValue);
                 }}
               />
               <S.DropzoneContainer
                 $active={dragActive}
                 $hasFile={!!values.dicomFile}
-                onDragEnter={handleDrag}
-                onDragLeave={handleDrag}
-                onDragOver={handleDrag}
-                onDrop={(e: any) => {
-                  e.preventDefault();
-                  setDragActive(false);
-                  if (e.dataTransfer.files[0])
-                    setFieldValue("dicomFile", e.dataTransfer.files[0]);
-                }}
+                $isUploading={isUploading}
+                onDragEnter={!isUploading ? handleDrag : undefined}
+                onDragLeave={!isUploading ? handleDrag : undefined}
+                onDragOver={!isUploading ? handleDrag : undefined}
+                onDrop={
+                  !isUploading
+                    ? (e: any) => {
+                        e.preventDefault();
+                        setDragActive(false);
+                        const file = e.dataTransfer.files[0];
+                        if (file) uploadDicom(file, setFieldValue);
+                      }
+                    : undefined
+                }
                 onClick={() =>
-                  document.getElementById("dicom-upload")?.click()
+                  !values.dicomFile &&
+                  !isUploading &&
+                  fileInputRef.current?.click()
                 }>
-                {values.dicomFile ? (
-                  <p>
-                    ✅ Załadowano: <strong>{values.dicomFile.name}</strong>
-                  </p>
+                {isUploading ? (
+                  <S.UploadStatusWrapper>
+                    <p>
+                      Dodawanie pliku: <strong>{uploadProgress}%</strong>
+                    </p>
+                    <S.ProgressBar $width={uploadProgress} />
+                  </S.UploadStatusWrapper>
+                ) : values.dicomFile ? (
+                  <S.FileDetailsWrapper>
+                    <p>
+                      ✅ Załadowano: <strong>{values.dicomFile.name}</strong>
+                    </p>
+                    <S.RemoveFileBtn
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveFile(setFieldValue);
+                      }}>
+                      Usuń plik ❌
+                    </S.RemoveFileBtn>
+                  </S.FileDetailsWrapper>
                 ) : (
                   <p>Przeciągnij tutaj plik .zip lub kliknij</p>
                 )}
               </S.DropzoneContainer>
-              <ErrorMessage name="dicomFile" component={S.ErrorText} />
+              <ErrorMessage name="dicomUrl" component={S.ErrorText} />
             </S.FormGroup>
 
             <S.FormGroup>
@@ -338,20 +353,16 @@ if (isSuccess) {
             </S.FormGroup>
             <ErrorMessage name="gdprAccepted" component={S.ErrorText} />
 
-            <S.SubmitButton type="submit" disabled={isPending}>
-              {isPending ? "Wysyłanie..." : "Wyślij formularz zamówienia"}
+            <S.SubmitButton type="submit" disabled={isPending || isUploading}>
+              {isPending
+                ? "Zapisywanie..."
+                : isUploading
+                  ? `Przesyłanie danych...`
+                  : "Wyślij formularz zamówienia"}
             </S.SubmitButton>
           </Form>
         )}
       </Formik>
-
-      <div
-        style={{
-          marginTop: "40px",
-          textAlign: "right",
-          borderTop: "1px solid #eee",
-          paddingTop: "20px",
-        }}></div>
     </S.FormContainer>
   );
 };

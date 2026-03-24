@@ -72,25 +72,25 @@ export const FormGroup = styled.div`
   }
 `;
 
-export const DropzoneContainer = styled.div<any>`
-  border: 2px dashed ${(props) => (props.$active ? "#0056b3" : "#ccc")};
-  background: ${(props) => (props.$active ? "#f0f7ff" : "#fafafa")};
-  padding: 30px;
-  text-align: center;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: all 0.2s ease;
+// export const DropzoneContainer = styled.div<any>`
+//   border: 2px dashed ${(props) => (props.$active ? "#0056b3" : "#ccc")};
+//   background: ${(props) => (props.$active ? "#f0f7ff" : "#fafafa")};
+//   padding: 30px;
+//   text-align: center;
+//   border-radius: 8px;
+//   cursor: pointer;
+//   margin-top: 10px;
+//   transition: all 0.2s ease;
 
-  &:hover {
-    border-color: #2c50dc;
-  }
-  p {
-    margin: 0;
-    color: ${(props) => (props.$hasFile ? "#28a745" : "#666")};
-    font-weight: ${(props) => (props.$hasFile ? "bold" : "normal")};
-  }
-`;
+//   &:hover {
+//     border-color: #2c50dc;
+//   }
+//   p {
+//     margin: 0;
+//     color: ${(props) => (props.$hasFile ? "#28a745" : "#666")};
+//     font-weight: ${(props) => (props.$hasFile ? "bold" : "normal")};
+//   }
+// `;
 
 export const ErrorText = styled.div`
   color: #d9534f;
@@ -256,5 +256,86 @@ export const SuccessButton = styled.button`
 
   &:hover {
     background-color: #004494;
+  }
+`;
+
+
+export const FileDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+`;
+
+export const RemoveFileBtn = styled.button`
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #ef4444;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  &:hover {
+    background: #fecaca;
+  }
+`;
+
+export const DropzoneContainer = styled.div<{
+  $active: boolean;
+  $hasFile: boolean;
+  $isUploading?: boolean;
+}>`
+  /* ... reszta twoich styli ... */
+  border: 2px dashed ${(props) => (props.$active ? "#0056b3" : "#ccc")};
+  background: ${(props) => (props.$active ? "#f0f7ff" : "#fafafa")};
+  padding: 30px;
+  text-align: center;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.2s ease;
+
+  cursor: ${(props) =>
+    props.$isUploading || props.$hasFile ? "default" : "pointer"};
+  opacity: ${(props) => (props.$isUploading ? 0.8 : 1)};
+`;
+
+export const FileDetailsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+`;
+
+export const UploadStatusWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  p {
+    margin-bottom: 8px;
+  }
+`;
+
+export const ProgressBar = styled.div<{ $width: number }>`
+  width: 100%;
+  max-width: 300px;
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: ${(props) => props.$width}%;
+    background: #2c50dc;
+    /* Płynne przejście paska */
+    transition: width 0.4s cubic-bezier(0.1, 0.7, 1, 0.1);
   }
 `;
