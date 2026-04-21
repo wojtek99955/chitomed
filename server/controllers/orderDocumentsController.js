@@ -46,9 +46,8 @@ exports.getOrderDocument = asyncHandler(async (req, res) => {
 });
 
 exports.deleteOrderDocument = asyncHandler(async (req, res) => {
-  const result = await OrderDocument.findOneAndDelete({
-    orderId: req.params.orderId,
-  });
+  console.log(req.params.id, " console")
+  const result = await OrderDocument.findByIdAndDelete(req.params.id);
 
   if (!result) {
     res.status(404);

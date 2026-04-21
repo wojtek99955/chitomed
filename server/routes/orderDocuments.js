@@ -8,4 +8,5 @@ const {
 
 router.post("/", saveOrderDocument);
 router.get("/:orderId", getOrderDocument);
+router.delete("/:id", deleteOrderDocument);
 module.exports = router;

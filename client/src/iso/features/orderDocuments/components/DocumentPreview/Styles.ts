@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { FaTrashAlt } from "react-icons/fa";
 
 export const PreviewContainer = styled.div`
   background: white;
@@ -49,4 +50,35 @@ export const EmptyPreview = styled.div`
   border: 2px dashed #eee;
   border-radius: 8px;
   font-style: italic;
+`;
+
+export const RightSide = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
+
+export const DeleteIconButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: #fee2e2;
+    transform: scale(1.1);
+  }
+`;
+
+export const DeleteIcon = styled(FaTrashAlt)`
+  font-size: 1rem;
+  color: #ff2b2b;
 `;
