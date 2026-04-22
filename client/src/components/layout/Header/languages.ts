@@ -11,4 +11,8 @@ export const languages = {
     pl: "Uzytkownicy",
     en: "Users",
   },
+  materialsDetails: {
+    pl: "Materiał",
+    en: "Material details",
+  },
 };

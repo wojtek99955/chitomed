@@ -37,7 +37,7 @@ const SignInForm = () => {
       if (data.accessToken) {
         let jwt: any = jwtDecode(data.accessToken);
         if (jwt.role === "admin") {
-          navigate("/dashboard");
+          navigate("/apps");
         } else {
           navigate("/dashboard");
         }
