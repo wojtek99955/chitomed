@@ -10,7 +10,6 @@ import { useGetCategories } from "../../../categories/api/useGetCategories";
 import { useAuthData } from "../../../../../../features/auth/hooks/useAuthData";
 import { useLanguage } from "../../../../../../features/language/useLanguage";
 import { languages } from "./languages";
-
 const Wrapper = styled.div<any>`
   display: flex;
   min-height: 100vh;
@@ -118,6 +117,37 @@ const ArticleContent = styled.div`
   font-size: 1.125rem;
   line-height: 1.8;
   color: #374151;
+
+  .pdf-download-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 1.2rem;
+    margin: 1.5rem 0;
+    background-color: #2c50dc; /* Kolor firmowy z Twojego BackButton */
+    color: white !important;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: all 0.2s;
+    box-sizing: border-box;
+
+    &:hover {
+      background-color: #1e3bb3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(44, 80, 220, 0.2);
+    }
+
+    &::before {
+      content: "PDF";
+      background: rgba(255, 255, 255, 0.2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      margin-right: 12px;
+    }
+  }
 
   iframe {
     width: 100%;
@@ -267,6 +297,26 @@ const categoryName = getCategoryDisplayName();
         );
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, "text/html");
+
+        const links = doc.querySelectorAll("a");
+        links.forEach((link) => {
+          const href = link.getAttribute("href") || "";
+          if (href.toLowerCase().endsWith(".pdf")) {
+            // Tworzymy kontener, który będzie wyglądał jak nasz przycisk
+            const pdfBtn = doc.createElement("a");
+            pdfBtn.href = href;
+            pdfBtn.target = "_blank";
+            pdfBtn.rel = "noopener noreferrer";
+
+            // Dodajemy klasy lub style bezpośrednio,
+            // ale najlepiej obsłużyć to w ArticleContent CSS
+            pdfBtn.className = "pdf-download-button";
+            pdfBtn.textContent =
+              lang === "pl" ? "Otwórz plik PDF" : "Open PDF file";
+
+            link.replaceWith(pdfBtn);
+          }
+        });
 
         const videoTags = doc.querySelectorAll("video");
         videoTags.forEach((videoTag) => {

@@ -1,11 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useCreateBlockNote } from "@blocknote/react";
 import { BlockNoteView } from "@blocknote/mantine";
+import { pl } from "@blocknote/core/locales";
+
+// Style BlockNote
 import "@blocknote/core/fonts/inter.css";
 import "@blocknote/mantine/style.css";
 
+// Twoje Style
 import {
   ModalContent,
   ModalOverlay,
@@ -22,11 +27,11 @@ import {
   TopInputs,
   NotepadWrapper,
 } from "./Styles";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { pl } from "@blocknote/core/locales";
+
+// API / Hooki
 import { useAddMaterial } from "../../api/useAddMaterial";
 import { useGetCategories } from "../../../categories/api/useGetCategories";
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const initialValues = {
@@ -39,27 +44,31 @@ const validationSchema = Yup.object().shape({
   categoryId: Yup.string().required("Wybierz kategorię"),
 });
 
-
 const AddMaterialModal = () => {
   const navigate = useNavigate();
   const { mutate, isPending } = useAddMaterial(() => {
     navigate("/dashboard");
   });
+
   const { data: categories = [] } = useGetCategories();
   const [content, setContent] = useState<any[]>([]);
 
+  // KONFIGURACJA EDYTORA
   const editor = useCreateBlockNote({
-    dictionary:pl,
+    dictionary: pl,
     uploadFile: async (file: File) => {
       const formData = new FormData();
       formData.append("file", file);
 
       let uploadEndpoint = `${BASE_URL}/upload/upload-image`;
 
+      // Logika wyboru endpointu na podstawie typu pliku
       if (file.type.startsWith("video/")) {
         uploadEndpoint = `${BASE_URL}/upload/upload-video`;
+      } else if (file.type === "application/pdf") {
+        uploadEndpoint = `${BASE_URL}/upload/upload-pdf`;
       } else if (!file.type.startsWith("image/")) {
-        throw new Error("Obsługiwane są tylko obrazy i filmy");
+        throw new Error("Obsługiwane są tylko obrazy, filmy oraz pliki PDF");
       }
 
       const response = await fetch(uploadEndpoint, {
@@ -69,7 +78,7 @@ const AddMaterialModal = () => {
 
       if (!response.ok) {
         const err = await response.json().catch(() => ({}));
-        throw new Error(err.error || `Błąd uploadu (${file.type})`);
+        throw new Error(err.error || `Błąd przesyłania pliku (${file.type})`);
       }
 
       const { url } = await response.json();
@@ -77,7 +86,7 @@ const AddMaterialModal = () => {
     },
   });
 
-  // Nasłuchujemy zmian w edytorze → zapisujemy lokalnie
+  // Synchronizacja treści edytora ze stanem Formika/lokalnym
   useEffect(() => {
     const unsubscribe = editor.onChange(() => {
       setContent(editor.document);
@@ -85,9 +94,10 @@ const AddMaterialModal = () => {
     return () => unsubscribe();
   }, [editor]);
 
-  // Zamień video tagi na iframe po załadowaniu
+  // RENDEROWANIE PODGLĄDU (VIDEO I PDF)
   useEffect(() => {
-    const replaceVideoWithIframe = () => {
+    const replaceMediaWithPreview = () => {
+      // 1. Obsługa VIDEO
       const videoElements = document.querySelectorAll(
         ".bn-visual-media-wrapper video",
       );
@@ -96,44 +106,66 @@ const AddMaterialModal = () => {
         const videoUrl = video.src;
         if (!videoUrl || video.dataset.replaced === "true") return;
 
-        // Sprawdź czy to nie jest już iframe
         const wrapper = video.closest(".bn-visual-media-wrapper");
         if (!wrapper) return;
 
-        // Utwórz iframe
         const iframe = document.createElement("iframe");
         iframe.src = videoUrl;
         iframe.style.width = "100%";
         iframe.style.height = "400px";
         iframe.style.border = "1px solid #e5e7eb";
         iframe.style.borderRadius = "8px";
+        iframe.setAttribute("allowfullscreen", "true");
         iframe.setAttribute(
           "allow",
           "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
         );
-        iframe.setAttribute("allowfullscreen", "true");
 
-        // Zamień video na iframe
         wrapper.innerHTML = "";
         wrapper.appendChild(iframe);
-
-        // Oznacz jako zamienione
         iframe.dataset.replaced = "true";
+      });
+
+      // 2. Obsługa PDF
+      const pdfLinks = document.querySelectorAll(
+        ".bn-file-block-content-wrapper a[href*='.pdf']",
+      );
+
+      pdfLinks.forEach((link: any) => {
+        if (link.dataset.replaced === "true") return;
+
+        const pdfUrl = link.href;
+        const fileBlock = link.closest(
+          ".bn-block-content[data-content-type='file']",
+        );
+        if (!fileBlock) return;
+
+        const wrapper = fileBlock.querySelector(
+          ".bn-file-block-content-wrapper",
+        );
+        if (wrapper) {
+          const pdfIframe = document.createElement("iframe");
+          // Dodajemy parametry dla lepszego wyglądu w przeglądarce
+          pdfIframe.src = `${pdfUrl}#toolbar=0&navpanes=0&view=FitH`;
+          pdfIframe.style.width = "100%";
+          pdfIframe.style.height = "600px";
+          pdfIframe.style.border = "1px solid #d1d5db";
+          pdfIframe.style.borderRadius = "8px";
+          pdfIframe.style.marginTop = "10px";
+
+          wrapper.innerHTML = ""; // Czyścimy domyślny wygląd (ikonka + link)
+          wrapper.appendChild(pdfIframe);
+          link.dataset.replaced = "true";
+        }
       });
     };
 
-    // Obserwuj zmiany w DOM
-    const observer = new MutationObserver(replaceVideoWithIframe);
+    const observer = new MutationObserver(replaceMediaWithPreview);
     const editorElement = document.querySelector(".bn-container");
 
     if (editorElement) {
-      observer.observe(editorElement, {
-        childList: true,
-        subtree: true,
-      });
-
-      // Wykonaj od razu
-      replaceVideoWithIframe();
+      observer.observe(editorElement, { childList: true, subtree: true });
+      replaceMediaWithPreview();
     }
 
     return () => observer.disconnect();
@@ -145,22 +177,25 @@ const AddMaterialModal = () => {
       return;
     }
 
-    // Można dodać prostą walidację tekstu, np.:
-    const hasSomeText = content.some(
-      (block: any) =>
-        block.type === "paragraph" &&
-        block.content?.some((c: any) => c.type === "text" && c.text?.trim()),
-    );
+    // Prosta walidacja czy w ogóle jest jakaś treść (tekst lub media)
+    const hasContent = content.some((block: any) => {
+      if (block.type === "paragraph") {
+        return block.content?.some(
+          (c: any) => c.type === "text" && c.text?.trim(),
+        );
+      }
+      return ["image", "video", "file"].includes(block.type);
+    });
 
-    if (!hasSomeText) {
-      alert("Wpisz choć trochę tekstu!");
+    if (!hasContent) {
+      alert("Dodaj treść lub pliki do materiału!");
       return;
     }
 
     const dataToSend = {
       title: values.title,
       categoryId: values.categoryId,
-      content, // ← wysyłamy lokalny stan
+      content,
     };
 
     mutate(dataToSend);
@@ -182,30 +217,30 @@ const AddMaterialModal = () => {
           onSubmit={handleSubmit}>
           <Form>
             <TopInputs>
-            <FormSection>
-              <Label htmlFor="title">Tytuł</Label>
-              <Field as={Input} name="title" placeholder="Tytuł materiału" />
-              <ErrorMessage name="title" component={ErrorText} />
-            </FormSection>
+              <FormSection>
+                <Label htmlFor="title">Tytuł</Label>
+                <Field as={Input} name="title" placeholder="Tytuł materiału" />
+                <ErrorMessage name="title" component={ErrorText} />
+              </FormSection>
 
-            <FormSection>
-              <Label htmlFor="categoryId">Kategoria</Label>
-              <Field as="select" name="categoryId">
-                <option value="" disabled>
-                  -- Wybierz kategorię --
-                </option>
-                {categories.map((cat: any) => (
-                  <option key={cat._id} value={cat._id}>
-                    {cat.name["pl"]}
+              <FormSection>
+                <Label htmlFor="categoryId">Kategoria</Label>
+                <Field as="select" name="categoryId">
+                  <option value="" disabled>
+                    -- Wybierz kategorię --
                   </option>
-                ))}
-              </Field>
-              <ErrorMessage name="categoryId" component={ErrorText} />
-            </FormSection>
+                  {categories.map((cat: any) => (
+                    <option key={cat._id} value={cat._id}>
+                      {cat.name["pl"]}
+                    </option>
+                  ))}
+                </Field>
+                <ErrorMessage name="categoryId" component={ErrorText} />
+              </FormSection>
             </TopInputs>
+
             <FormSection>
               <Label>Treść</Label>
-
               <NotepadWrapper
                 style={{
                   border: "1px solid #d1d5db",
@@ -215,7 +250,6 @@ const AddMaterialModal = () => {
                 <BlockNoteView editor={editor} theme="light" />
               </NotepadWrapper>
 
-              {/* Można dodać własną informację o błędzie, jeśli treść pusta */}
               {content.length === 0 && (
                 <ErrorText style={{ marginTop: "4px" }}>
                   Treść nie może być pusta
