@@ -66,7 +66,7 @@ const LinksDropdown = () => {
 
       {isOpen && (
         <S.DropdownMenu>
-          <S.DropdownHeader>Udostępnij zewnętrzne formularze</S.DropdownHeader>
+          <S.DropdownHeader>Udostępnij</S.DropdownHeader>
 
           {links.map((link) => (
             <S.LinkItem key={link.id}>
