@@ -35,7 +35,7 @@ function App() {
       <Router>
         <Routes>
           {/* Public routes */}
-          <Route path="/" element={<InProgressPage />} />
+          <Route path="/" element={<SignIn />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
@@ -71,7 +71,10 @@ function App() {
               <Route path="/iso/orders" element={<ISOOrders />} />
               <Route path="/iso/links" element={<Links />} />
               <Route path="/iso/orders/:id" element={<OrderPage />} />
-              <Route path="/iso/orders/:id/doc/:docId" element={<DocumentView />} />
+              <Route
+                path="/iso/orders/:id/doc/:docId"
+                element={<DocumentView />}
+              />
             </Route>
             <Route
               path="add-material"
