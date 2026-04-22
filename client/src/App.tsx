@@ -9,7 +9,7 @@ import User from "./pages/protected/features/users/pages/User";
 import MaterialPage from "./pages/protected/features/materials/pages/MaterialPage/MaterialPage";
 import ProfilePage from "./pages/protected/features/profile/pages/ProfilePage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import InProgressPage from "./pages/InProgressPage/InProgressPage";
+// import InProgressPage from "./pages/InProgressPage/InProgressPage";
 import ResetPasswordForm from "./features/auth/ResetPasswordForm/ResetPasswordForm";
 import AdminRoute from "./features/auth/AdminRoute";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
