@@ -12,7 +12,7 @@ const getMaterials = asyncHandler(async (req, res) => {
     }
     res.status(200).json(material);
   } else {
-    const materials = await Material.find({});
+    const materials = await Material.find({}).sort({ createdAt: -1 });
     res.status(200).json(materials);
   }
 });

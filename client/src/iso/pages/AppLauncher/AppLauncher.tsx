@@ -101,10 +101,10 @@ const AppLauncher = () => {
           </IconWrapper>
           <CardTitle>Akademia Klienta</CardTitle>
           <CardDescription>
-            Zarządzaj materiałami wideo, webinarami i biblioteką wiedzy dla
+            Zarządzaj materiałami wideo i biblioteką wiedzy dla
             lekarzy. Edytuj treści i monitoruj postępy.
           </CardDescription>
-          <Badge>Materiały i Edukacja</Badge>
+          <Badge>education</Badge>
         </Card>
 
         <Card href="/iso/orders">
@@ -115,7 +115,7 @@ const AppLauncher = () => {
           <CardDescription>
             Zarządzaj procesem.
           </CardDescription>
-          <Badge>Produkcja i Certyfikacja</Badge>
+          <Badge>process</Badge>
         </Card>
       </Grid>
 
