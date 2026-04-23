@@ -6,22 +6,20 @@ import { api } from "../../../../../api/api";
 import { useSaveOrderDocument } from "../../../orderDocuments/api/useSaveOrderDocument";
 
 const validationSchema = Yup.object().shape({
-  creationDate: Yup.date().required("Data jest wymagana"),
-  doctorName: Yup.string().required("Imię i nazwisko lekarza jest wymagane"),
-  facilityDetails: Yup.string().required("Dane placówki są wymagane"),
-  phone: Yup.string().required("Telefon kontaktowy jest wymagany"),
-  email: Yup.string()
-    .email("Niepoprawny email")
-    .required("Email jest wymagany"),
-  surgeryDate: Yup.date().required("Data zabiegu jest wymagana"),
+  creationDate: Yup.date().required("Wymagane"),
+  doctorName: Yup.string().required("Wymagane"),
+  facilityDetails: Yup.string().required("DWymagane"),
+  phone: Yup.string().required("Wymagane"),
+  email: Yup.string().email("Niepoprawny email").required("Wymagane"),
+  surgeryDate: Yup.date().required("Wymagane"),
   patientId: Yup.string()
     .matches(/^[A-Z]{2}[0-9]{8}$/, "Format: XXDDMMRRRR (bez polskich znaków)")
-    .required("ID Pacjenta jest wymagane"),
-  medicalCase: Yup.string().required("Opis przypadku jest wymagany"),
-  geometryDescription: Yup.string().required("Opis geometryczny jest wymagany"),
-  gdprAccepted: Yup.boolean().oneOf([true], "Musisz zaakceptować klauzulę"),
+    .required("Wymagane"),
+  medicalCase: Yup.string().required("Wymagane"),
+  geometryDescription: Yup.string().required("Wymagane"),
+  gdprAccepted: Yup.boolean().oneOf([true], "Wymagane"),
   dicomUrl: Yup.string().required(
-    "Załącz i poczekaj na przesłanie badania DICOM",
+    "Załącz i poczekaj na przesłanie badania",
   ),
 });
 

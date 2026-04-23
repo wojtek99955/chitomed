@@ -97,16 +97,16 @@ const SubmitButton = styled.button`
 
 
 const validationSchema = Yup.object().shape({
-  effectiveness: Yup.string().required("Proszę wybrać ocenę"),
-  adverseEvents: Yup.string().required("Proszę zaznaczyć odpowiedź"),
+  effectiveness: Yup.string().required("Wymagane"),
+  adverseEvents: Yup.string().required("Wymagane"),
   adverseDescription: Yup.string().when("adverseEvents", {
     is: "yes",
-    then: (schema) => schema.required("Proszę opisać reakcję niepożądaną"),
+    then: (schema) => schema.required("Wymagane"),
     otherwise: (schema) => schema.notRequired(),
   }),
-  easeOfUse: Yup.string().required("Proszę wybrać ocenę"),
-  longTermResults: Yup.string().required("Proszę wybrać ocenę"),
-  overallSatisfaction: Yup.string().required("Proszę wybrać ocenę"),
+  easeOfUse: Yup.string().required("Wymagane"),
+  longTermResults: Yup.string().required("Wymagane"),
+  overallSatisfaction: Yup.string().required("Wymagane"),
 });
 
 const PMCFSurvey = () => {
@@ -122,7 +122,6 @@ const PMCFSurvey = () => {
     overallSatisfaction: "",
     overallComment: "",
     additionalNotes: "",
-    orderCode: "", // Traceability
   };
 
   const renderScale = (name:any) => (
@@ -279,22 +278,12 @@ const PMCFSurvey = () => {
             </QuestionSection>
 
             <QuestionSection style={{ background: "#fdfdfd" }}>
-              <QuestionText>Dodatkowe uwagi i kod zamówienia</QuestionText>
+              <QuestionText>Dodatkowe uwagi</QuestionText>
               <FormGroup>
                 <label style={{ fontSize: "13px", marginBottom: "5px" }}>
                   Dowolne komentarze:
                 </label>
                 <Field name="additionalNotes" component="textarea" rows="3" />
-              </FormGroup>
-              <FormGroup style={{ marginTop: "15px" }}>
-                <label style={{ fontSize: "13px", marginBottom: "5px" }}>
-                  Kod zamówienia (traceability):
-                </label>
-                <Field
-                  name="orderCode"
-                  placeholder="Np. SZ/2024/001"
-                  style={{ padding: "8px" }}
-                />
               </FormGroup>
             </QuestionSection>
 
@@ -309,8 +298,7 @@ const PMCFSurvey = () => {
                 color: "#999",
                 marginTop: "20px",
               }}>
-              Dziękujemy za poświęcony czas! Dane zostaną przesłane do działu
-              jakości.
+              Dziękujemy za poświęcony czas!
             </p>
           </Form>
         )}

@@ -46,7 +46,7 @@ const validationSchema = Yup.object().shape({
   facilityData: Yup.string().required("Wymagane"),
   email: Yup.string().email("Błędny e-mail").required("Wymagane"),
   chitosanMatrix: Yup.number().min(0).max(100).required("Podaj %"),
-  fillerType: Yup.string().required("Podaj rodzaj napełniacza"),
+  fillerType: Yup.string().required("Wymagane"),
   fillerPercent: Yup.number().min(0).max(100).required("Podaj %"),
   density: Yup.string().required("Określ gęstość"),
 });

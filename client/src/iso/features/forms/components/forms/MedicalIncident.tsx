@@ -64,14 +64,14 @@ const CheckboxLabel = styled.label`
 `;
 
 const validationSchema = Yup.object().shape({
-  reporterStatus: Yup.string().required("Wybierz status zgłaszającego"),
+  reporterStatus: Yup.string().required("Wymagane"),
   reporterName: Yup.string().required("Wymagane"),
   contactPerson: Yup.string().required("Wymagane"),
   email: Yup.string().email("Błędny format").required("Wymagane"),
   productName: Yup.string().required("Wymagane"),
   incidentDate: Yup.date().required("Wymagane"),
   incidentDescription: Yup.string()
-    .min(20, "Opis zbyt krótki")
+    .min(5, "Opis zbyt krótki")
     .required("Wymagane"),
   declaration: Yup.boolean().oneOf(
     [true],
