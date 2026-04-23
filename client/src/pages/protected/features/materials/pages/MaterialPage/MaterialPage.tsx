@@ -15,11 +15,12 @@ const Wrapper = styled.div<any>`
   min-height: 100vh;
   flex-direction: column;
   position: relative;
-  top: 10rem;
+  top: 7rem;
   @media ${device.laptop} {
     flex-direction: row;
     width: ${({ isAdmin }) => (isAdmin ? "calc(100% - 15rem)" : "100%")};
     left: ${({ isAdmin }) => (isAdmin ? "15rem" : "0")};
+    top:10rem
   }
 `;
 
@@ -92,11 +93,14 @@ const ContentWrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 2.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #111827;
   margin: 0 0 0.75rem 0;
   line-height: 1.2;
+  @media ${device.laptop} {
+    font-size: 2.4rem;
+  }
 `;
 
 const Meta = styled.p<any>`
@@ -122,9 +126,9 @@ const ArticleContent = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 250px;
+    min-width: 220px;
     width: 50%;
-    padding: 1.2rem;
+    padding: 1rem;
     margin: 1.5rem 0;
     background-color: #2c50dc; /* Kolor firmowy z Twojego BackButton */
     color: white !important;
@@ -133,6 +137,7 @@ const ArticleContent = styled.div`
     text-decoration: none !important;
     transition: all 0.2s;
     box-sizing: border-box;
+    font-size: 1rem;
 
     &:hover {
       background-color: #1e3bb3;
