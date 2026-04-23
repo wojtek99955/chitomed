@@ -122,12 +122,13 @@ const ArticleContent = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    min-width: 250px;
+    width: 50%;
     padding: 1.2rem;
     margin: 1.5rem 0;
     background-color: #2c50dc; /* Kolor firmowy z Twojego BackButton */
     color: white !important;
-    border-radius: 8px;
+    border-radius: 33px;
     font-weight: 600;
     text-decoration: none !important;
     transition: all 0.2s;
