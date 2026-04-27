@@ -57,7 +57,11 @@ const Header = () => {
   }, [isDropdownOpen]);
 
   const goDashboard = () => {
-    navigate("/dashboard");
+    if (location.pathname.startsWith("/iso")) {
+      navigate("/iso/orders");
+    } else {
+      navigate("/dashboard");
+    }
   };
 
   const goToProfile = () => {
