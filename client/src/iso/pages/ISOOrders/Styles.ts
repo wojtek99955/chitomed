@@ -11,7 +11,7 @@ export const PageContainer = styled.div`
   padding: 1rem;
 
   @media ${device.laptop} {
-    top: 8rem;
+    top: 10rem;
     flex-direction: row;
     width: calc(100% - 15rem);
     left: 15rem;
