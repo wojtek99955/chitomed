@@ -5,6 +5,7 @@ import { device } from "../../../assets/device";
 export const PageContainer = styled.div`
   gap: 1rem;
   width: 100%;
+  min-height: 100vh;
   position: relative;
   top: 10rem;
   padding: 1rem;
