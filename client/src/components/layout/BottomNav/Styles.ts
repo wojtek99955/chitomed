@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { device } from "../../../assets/device";
 import { HiOutlineUsers } from "react-icons/hi2";
 import { HiOutlineUser } from "react-icons/hi";
+import { ArrowLeftRight } from "lucide-react"; // Przykładowa ikona przełączania
+import { BsCart } from "react-icons/bs";
 
 export const Container = styled.div`
   position: fixed;
@@ -45,7 +47,7 @@ export const LinksContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     color: white;
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     transition: all 0.2s;
     border-radius: 28px;
     width: 100%;
@@ -102,3 +104,53 @@ export const LinkContent = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
+
+
+export const OrdersIcon = styled(BsCart)`
+  font-size: 1.4rem;
+`;
+
+export const LinkIcon = styled.div``
+
+// --- IKONA PRZEŁĄCZANIA ---
+export const ToggleIcon = styled(ArrowLeftRight)`
+  width: 18px;
+  height: 18px;
+  color:white;
+  flex-shrink: 0;
+  /* Delikatny efekt dla przycisku akcji */
+  transition: transform 0.3s ease;
+  
+  // Jeśli chcesz, aby ikona lekko "pracowała" przy hoverze na całym LinkContent
+`;
+
+// --- SEPARATOR ---
+// Umieszczamy go między przełącznikiem a resztą linków
+export const Separator = styled.div`
+  width: 1px;           // Szerokość kreski (pionowa)
+  height: 24px;         // Wysokość kreski
+  background-color: #e5e7eb; // Jasny szary kolor (border-color)
+  margin: 0 8px;        // Odstęp od elementów po bokach
+  align-self: center;   // Wyśrodkowanie w pionie wewnątrz flexa
+  
+  // Na wypadek, gdyby Twój LinksContainer układał elementy jeden pod drugim:
+  @media (max-width: 400px) {
+    width: 100%;
+    height: 1px;
+    margin: 8px 0;
+  }
+`;
+
+// Opcjonalnie: poprawka dla LinkContent, aby lepiej wyglądał jako przycisk
+// (Dodaj to jeśli LinkContent nie ma jeszcze cursor pointer)
+// export const LinkContent = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 8px;
+//   cursor: pointer;
+//   user-select: none;
+//   
+//   &:hover ${ToggleIcon} {
+//     transform: rotate(180deg); // Fajny efekt przy przełączaniu
+//   }
+// `;
