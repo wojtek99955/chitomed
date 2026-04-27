@@ -48,7 +48,7 @@ export const OrderBox = styled.div<any>`
 `;
 
 export const StatusBar = styled.div<any>`
-  width: 0.3rem;
+  width: 0.4rem;
   z-index: 1;
   height: 100%;
   position: absolute;
