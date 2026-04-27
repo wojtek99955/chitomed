@@ -8,7 +8,6 @@ import { memo } from "react";
 import { languages } from "./languages";
 import { useLanguage } from "../../../../features/language/useLanguage";
 import { BsCart } from "react-icons/bs";
-import { PiLinkSimpleBold } from "react-icons/pi";
 import ToggleApp from "../../../../components/layout/ToggleApp/ToggleApp";
 
 const ACTIVE_BG_COLOR = "white";
@@ -69,11 +68,6 @@ const OrdersIcon = styled(BsCart)`
   color: #1f2937;
 `;
 
-const LinksIcon = styled(PiLinkSimpleBold)`
-  font-size: 1.6rem;
-  color: #1f2937;
-`;
-
 const ContentIcon = styled(RxVideo)`
   font-size: 1.6rem;
   color: #1f2937;
@@ -99,7 +93,7 @@ const Sidebar = () => {
   const usersPath = "/users";
   const isoOrdersPath = "/iso/orders"
   const isIsoModule = currentPath.includes("iso");
-  const isoLinksPath ="/iso/links";
+  // const isoLinksPath ="/iso/links";
   return (
     <>
       {role === "admin" && (
@@ -118,14 +112,6 @@ const Sidebar = () => {
                     currentPath === isoOrdersPath ? "true" : "false"
                   }>
                   <OrdersIcon /> Zamówienia
-                </Link>
-                <Link
-                  to="/iso/links"
-                  data-is-active={
-                    currentPath === isoLinksPath ? "true" : "false"
-                  }>
-                  <LinksIcon />
-                  Linki
                 </Link>
               </>
             ) : (
