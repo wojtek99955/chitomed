@@ -8,7 +8,7 @@ export const OrderPageContainer = styled.div`
   width: 100%;
   display: flex;
   position: relative;
-  top: 10rem;
+  top: 8rem;
   padding: 1rem;
 
   @media ${device.laptop} {
@@ -17,6 +17,7 @@ export const OrderPageContainer = styled.div`
     left: 15rem;
     width: calc(100% - 15rem);
     left: 15rem;
+    top: 10rem;
   }
 `;
 
@@ -279,7 +280,10 @@ width: 100%;
 `;
 
 export const BackBtn = styled(Link)`
-  display: flex;
+  display: none;
+  @media ${device.tablet} {
+    display: flex;
+  }
   align-items: center;
   justify-content: center;
   gap: 0.5rem;

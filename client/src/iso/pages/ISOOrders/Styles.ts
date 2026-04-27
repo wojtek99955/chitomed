@@ -7,10 +7,11 @@ export const PageContainer = styled.div`
   width: 100%;
   min-height: 100vh;
   position: relative;
-  top: 10rem;
+  top: 8rem;
   padding: 1rem;
 
   @media ${device.laptop} {
+    top: 8rem;
     flex-direction: row;
     width: calc(100% - 15rem);
     left: 15rem;

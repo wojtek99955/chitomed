@@ -4,23 +4,24 @@ import styled from "styled-components";
 import { device } from "../../../../../assets/device";
 
 export const Section = styled.div`
-display: grid;
-grid-template-columns: 1fr 100% 1fr;
+  display: grid;
+  grid-template-columns: 1fr 100% 1fr;
   gap: 1rem;
   width: 100%;
   display: flex;
   position: relative;
-  top: 10rem;
+  top: 8rem;
   padding: 1rem;
 
   @media ${device.laptop} {
+    top: 10rem;
     flex-direction: row;
     width: calc(100% - 15rem);
     left: 15rem;
     width: calc(100% - 15rem);
     left: 15rem;
   }
-`
+`;
 export const BackBtn = styled(Link)`
   display: flex;
   align-items: center;
