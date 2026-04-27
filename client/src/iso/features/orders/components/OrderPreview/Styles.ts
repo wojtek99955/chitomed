@@ -1,6 +1,6 @@
+// Styles.js
 import styled from "styled-components";
-import { device } from "../../../assets/device";
-import { FaTrashAlt } from "react-icons/fa";
+import { device } from "../../../../../assets/device";
 
 export const PageContainer = styled.div`
   gap: 1rem;
@@ -154,32 +154,4 @@ export const HeaderSection = styled.div`
 
 export const Wrapper = styled.div`
   display: flex;
-`;
-
-export const DeleteIconButton = styled.button`
-  position: absolute;
-  right: 20px;
-  bottom: 1rem;
-  background: none;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 50%;
-  transition:
-    background 0.2s,
-    transform 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background: #fee2e2;
-    transform: scale(1.1);
-  }
-`;
-
-export const DeleteIcon = styled(FaTrashAlt)`
-  font-size: 1rem;
-  color: #ff2b2b;
 `;

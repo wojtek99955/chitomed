@@ -39,7 +39,7 @@ const DeleteDocumentModal = ({
           Próbujesz usunąć: <strong>{documentName || orderId}</strong>.
           <br />
           Ta operacja jest <strong>nieodwracalna</strong>. Dane zostaną trwale
-          usunięte z bazy danych Syntplant.
+          usunięte z bazy danych.
         </S.ModalDescription>
 
         <S.ButtonGroup>

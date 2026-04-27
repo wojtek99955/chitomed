@@ -1,5 +1,6 @@
 const Order = require("../models/Order");
 const asyncHandler = require("express-async-handler");
+const OrderDocument = require("../models/OrderDocument"); 
 
 exports.createOrder = async (req, res) => {
   try {
@@ -51,15 +52,29 @@ exports.getOrderById = async (req, res) => {
   }
 };
 
-exports.deleteOrder = async (req, res) => {
-  try {
-    const order = await Order.findByIdAndDelete(req.params.id);
-    if (!order)
-      return res
-        .status(404)
-        .json({ message: "Nie znaleziono zamówienia do usunięcia" });
-    res.status(200).json({ message: "Zamówienie zostało usunięte z bazy" });
-  } catch (err) {
-    res.status(500).json({ message: "Błąd serwera", error: err.message });
+exports.deleteOrder = asyncHandler(async (req, res) => {
+  const orderId = req.params.id;
+console.log(orderId, " order id")
+  // 1. Znajdź zamówienie
+  const order = await Order.findById(orderId);
+
+  if (!order) {
+    res.status(404);
+    throw new Error("Nie znaleziono zamówienia do usunięcia");
   }
-};
+
+  // 2. Usuń kaskadowo wszystkie dokumenty przypisane do tego orderId
+  // Wykonujemy to przed usunięciem samego zamówienia
+  await OrderDocument.deleteMany({ orderId: orderId });
+
+  // 3. Usuń główne zamówienie
+  await order.deleteOne(); 
+  // lub Order.findByIdAndDelete(orderId)
+
+  res.status(200).json({
+    success: true,
+    message:
+      "Zamówienie oraz powiązane dokumenty ISO zostały pomyślnie usunięte",
+    deletedId: orderId,
+  });
+});
