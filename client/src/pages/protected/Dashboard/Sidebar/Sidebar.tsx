@@ -9,6 +9,7 @@ import { languages } from "./languages";
 import { useLanguage } from "../../../../features/language/useLanguage";
 import { BsCart } from "react-icons/bs";
 import { PiLinkSimpleBold } from "react-icons/pi";
+import ToggleApp from "../../../../components/layout/ToggleApp/ToggleApp";
 
 const ACTIVE_BG_COLOR = "white";
 
@@ -106,6 +107,7 @@ const Sidebar = () => {
           <Name>
             Administrator <br />
             menu
+            <ToggleApp />
           </Name>
           <Nav>
             {isIsoModule ? (
