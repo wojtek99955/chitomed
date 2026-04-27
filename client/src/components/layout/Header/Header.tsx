@@ -65,8 +65,13 @@ const Header = () => {
   };
 
   const goToProfile = () => {
-    navigate("/profile");
+    if (location.pathname.startsWith("/iso")) {
+      navigate("/iso/profile");
+    } else {
+      navigate("/profile");
+    }
   };
+
   const location = useLocation();
   const getSubHeaderTitle = () => {
     const path = location.pathname;

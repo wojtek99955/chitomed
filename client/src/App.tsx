@@ -71,6 +71,8 @@ function App() {
               <Route path="/iso/orders" element={<ISOOrders />} />
               <Route path="/iso/links" element={<Links />} />
               <Route path="/iso/orders/:id" element={<OrderPage />} />
+              <Route path="/iso/profile" element={<ProfilePage />} />
+
               <Route
                 path="/iso/orders/:id/doc/:docId"
                 element={<DocumentView />}
