@@ -26,6 +26,7 @@ import OrderPage from "./iso/features/orders/pages/OrderPage";
 import DocumentView from "./iso/features/orderDocuments/pages/DocumentView/DocumentView";
 import NovaOssProductionForm from "./iso/features/forms/components/forms/NovaOssProductionForm";
 import PMCFSurvey from "./iso/features/forms/components/forms/PMCFSurvey";
+import PdfUploadPage from "./iso/features/orderDocuments/pages/PDFUploadPage/PDFUploadPage";
 const queryClient = new QueryClient();
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
             path="nova-oss-order-form"
             element={<NovaOssProductionForm />}
           />
+          <Route path="/iso/orders/:id/upload" element={<PdfUploadPage />} />
 
           {/* Protected routes */}
           <Route element={<ProtectedRoute />}>

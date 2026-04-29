@@ -6,13 +6,11 @@ exports.saveOrderDocument = asyncHandler(async (req, res) => {
   let { orderId, documentType, ...restData } = req.body;
 
   if (documentType && documentType.includes("Order") && !orderId) {
-    console.log("tutaj takkk")
     const newOrder = await Order.create({
       patientId: restData.patientId || "",
       doctorName: restData.doctorName || "Nieznany",
       status: "nowe",
     });
-    console.log(newOrder, " new order")
     orderId = newOrder._id;
   }
 
