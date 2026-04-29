@@ -2,18 +2,16 @@ import { Download, FileArchive, Box } from "lucide-react";
 import * as S from "./Styles"; // Zakładam, że masz plik ze stylami
 
 interface Project3DProps {
-  data: {
     data: {
       fileUrl: string;
       originalName?: string;
       fileType?: string;
       uploadedAt?: string;
     };
-  };
 }
 
-const Project3D = ({ data: wrapper }: Project3DProps) => {
-  const { fileUrl, originalName, fileType } = wrapper.data;
+const Project3D = ({ data }: Project3DProps) => {
+  const { fileUrl, originalName, fileType } = data;
 
   const handleDownload = () => {
     if (fileUrl) window.open(fileUrl, "_blank");

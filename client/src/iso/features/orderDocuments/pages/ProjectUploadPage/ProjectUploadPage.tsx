@@ -85,11 +85,9 @@ const ProjectUploadPage = () => {
       await saveOrderDocument({
         orderId: id,
         documentType: "3Dproject",
-        data: {
           fileUrl: url,
           originalName: fileName,
           fileType: fileName.split(".").pop()?.toLowerCase(),
-        },
       });
 
       setStatus("success");
