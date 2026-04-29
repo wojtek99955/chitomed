@@ -148,3 +148,55 @@ export const SuccessMessage = styled.div`
   text-align: center;
   font-weight: 500;
 `;
+
+export const StatusCenter = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  color: #64748b;
+`;
+
+export const ErrorCard = styled.div`
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+
+  h2 {
+    margin: 20px 0 10px;
+    color: #1e293b;
+  }
+  p {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 25px;
+  }
+`;
+
+export const SecondaryButton = styled.button`
+  background: #f1f5f9;
+  color: #475569;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  &:hover {
+    background: #e2e8f0;
+  }
+`;
+
+export const Badge = styled.span`
+  background: #f0f4ff;
+  color: #2c50dc;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: inline-block;
+`;

@@ -1,15 +1,62 @@
 import React, { useState, useRef } from "react";
-import { FileText, Upload, X, CheckCircle } from "lucide-react";
+import { useParams } from "react-router-dom"; // Dodajemy useParams
+import {
+  FileText,
+  Upload,
+  X,
+  // CheckCircle,
+  AlertTriangle,
+  Loader2,
+} from "lucide-react";
 import * as S from "./Styles";
+import { useOrderDocuments } from "../../api/useOrderDocuments";
 
 const PdfUploadPage = () => {
+  const { id } = useParams<{ id: string }>(); // Pobieramy ID z URL
+
+  // 1. Sprawdzamy czy dokument (id) istnieje w bazie
+  const { data: documents, isLoading, isError } = useOrderDocuments(id);
+console.log(documents," documents")
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [status, setStatus] = useState<
     "idle" | "uploading" | "success" | "error"
   >("idle");
   const fileInputRef = useRef<HTMLInputElement>(null);
+const hasError =
+  isError ||
+  (documents as any)?.isError ||
+  !documents ||
+  (Array.isArray(documents) && documents.length === 0);
+  // LOGIKA LOADINGU
+  if (isLoading) {
+    return (
+      <S.PageWrapper>
+        <S.StatusCenter>
+          <Loader2 size={40} className="animate-spin" color="#2c50dc" />
+        </S.StatusCenter>
+      </S.PageWrapper>
+    );
+  }
 
+  // LOGIKA BŁĘDNEGO ID (Jeśli API nie zwróci danych lub rzuci błąd)
+  // Zakładamy, że documents to tablica - sprawdzamy czy przyszła i czy nie jest pusta
+  if (hasError) {
+    return (
+      <S.PageWrapper>
+        <S.ErrorCard>
+          <AlertTriangle size={48} color="#dc2626" />
+          <h2>Błędny link lub brak zamówienia</h2>
+          <p>
+            Przepraszamy, ale podany identyfikator zamówienia nie istnieje w
+            naszym systemie lub wygasł.
+          </p>
+        </S.ErrorCard>
+      </S.PageWrapper>
+    );
+  }
+
+  // FUNKCJE FORMULARZA (bez zmian)
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     validateAndSetFile(selectedFile);
@@ -40,10 +87,9 @@ const PdfUploadPage = () => {
 
   const handleUpload = async () => {
     if (!file) return;
-
     setStatus("uploading");
 
-    // Symulacja wysyłania (tutaj dodaj swoje API)
+    // Tutaj Twoje API do wysyłki PDF
     setTimeout(() => {
       setStatus("success");
     }, 2000);
@@ -55,12 +101,14 @@ const PdfUploadPage = () => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  // RENDEREOWANIE WŁAŚCIWEGO FORMULARZA (Tylko jeśli ID jest poprawne)
   return (
     <S.PageWrapper>
       <S.UploadContainer>
         <S.Header>
-          <h1>Prześlij plik</h1>
-          <p>Wybierz dokument PDF, który chcesz dodać do systemu.</p>
+          <S.Badge>ID: {id}</S.Badge>
+          <h1>Prześlij plik PDF</h1>
+          <p>Prześlij podpisany dokument w formacie pdf.</p>
         </S.Header>
 
         <S.Dropzone
@@ -84,16 +132,12 @@ const PdfUploadPage = () => {
               <S.IconWrapper>
                 <Upload size={40} />
               </S.IconWrapper>
-              <span>
-                Przeciągnij i upuść plik PDF tutaj lub kliknij, aby wybrać
-              </span>
-              <small>Maksymalny rozmiar: 10MB</small>
+              <span>Przeciągnij PDF tutaj lub kliknij</span>
             </S.Placeholder>
           ) : (
             <S.FileInfo>
               <FileText size={48} color="#2c50dc" />
               <S.FileName>{file.name}</S.FileName>
-              <S.FileSize>{(file.size / 1024 / 1024).toFixed(2)} MB</S.FileSize>
               <S.RemoveButton
                 onClick={(e) => {
                   e.stopPropagation();
@@ -111,19 +155,8 @@ const PdfUploadPage = () => {
           $status={status}>
           {status === "idle" && "Wyślij dokument"}
           {status === "uploading" && "Przesyłanie..."}
-          {status === "success" && (
-            <>
-              <CheckCircle size={18} style={{ marginRight: "8px" }} />
-              Wysłano pomyślnie
-            </>
-          )}
+          {status === "success" && "Wysłano pomyślnie ✅"}
         </S.SubmitButton>
-
-        {status === "success" && (
-          <S.SuccessMessage>
-            Dokument został przesłany!
-          </S.SuccessMessage>
-        )}
       </S.UploadContainer>
     </S.PageWrapper>
   );
