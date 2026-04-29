@@ -1,9 +1,5 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-`;
 
 export const PageWrapper = styled.div`
   min-height: 100vh;
@@ -21,7 +17,6 @@ export const UploadContainer = styled.div`
   padding: 40px;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  animation: ${fadeIn} 0.5s ease-out;
 `;
 
 export const Header = styled.div`
@@ -79,7 +74,6 @@ export const FileInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: ${fadeIn} 0.3s ease-out;
 `;
 
 export const FileName = styled.span`

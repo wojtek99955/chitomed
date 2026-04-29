@@ -59,10 +59,7 @@ export const BackIcon = styled(IoChevronBackOutline)`
   color: white;
 `;
 
-export const UnknownDoc = styled.div`
-
-
-`
+export const UnknownDoc = styled.div``;
 
 // Mapa kolorów dla różnych typów dokumentów
 const badgeColors: Record<
@@ -122,18 +119,14 @@ export const DocBadge = styled.span<{ $type?: string }>`
 
 // Dodatkowo styl dla kontenera nagłówka, żeby przycisk "Wróć" i Badge były w jednej linii
 export const Header = styled.header`
-
   margin-bottom: 24px;
   padding-bottom: 16px;
-  border-bottom: 1px solid #e2e8f0;
 `;
 
 export const ContentCard = styled.div`
-width: 100%;
-max-width: 700px;
-margin: auto;
-`
+  width: 100%;
+  max-width: 700px;
+  margin: auto;
+`;
 
-export const Date = styled.div`
-
-`
+export const Date = styled.div``;

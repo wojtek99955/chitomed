@@ -293,23 +293,16 @@ router.post("/upload-dicom", upload.single("file"), async (req, res) => {
   }
 });
 
-router.post("/upload-pdf", upload.single("file"), async (req, res) => {
+router.post("/upload-document", upload.single("file"), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: "Brak pliku" });
 
     const file = req.file;
 
-    // Walidacja czy to na pewno PDF
-    if (file.mimetype !== "application/pdf") {
-      return res.status(400).json({ error: "Plik musi być formatu PDF" });
-    }
-
-    // Wykorzystujemy Twoją istniejącą funkcję do surowych plików
-    // Folder zmieniamy na 'materials' lub 'pdf'
     const url = await uploadRawFileToBunny(
       file.buffer,
       file.originalname,
-      "materials",
+      "documents",
     );
 
     res.json({
@@ -317,8 +310,8 @@ router.post("/upload-pdf", upload.single("file"), async (req, res) => {
       fileName: file.originalname,
     });
   } catch (err) {
-    console.error("Błąd uploadu PDF:", err);
-    res.status(500).json({ error: "Błąd serwera podczas przesyłania PDF" });
+    console.error("Błąd uploadu pliku:", err);
+    res.status(500).json({ error: "Błąd serwera podczas przesyłania pliku" });
   }
 });
 

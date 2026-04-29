@@ -19,6 +19,11 @@ const LinksDropdown = () => {
   const links = [
     dicomUrl ? { id: "DICOM", label: "Link: Plik DICOM", url: dicomUrl } : null,
     {
+      id: "3Dproject",
+      label: "Link: Dodawanie projektu 3D (dla projektanta)",
+      url: `${baseUrl}/project-upload/${id}`,
+    },
+    {
       id: "medical-event",
       label: "Link: Zdarzenie medyczne",
       url: `${baseUrl}/medical-event/${id}`,

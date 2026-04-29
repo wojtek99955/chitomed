@@ -9,7 +9,6 @@ import User from "./pages/protected/features/users/pages/User";
 import MaterialPage from "./pages/protected/features/materials/pages/MaterialPage/MaterialPage";
 import ProfilePage from "./pages/protected/features/profile/pages/ProfilePage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-// import InProgressPage from "./pages/InProgressPage/InProgressPage";
 import ResetPasswordForm from "./features/auth/ResetPasswordForm/ResetPasswordForm";
 import AdminRoute from "./features/auth/AdminRoute";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
@@ -26,7 +25,7 @@ import OrderPage from "./iso/features/orders/pages/OrderPage";
 import DocumentView from "./iso/features/orderDocuments/pages/DocumentView/DocumentView";
 import NovaOssProductionForm from "./iso/features/forms/components/forms/NovaOssProductionForm";
 import PMCFSurvey from "./iso/features/forms/components/forms/PMCFSurvey";
-import PdfUploadPage from "./iso/features/orderDocuments/pages/PDFUploadPage/PDFUploadPage";
+import ProjectUploadPage from "./iso/features/orderDocuments/pages/ProjectUploadPage/ProjectUploadPage";
 const queryClient = new QueryClient();
 
 function App() {
@@ -52,7 +51,7 @@ function App() {
             path="nova-oss-order-form"
             element={<NovaOssProductionForm />}
           />
-          <Route path="/iso/orders/:id/upload" element={<PdfUploadPage />} />
+          <Route path="/project-upload/:id" element={<ProjectUploadPage />} />
 
           {/* Protected routes */}
           <Route element={<ProtectedRoute />}>

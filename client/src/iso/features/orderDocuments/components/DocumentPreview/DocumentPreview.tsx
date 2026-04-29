@@ -35,6 +35,7 @@ const DocumentPreview = ({ doc }: DocumentPreviewProps) => {
     NovaOssOrderForm: "Wytyczne NovaOss",
     "patient-consent": "Zgoda pacjenta na zabieg",
     invoice: "Faktura Pro-forma",
+    "3Dproject": "Projekt 3D",
     default: "Dokumentacja medyczna",
   };
 

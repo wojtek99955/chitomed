@@ -6,6 +6,7 @@ import NovaOssPreview from "../../components/view/NovaOss/NovaOssPreview";
 import { format } from "date-fns";
 import { pl } from "date-fns/locale"; 
 import MedicalEventPreview from "../../components/view/MedicalEventPreview/MedicalEventPreview";
+import Project3D from "../../components/view/Project3D/Project3D";
 const DocumentView = () => {
   const { id, docId } = useParams<{ id: string; docId: string }>();
   const { data: docs, isLoading } = useOrderDocuments(id);
@@ -25,6 +26,8 @@ const DocumentView = () => {
         return <NovaOssPreview data={currentDoc.data} />;
       case "medical-event":
         return <MedicalEventPreview data={currentDoc.data} />;
+      case "3Dproject":
+        return <Project3D data={currentDoc.data} />;
       default:
         return (
           <S.UnknownDoc>
