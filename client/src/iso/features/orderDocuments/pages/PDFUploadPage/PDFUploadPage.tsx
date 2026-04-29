@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { FileText, Upload, X, CheckCircle, AlertCircle } from "lucide-react";
+import { FileText, Upload, X, CheckCircle } from "lucide-react";
 import * as S from "./Styles";
 
 const PdfUploadPage = () => {
