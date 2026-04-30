@@ -2,6 +2,7 @@ import * as S from "./Styles";
 import LinksDropdown from "../../Links/LinksDropdown";
 import OrderDetails from "../components/OrderDetails/OrderDetails";
 import OrderDocumentsList from "../../orderDocuments/components/OrderDocumentsList/OrderDocumentsList";
+import AddDocument from "../../orderDocuments/components/AddDocument/AddDocument";
 
 const OrderPage = () => {
   return (
@@ -12,6 +13,7 @@ const OrderPage = () => {
           <OrderDetails />
           <LinksDropdown />
           <OrderDocumentsList />
+          <AddDocument/>
         </S.Wrapper>
       </S.OrderPageContainer>
     </>
