@@ -63,7 +63,7 @@ const CyberbonePreview = ({ data }: CyberbonePreviewProps) => {
 
       {data.dicomUrl && (
         <S.FileSection>
-          <S.Label>Dane obrazowe (DICOM)</S.Label>
+          <S.Label>Dane obrazowe</S.Label>
           <S.DownloadLink href={data.dicomUrl} target="_blank">
             📥 Pobierz plik z badaniem
           </S.DownloadLink>
