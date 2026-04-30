@@ -52,7 +52,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const NovaOssProductionForm = () => {
-  const { mutateAsync } = useSaveOrderDocument();
+  const { mutateAsync, isSuccess } = useSaveOrderDocument();
   const initialValues = {
     creationDate: new Date().toISOString().substr(0, 10),
     doctorName: "",
@@ -94,17 +94,17 @@ const handleSubmit = async (values: any, { setSubmitting, resetForm }: any) => {
   }
 };
 
-// if (isSuccess) {
-//   return (
-//     <S.FormContainer>
-//       <S.SuccessWrapper>
-//         <S.SuccessIcon>🚀</S.SuccessIcon>
-//         <h2>Wytyczne wysłane do produkcji!</h2>
-//         <p>Zlecenie zostało zarejestrowane w systemie.</p>
-//       </S.SuccessWrapper>
-//     </S.FormContainer>
-//   );
-// }
+if (isSuccess) {
+  return (
+    <S.FormContainer>
+      <S.SuccessWrapper>
+        <S.SuccessIcon>🚀</S.SuccessIcon>
+        <h2>Wytyczne wysłane do produkcji!</h2>
+        <p>Zlecenie zostało zarejestrowane w systemie.</p>
+      </S.SuccessWrapper>
+    </S.FormContainer>
+  );
+}
   return (
     <S.FormContainer>
       <S.Header>
