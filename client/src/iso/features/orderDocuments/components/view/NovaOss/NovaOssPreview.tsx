@@ -42,7 +42,7 @@ const NovaOssPreview = ({ data }: NovaOssPreviewProps) => {
           <S.Value>{data.doctorEmail}</S.Value>
         </S.InfoGroup>
         <S.InfoGroup>
-          <S.Label>Tefon</S.Label>
+          <S.Label>Telefon</S.Label>
           <S.Value>{data.phone}</S.Value>
         </S.InfoGroup>
       </S.GridSection>
