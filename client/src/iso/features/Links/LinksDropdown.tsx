@@ -11,14 +11,18 @@ const LinksDropdown = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const baseUrl = window.location.origin;
   const { data: docs } = useOrderDocuments(id);
-
+  const cyberboneOrder = docs?.find(
+    (doc) => doc.documentType === "CyberboneOrderForm",
+  );
   const dicomUrl = docs?.find(
     (doc) => doc.documentType === "CyberboneOrderForm",
   )?.data?.dicomUrl;
 
   const links = [
-    dicomUrl ? { id: "DICOM", label: "Link: Plik DICOM", url: dicomUrl } : null,
-    {
+    cyberboneOrder
+      ? { id: "DICOM", label: "Link: Plik DICOM", url: dicomUrl }
+      : null,
+   cyberboneOrder && {
       id: "3Dproject",
       label: "Link: Dodawanie projektu 3D (dla projektanta)",
       url: `${baseUrl}/project-upload/${id}`,

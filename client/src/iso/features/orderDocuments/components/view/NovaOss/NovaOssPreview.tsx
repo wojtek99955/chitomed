@@ -37,6 +37,14 @@ const NovaOssPreview = ({ data }: NovaOssPreviewProps) => {
           <S.Label>Placówka</S.Label>
           <S.Value>{data.facilityData}</S.Value>
         </S.InfoGroup>
+        <S.InfoGroup>
+          <S.Label>Email</S.Label>
+          <S.Value>{data.doctorEmail}</S.Value>
+        </S.InfoGroup>
+        <S.InfoGroup>
+          <S.Label>Tefon</S.Label>
+          <S.Value>{data.phone}</S.Value>
+        </S.InfoGroup>
       </S.GridSection>
       <S.Divider />
 

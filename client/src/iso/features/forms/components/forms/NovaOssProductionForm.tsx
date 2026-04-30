@@ -73,7 +73,7 @@ const NovaOssProductionForm = () => {
     additionalNotes: "",
   };
 
-const handleSubmit = async (values: any, { setSubmitting, resetForm }: any) => {
+const handleSubmit = async (values: any, { setSubmitting }: any) => {
   try {
     const { doctorName, email, ...restOfValues } = values;
 
@@ -85,7 +85,6 @@ const handleSubmit = async (values: any, { setSubmitting, resetForm }: any) => {
     };
 
     await mutateAsync(payload);
-    resetForm();
   } catch (error: any) {
     console.error("Błąd wysyłki:", error);
     alert("Wystąpił błąd podczas przesyłania wytycznych.");
