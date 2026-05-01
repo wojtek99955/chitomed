@@ -78,6 +78,7 @@ const Header = () => {
 
     if (path.startsWith("/dashboard")) return languages.materialsTitle[lang];
     if (path.startsWith("/profile")) return languages.profile[lang];
+        if (path.startsWith("/iso/profile")) return languages.profile[lang];
     if (path.startsWith("/users")) return languages.users[lang];
 
     if (path.startsWith("/material")) return languages.materialsDetails[lang];

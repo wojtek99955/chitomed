@@ -83,7 +83,6 @@ export const OrderHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
   padding: .7rem;
@@ -99,7 +98,7 @@ export const OrderContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 0.7rem;
+  padding: 1.5rem 0.7rem;
 
   .info-row {
     font-size: 0.85rem;
@@ -162,7 +161,6 @@ export const LogoWrapper = styled.div`
   width: 100%;
   background-color: #2d50dc;
   padding: 0.7rem;
-  margin-bottom: 1rem;
   display: flex;
   align-items: center;
 `;
