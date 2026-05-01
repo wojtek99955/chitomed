@@ -30,16 +30,12 @@ export const OrdersGrid = styled.div`
 export const OrderBox = styled.div<any>`
   background: white;
   border-radius: 12px;
-  padding: 25px 20px;
   position: relative;
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.05);
   cursor: pointer;
   transition: transform 0.2s;
   border: 1px solid #e9eaed;
-  border-left: none;
   overflow: hidden;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
 
   &:hover {
     transform: translateY(-3px);
@@ -90,7 +86,7 @@ export const OrderHeader = styled.div`
   margin-bottom: 15px;
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
-
+  padding: .7rem;
   .order-number {
     font-weight: 800;
     color: #2c3e50;
@@ -103,6 +99,7 @@ export const OrderContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding: 0.7rem;
 
   .info-row {
     font-size: 0.85rem;
@@ -154,4 +151,18 @@ export const HeaderSection = styled.div`
 
 export const Wrapper = styled.div`
   display: flex;
+`;
+
+export const Logo = styled.div`
+  width: 5rem;
+  display: flex;
+  align-items: center;
+`;
+export const LogoWrapper = styled.div`
+  width: 100%;
+  background-color: #2d50dc;
+  padding: 0.7rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
 `;

@@ -107,7 +107,7 @@ const CyberboneForm = () => {
     try {
       const { dicomFile, email, ...restOfValues } = values;
       const payload = {
-        documentType: "CyberboneOrderForm",
+        documentType: "CyberBoneOrderForm",
         doctorEmail: email,
         ...restOfValues,
       };

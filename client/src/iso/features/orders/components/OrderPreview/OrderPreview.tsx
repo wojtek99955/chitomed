@@ -1,15 +1,30 @@
 import { useNavigate } from "react-router-dom";
 import * as S from "./Styles";
 import DeleteOrderModal from "../../../orderDocuments/components/DeleteOrderModal/DeleteOrderModal";
+import NovaOssLogo from "./NovaOssLogo";
+import CyberBoneLogo from "./CyberBoneLogo";
 
 const OrderPreview = ({ order }: any) => {
   let navigate = useNavigate();
+  const renderLogo = () => {
+    switch (order.brand) {
+      case "NovaOss":
+        return <NovaOssLogo />;
+      case "CyberBone":
+        return <CyberBoneLogo />;
+      default:
+        return null;
+    }
+  };
   return (
     <>
       <S.OrderBox
         key={order._id}
         onClick={() => navigate(`/iso/orders/${order._id}`)}>
-        <S.StatusBar $status={order.status} />
+        <S.LogoWrapper>
+          <S.Logo>{renderLogo()}</S.Logo>
+        </S.LogoWrapper>
+        {/* <S.StatusBar $status={order.status} /> */}
         <S.OrderHeader>
           <span className="order-number">ID: {order._id || "BRAK NR"}</span>
           <S.StatusBadge $status={order.status}>

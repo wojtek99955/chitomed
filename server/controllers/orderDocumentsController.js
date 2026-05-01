@@ -4,12 +4,18 @@ const Order = require("../models/Order");
 
 exports.saveOrderDocument = asyncHandler(async (req, res) => {
   let { orderId, documentType, ...restData } = req.body;
-
   if (documentType && documentType.includes("Order") && !orderId) {
+    const brandMapping = {
+    "NovaOssOrderForm": "NovaOss",
+    "CyberBoneOrderForm": "CyberBone"
+  };
+  // Pobieramy markę z mapy, a jeśli typ jest inny (np. GenericOrder), dajemy null lub "Inny"
+  const selectedBrand = brandMapping[documentType] || "Inny";
     const newOrder = await Order.create({
       patientId: restData.patientId || "",
       doctorName: restData.doctorName || "Nieznany",
       status: "nowe",
+      brand: selectedBrand,
     });
     orderId = newOrder._id;
   }

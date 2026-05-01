@@ -10,6 +10,11 @@ const OrderSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    brand: {
+      type: String,
+      required: true,
+      enum: ["NovaOss", "CyberBone"],
+    },
     status: {
       type: String,
       //   enum: [
