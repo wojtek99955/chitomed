@@ -12,15 +12,15 @@ const LinksDropdown = () => {
   const baseUrl = window.location.origin;
   const { data: docs } = useOrderDocuments(id);
   const cyberboneOrder = docs?.find(
-    (doc) => doc.documentType === "CyberboneOrderForm",
+    (doc) => doc.documentType === "CyberBoneOrderForm",
   );
   const dicomUrl = docs?.find(
-    (doc) => doc.documentType === "CyberboneOrderForm",
+    (doc) => doc.documentType === "CyberBoneOrderForm",
   )?.data?.dicomUrl;
 
   const links = [
     cyberboneOrder
-      ? { id: "DICOM", label: "Link: Plik DICOM", url: dicomUrl }
+      ? { id: "DICOM", label: "Link: Plik z tomografią", url: dicomUrl }
       : null,
    cyberboneOrder && {
       id: "3Dproject",
