@@ -16,7 +16,7 @@ import AddMaterialModal from "./pages/protected/features/materials/components/Ad
 import ForgotPassword from "./features/auth/SignIn/ForgotPasswordForm";
 import SignIn from "./features/auth/SignIn/SignIn";
 import AppLauncher from "./iso/pages/AppLauncher/AppLauncher";
-import ISODashboard from "./iso/pages/Dashboard/Dashboard"
+import ISODashboard from "./iso/pages/Dashboard/Dashboard";
 import Links from "./iso/pages/Links/Links";
 import ISOOrders from "./iso/pages/ISOOrders/ISOOrders";
 import CyberboneForm from "./iso/features/forms/components/forms/CyberboneOrder";
@@ -68,15 +68,40 @@ function App() {
               <Route path="users/:id" element={<User />} />
               <Route path="material/:id" element={<MaterialPage />} />
               <Route path="profile" element={<ProfilePage />} />
-              <Route path="/iso/dashboard" element={<ISODashboard />} />
-              <Route path="/iso/orders" element={<ISOOrders />} />
+              <Route
+                path="/iso/dashboard"
+                element={
+                  <AdminRoute>
+                    <ISODashboard />{" "}
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/iso/orders"
+                element={
+                  <AdminRoute>
+                    <ISOOrders />
+                  </AdminRoute>
+                }
+              />
               <Route path="/iso/links" element={<Links />} />
-              <Route path="/iso/orders/:id" element={<OrderPage />} />
+              <Route
+                path="/iso/orders/:id"
+                element={
+                  <AdminRoute>
+                    <OrderPage />
+                  </AdminRoute>
+                }
+              />
               <Route path="/iso/profile" element={<ProfilePage />} />
 
               <Route
                 path="/iso/orders/:id/doc/:docId"
-                element={<DocumentView />}
+                element={
+                  <AdminRoute>
+                    <DocumentView />
+                  </AdminRoute>
+                }
               />
             </Route>
             <Route
