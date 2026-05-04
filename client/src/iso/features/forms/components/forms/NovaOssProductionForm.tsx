@@ -124,7 +124,7 @@ if (isSuccess) {
               </S.FormGroup>
               <S.FormGroup>
                 <label>Imię i Nazwisko lekarza</label>
-                <Field name="doctorName" placeholder="Lek. med..." />
+                <Field name="doctorName" placeholder="" />
               </S.FormGroup>
             </Grid>
 
@@ -237,8 +237,7 @@ if (isSuccess) {
               implantów. Zgodnie z RODO (2016/679), masz prawo do dostępu,
               skorygowania, usunięcia lub ograniczenia przetwarzania swoich
               danych. Kontakt z Inspektorem Ochrony Danych:{" "}
-              <strong>office@syntplant.com</strong>. Pełna treść dostępna w
-              siedzibie firmy.
+              <strong>office@syntplant.com</strong>.
             </PrivacyBox>
 
             <S.SubmitButton type="submit">
