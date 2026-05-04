@@ -85,13 +85,10 @@ const AddDocumentModal = ({ orderId, onClose }: AddDocumentModalProps) => {
       await saveToDb({
         orderId,
         documentType: "OrderAttachment",
-        data: {
-          fileUrl: url,
-          displayName: customName,
-          originalName: file.name,
-          fileType: file.name.split(".").pop()?.toLowerCase(),
-          uploadedAt: new Date().toISOString(),
-        },
+        fileUrl: url,
+        displayName: customName,
+        originalName: file.name,
+        fileType: file.name.split(".").pop()?.toLowerCase(),
       });
 
       onClose();

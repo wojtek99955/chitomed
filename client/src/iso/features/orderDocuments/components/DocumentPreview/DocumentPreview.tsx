@@ -8,6 +8,10 @@ interface DocumentPreviewProps {
     documentType: string;
     createdAt: string;
     _id: string;
+    data: {
+        displayName: string;
+        originalName: string;
+    };
   } | null;
 }
 
@@ -38,9 +42,11 @@ const DocumentPreview = ({ doc }: DocumentPreviewProps) => {
     "3Dproject": "Projekt 3D",
     default: "Dokumentacja medyczna",
   };
-
-  const getDocTitle = (type: string) =>
-    DOCUMENT_TYPES[type] || DOCUMENT_TYPES["default"];
+  
+  const getDocTitle = () => {
+    if (doc.data?.displayName) return doc.data.displayName;
+    return DOCUMENT_TYPES[doc.documentType] || DOCUMENT_TYPES["default"];
+  };
 
   const showDetails = () => {
     navigate(`doc/${doc._id}`);
@@ -52,7 +58,7 @@ const DocumentPreview = ({ doc }: DocumentPreviewProps) => {
     setModalData({
       isOpen: true,
       id: doc._id,
-      name: getDocTitle(doc.documentType),
+      name: getDocTitle(),
     });
   };
   return (
@@ -61,7 +67,7 @@ const DocumentPreview = ({ doc }: DocumentPreviewProps) => {
         <S.PreviewHeader>
           <div>
             <S.Label>Typ dokumentu</S.Label>
-            <h3>{getDocTitle(doc.documentType)}</h3>
+            <h3>{getDocTitle()}</h3>
           </div>
 
           <S.RightSide>
@@ -72,7 +78,7 @@ const DocumentPreview = ({ doc }: DocumentPreviewProps) => {
 
             {/* 3. Przycisk usuwania */}
             <S.DeleteIconButton onClick={openDeleteModal} title="Usuń dokument">
-             <S.DeleteIcon/>
+              <S.DeleteIcon />
             </S.DeleteIconButton>
           </S.RightSide>
         </S.PreviewHeader>

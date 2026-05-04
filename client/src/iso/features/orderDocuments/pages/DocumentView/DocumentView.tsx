@@ -28,6 +28,8 @@ const DocumentView = () => {
         return <MedicalEventPreview data={currentDoc.data} />;
       case "3Dproject":
         return <Project3D data={currentDoc.data} />;
+      case "OrderAttachment":
+        return <Project3D data={currentDoc.data} />;
       default:
         return (
           <S.UnknownDoc>
