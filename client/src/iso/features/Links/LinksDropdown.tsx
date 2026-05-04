@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Link2, Copy, CheckCircle2, ChevronDown } from "lucide-react";
-import * as S from "./Styles"; // Pamiętaj o dodaniu stylów poniżej
+import toast, { Toaster } from "react-hot-toast"; // DODANO IMPORT
+import * as S from "./Styles";
 import { useOrderDocuments } from "../orderDocuments/api/useOrderDocuments";
 
 const LinksDropdown = () => {
@@ -10,7 +11,9 @@ const LinksDropdown = () => {
   const [copiedLink, setCopiedLink] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const baseUrl = window.location.origin;
+
   const { data: docs } = useOrderDocuments(id);
+
   const cyberboneOrder = docs?.find(
     (doc) => doc.documentType === "CyberBoneOrderForm",
   );
@@ -19,10 +22,10 @@ const LinksDropdown = () => {
   )?.data?.dicomUrl;
 
   const links = [
-    cyberboneOrder
+    cyberboneOrder && dicomUrl
       ? { id: "DICOM", label: "Link: Plik z tomografią", url: dicomUrl }
       : null,
-   cyberboneOrder && {
+    cyberboneOrder && {
       id: "3Dproject",
       label: "Link: Dodawanie projektu 3D (dla projektanta)",
       url: `${baseUrl}/project-upload/${id}`,
@@ -43,10 +46,23 @@ const LinksDropdown = () => {
     try {
       await navigator.clipboard.writeText(url);
       setCopiedLink(linkId);
+
+      // WYWOŁANIE TOASTA
+      toast.success("Skopiowano link do schowka!", {
+        duration: 3000,
+        position: "bottom-right",
+        style: {
+          background: "#333",
+          color: "#fff",
+          fontSize: "14px",
+          borderRadius: "8px",
+        },
+      });
+
       setTimeout(() => setCopiedLink(null), 3000);
     } catch (err) {
+      toast.error("Błąd kopiowania!");
       console.error("Błąd kopiowania:", err);
-      alert("Nie udało się skopiować linku automatycznie.");
     }
   };
 
@@ -67,6 +83,9 @@ const LinksDropdown = () => {
 
   return (
     <S.DropdownContainer ref={dropdownRef}>
+      {/* Toaster musi być w drzewie komponentów, aby powiadomienia się wyświetlały */}
+      <Toaster />
+
       <S.DropdownButton onClick={() => setIsOpen(!isOpen)} $active={isOpen}>
         <Link2 size={16} className="icon-left" />
         Generuj linki udostępniania
