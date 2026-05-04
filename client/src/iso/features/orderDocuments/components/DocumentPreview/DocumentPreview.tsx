@@ -31,7 +31,7 @@ const DocumentPreview = ({ doc }: DocumentPreviewProps) => {
 
   const DOCUMENT_TYPES: Record<string, string> = {
     "medical-event": "Zgłoszenie incydentu medycznego",
-    CyberboneOrderForm: "Formularz projektu Cyberbone",
+    CyberBoneOrderForm: "Formularz projektu Cyberbone",
     NovaOssOrderForm: "Wytyczne NovaOss",
     "patient-consent": "Zgoda pacjenta na zabieg",
     invoice: "Faktura Pro-forma",
