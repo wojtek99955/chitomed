@@ -98,7 +98,7 @@ const Header = () => {
         <S.Profile onClick={goToProfile}>
           <S.UserIcon />
         </S.Profile>
-        <S.LogoutBtn onClick={logout}>Log out</S.LogoutBtn>
+        <S.LogoutBtn onClick={logout}>{languages.logout[lang]}</S.LogoutBtn>
         <S.LogoutIconContainer onClick={logout}>
           <S.LogoutIcon />
         </S.LogoutIconContainer>

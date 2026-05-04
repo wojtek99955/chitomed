@@ -15,4 +15,8 @@ export const languages = {
     pl: "Materiał",
     en: "Material details",
   },
+  logout:{
+    pl:"Wyloguj",
+    en:"Log out"
+  }
 };
