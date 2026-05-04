@@ -20,7 +20,7 @@ const DocumentView = () => {
   // Funkcja renderująca odpowiedni formularz
   const renderDocument = () => {
     switch (currentDoc.documentType) {
-      case "CyberboneOrderForm":
+      case "CyberBoneOrderForm":
         return <CyberbonePreview data={currentDoc.data} />;
       case "NovaOssOrderForm":
         return <NovaOssPreview data={currentDoc.data} />;

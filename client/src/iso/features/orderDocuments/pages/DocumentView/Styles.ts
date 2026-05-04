@@ -23,7 +23,10 @@ export const Section = styled.div`
   }
 `;
 export const BackBtn = styled(Link)`
-  display: flex;
+  display: none;
+  @media ${device.tablet} {
+    display: flex;
+  }
   align-items: center;
   justify-content: center;
   gap: 0.5rem;

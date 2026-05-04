@@ -55,7 +55,6 @@ const DocumentPreview = ({ doc }: DocumentPreviewProps) => {
       name: getDocTitle(doc.documentType),
     });
   };
-
   return (
     <>
       <S.PreviewContainer onClick={showDetails}>
