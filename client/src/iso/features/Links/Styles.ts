@@ -19,7 +19,7 @@ export const DropdownButton = styled.button<{ $active?: boolean }>`
   border-radius: 8px;
   color: ${(props) => (props.$active ? "#1e40af" : "#1e293b")};
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);

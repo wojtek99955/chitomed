@@ -72,7 +72,7 @@ const DocumentPreview = ({ doc }: DocumentPreviewProps) => {
 
           <S.RightSide>
             <S.DateWrapper>
-              <S.Label>Data utworzenia</S.Label>
+              <S.Label>Data</S.Label>
               <span>{new Date(doc.createdAt).toLocaleString("pl-PL")}</span>
             </S.DateWrapper>
 

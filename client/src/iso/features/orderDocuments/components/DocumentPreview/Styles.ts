@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { FaTrashAlt } from "react-icons/fa";
+import { device } from "../../../../../assets/device";
 
 export const PreviewContainer = styled.div`
   background: white;
@@ -13,10 +14,13 @@ export const PreviewContainer = styled.div`
 `;
 
 export const PreviewHeader = styled.div`
-  padding: 24px;
+  padding: 15px 12px;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  @media ${device.laptop} {
+    padding: 24px;
+  }
 
   h3 {
     margin: 4px 0 0 0;
@@ -39,8 +43,8 @@ export const Label = styled.div`
   font-size: 11px;
   text-transform: uppercase;
   color: #999;
-  letter-spacing: 0.8px;
-  margin-bottom: 2px;
+  letter-spacing: 1;
+  margin-bottom: 3px;
 `;
 
 export const EmptyPreview = styled.div`
