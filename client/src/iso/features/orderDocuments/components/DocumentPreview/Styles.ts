@@ -93,8 +93,8 @@ export const DeleteIcon = styled(FaTrashAlt)`
 export const Icon = styled.div`
   background-color: #e0f2fe;
   width: 3rem;
-  height: 3rem;
-  margin-right: .5rem;
+  aspect-ratio: 1/1;
+  margin-right: 0.5rem;
   border-radius: 6px;
   display: flex;
   justify-content: center;
@@ -102,10 +102,10 @@ export const Icon = styled.div`
 `;
 
 export const Wrapper = styled.div`
-display: flex;
-justify-content: space-between;
-width: 100%;
-`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
 
 export const DocumentIcon = styled(IoDocumentTextOutline)`
   font-size: 2rem;
