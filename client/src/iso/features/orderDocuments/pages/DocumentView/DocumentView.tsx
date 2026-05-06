@@ -7,9 +7,14 @@ import { format } from "date-fns";
 import { pl } from "date-fns/locale"; 
 import MedicalEventPreview from "../../components/view/MedicalEventPreview/MedicalEventPreview";
 import Project3D from "../../components/view/Project3D/Project3D";
+import { useEffect } from "react";
 const DocumentView = () => {
   const { id, docId } = useParams<{ id: string; docId: string }>();
   const { data: docs, isLoading } = useOrderDocuments(id);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [docId]);
 
   // Znajdujemy konkretny dokument po ID z URL
   const currentDoc = docs?.find((doc) => doc._id === docId);
