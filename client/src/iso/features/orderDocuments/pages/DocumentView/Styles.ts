@@ -4,16 +4,16 @@ import styled from "styled-components";
 import { device } from "../../../../../assets/device";
 
 export const Section = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 100% 1fr;
+  display: flex;
+  flex-direction: column-reverse;
   gap: 1rem;
   width: 100%;
-  display: flex;
   position: relative;
   top: 8rem;
   padding: 1rem;
 
   @media ${device.laptop} {
+    display: flex;
     top: 10rem;
     flex-direction: row;
     width: calc(100% - 15rem);
@@ -132,4 +132,9 @@ export const ContentCard = styled.div`
   margin: auto;
 `;
 
-export const Date = styled.div``;
+export const Date = styled.div`
+  margin-left: auto;
+  @media ${device.laptop} {
+    margin: unset;
+  }
+`;
