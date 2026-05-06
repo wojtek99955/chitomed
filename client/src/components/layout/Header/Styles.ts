@@ -7,19 +7,21 @@ export const Container = styled.header<any>`
   padding: 0px 0;
   position: fixed;
   width: calc(100% - 2rem);
+  width: 100%;
   left: 0;
   height: 120px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin: 0 1rem;
+  padding: 0 1rem;
   background-color: white;
   z-index: 100;
   border-bottom: 1px solid #e9eaed;
   @media ${device.laptop} {
-    padding: 10px 0;
+    /* margin: 0 1rem; */
+    padding: 10px 1rem;
     width: ${({ isAdmin }) =>
-      isAdmin ? "calc(100% - 17rem)" : "calc(100% - 2rem)"};
+      isAdmin ? "calc(100% - 15rem)" : "100%"};
     left: ${({ isAdmin }) => (isAdmin ? "15rem" : "0")};
     height: 160px;
   }
