@@ -61,26 +61,54 @@ const DocumentPreview = ({ doc }: DocumentPreviewProps) => {
       name: getDocTitle(),
     });
   };
+
+  const formattedDate = new Date(doc.createdAt).toLocaleDateString("pl-PL", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+
+const getDocumentIcon = (docType: string) => {
+  switch (docType) {
+    case "CyberBoneOrderForm":
+      return <S.DocumentIcon />;
+    case "OrderAttachment":
+      return <S.DocumentIcon />;
+    case "NovaOssOrderForm":
+      return <S.DocumentIcon />;
+    case "3Dproject":
+      return <S.ThreeDIcon />;
+    case "medical-event":
+      return <S.IncidentIcon />;
+    default:
+      return <S.DocumentIcon />;
+  }
+};
   return (
     <>
       <S.PreviewContainer onClick={showDetails}>
         <S.PreviewHeader>
-          <div>
-            <S.Label>Typ dokumentu</S.Label>
-            <h3>{getDocTitle()}</h3>
-          </div>
+          <S.Icon>{getDocumentIcon(doc.documentType)}</S.Icon>
+          <S.Wrapper>
+            <div>
+              <S.Label>Typ dokumentu</S.Label>
+              <h3>{getDocTitle()}</h3>
+            </div>
 
-          <S.RightSide>
-            <S.DateWrapper>
-              <S.Label>Data</S.Label>
-              <span>{new Date(doc.createdAt).toLocaleString("pl-PL")}</span>
-            </S.DateWrapper>
+            <S.RightSide>
+              <S.DateWrapper>
+                <S.Label>Data</S.Label>
+                <span>{formattedDate}</span>
+              </S.DateWrapper>
 
-            {/* 3. Przycisk usuwania */}
-            <S.DeleteIconButton onClick={openDeleteModal} title="Usuń dokument">
-              <S.DeleteIcon />
-            </S.DeleteIconButton>
-          </S.RightSide>
+              {/* 3. Przycisk usuwania */}
+              <S.DeleteIconButton
+                onClick={openDeleteModal}
+                title="Usuń dokument">
+                <S.DeleteIcon />
+              </S.DeleteIconButton>
+            </S.RightSide>
+          </S.Wrapper>
         </S.PreviewHeader>
       </S.PreviewContainer>
 

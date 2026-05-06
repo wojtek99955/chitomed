@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { FaTrashAlt } from "react-icons/fa";
 import { device } from "../../../../../assets/device";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { PiVectorThreeDuotone } from "react-icons/pi";
+import { BsExclamationCircle } from "react-icons/bs";
 
 export const PreviewContainer = styled.div`
   background: white;
@@ -17,7 +20,7 @@ export const PreviewHeader = styled.div`
   padding: 15px 12px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   @media ${device.laptop} {
     padding: 24px;
   }
@@ -44,7 +47,7 @@ export const Label = styled.div`
   text-transform: uppercase;
   color: #999;
   letter-spacing: 1;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 `;
 
 export const EmptyPreview = styled.div`
@@ -85,4 +88,36 @@ export const DeleteIconButton = styled.button`
 export const DeleteIcon = styled(FaTrashAlt)`
   font-size: 1rem;
   color: #ff2b2b;
+`;
+
+export const Icon = styled.div`
+  background-color: #e0f2fe;
+  width: 3rem;
+  height: 3rem;
+  margin-right: .5rem;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Wrapper = styled.div`
+display: flex;
+justify-content: space-between;
+width: 100%;
+`
+
+export const DocumentIcon = styled(IoDocumentTextOutline)`
+  font-size: 2rem;
+  color: #2d50dc;
+`;
+
+export const ThreeDIcon = styled(PiVectorThreeDuotone)`
+  font-size: 2rem;
+  color: #2d50dc;
+`;
+
+export const IncidentIcon = styled(BsExclamationCircle)`
+  font-size: 2rem;
+  color: #2d50dc;
 `;
