@@ -44,7 +44,7 @@ export const Label = styled.div`
   text-transform: uppercase;
   color: #999;
   letter-spacing: 1;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 `;
 
 export const EmptyPreview = styled.div`
