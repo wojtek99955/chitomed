@@ -1,21 +1,36 @@
 import styled from "styled-components";
+import { device } from "../../../../../assets/device";
 
 export const Button = styled.button`
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.8rem;
-  border-radius: 6px;
+  margin-top: 2rem;
+  margin-bottom: 5rem;
   width: 100%;
-  margin-top: 1rem;
-  gap: 0.5rem;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px dashed #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
+  color: #2563eb;
+  font-weight: 500;
   font-size: 1rem;
-  border: 1px solid #e2e8f0;
-  background-color: white;
-  transition: all 200ms;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  @media ${device.tablet}{
+    margin-bottom: 2rem;
+  }
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+
   &:hover {
+    background: rgba(59, 130, 246, 0.1);
     border-color: #2d50dc;
-    background-color: #f2f4fd;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `;

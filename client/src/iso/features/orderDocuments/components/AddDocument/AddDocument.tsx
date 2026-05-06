@@ -18,7 +18,7 @@ const AddDocument = () => {
         style={{
 
         }}>
-        <PlusCircle size={18} />
+        <PlusCircle size={22} />
         Dodaj dokument
       </S.Button>
 
