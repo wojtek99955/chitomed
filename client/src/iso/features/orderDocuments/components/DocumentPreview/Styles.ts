@@ -20,8 +20,8 @@ export const PreviewHeader = styled.div`
 
   h3 {
     margin: 4px 0 0 0;
-    color: #2c3e50;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    font-weight: 400;
   }
 `;
 
