@@ -9,7 +9,7 @@ export const Button = styled.button`
   border-radius: 12px;
   border: 1px dashed #3b82f6;
   background: rgba(59, 130, 246, 0.05);
-  color: #2563eb;
+  color: #2d50dc;
   font-weight: 500;
   font-size: 1rem;
 
@@ -17,7 +17,7 @@ export const Button = styled.button`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  @media ${device.tablet}{
+  @media ${device.tablet} {
     margin-bottom: 2rem;
   }
 
