@@ -1,5 +1,16 @@
 import * as S from "./Styles";
 
+// --- Types ---
+
+interface OrderLine {
+  volumeMl: string | number;
+  count: number;
+  chitosanMatrix: string | number;
+  fillerType: string;
+  fillerPercent: string | number;
+  density: string;
+}
+
 interface NovaOssPreviewProps {
   data: {
     creationDate: string;
@@ -7,90 +18,136 @@ interface NovaOssPreviewProps {
     facilityData: string;
     phone: string;
     doctorEmail?: string;
-    chitosanMatrix: number;
-    fillerType: string;
-    fillerPercent: number;
-    density: string;
-    volumes: {
-      v1ml?: number;
-      v2ml?: number;
-      v4ml?: number;
-      v5ml?: number;
-      v10ml?: number;
-    };
+    orderLines: OrderLine[];
     additionalNotes?: string;
   };
 }
 
+// --- Component ---
+
 const NovaOssPreview = ({ data }: NovaOssPreviewProps) => {
-  const totalPercent = Number(data.chitosanMatrix) + Number(data.fillerPercent);
+  // Zabezpieczenie na wypadek braku danych lub starego formatu
+  const lines = data.orderLines || [];
 
   return (
     <S.PreviewWrapper>
-      <S.SectionTitle>Dane zamawiającego</S.SectionTitle>
+      {/* SEKCJA 1: DANE ORAZ KONTAKT */}
+      <S.SectionTitle>1. Dane zamawiającego i placówki</S.SectionTitle>
       <S.GridSection>
         <S.InfoGroup>
-          <S.Label>Lekarz</S.Label>
+          <S.Label>Data utworzenia</S.Label>
+          <S.Value>{data.creationDate}</S.Value>
+        </S.InfoGroup>
+        <S.InfoGroup>
+          <S.Label>Lekarz prowadzący</S.Label>
           <S.Value>{data.doctorName}</S.Value>
         </S.InfoGroup>
         <S.InfoGroup>
-          <S.Label>Placówka</S.Label>
-          <S.Value>{data.facilityData}</S.Value>
-        </S.InfoGroup>
-        <S.InfoGroup>
           <S.Label>Email</S.Label>
-          <S.Value>{data.doctorEmail}</S.Value>
+          <S.Value>{data.doctorEmail || "Nie podano"}</S.Value>
         </S.InfoGroup>
         <S.InfoGroup>
           <S.Label>Telefon</S.Label>
           <S.Value>{data.phone}</S.Value>
         </S.InfoGroup>
       </S.GridSection>
-      <S.Divider />
-
-      <S.SectionTitle>Specyfikacja Składu</S.SectionTitle>
-      <S.GridSection>
-        <S.InfoGroup>
-          <S.Label>Matryca Chitozanowa</S.Label>
-          <S.Value>{data.chitosanMatrix}%</S.Value>
-        </S.InfoGroup>
-        <S.InfoGroup>
-          <S.Label>Napełniacz ({data.fillerType})</S.Label>
-          <S.Value>{data.fillerPercent}%</S.Value>
-        </S.InfoGroup>
-      </S.GridSection>
-
-      {totalPercent !== 100 && (
-        <S.WarningBox>
-          ⚠️ Suma składników wynosi {totalPercent}% (powinna 100%)
-        </S.WarningBox>
-      )}
 
       <S.FullWidthGroup style={{ marginTop: "10px" }}>
-        <S.Label>Gęstość wyrobu</S.Label>
-        <S.Value>{data.density}</S.Value>
+        <S.Label>Miejsce zabiegu</S.Label>
+        <S.Value>{data.facilityData}</S.Value>
       </S.FullWidthGroup>
 
       <S.Divider />
 
-      <S.SectionTitle>Zamówione Objętości</S.SectionTitle>
-      <S.VolumeGrid>
-        {Object.entries(data.volumes || {}).map(
-          ([key, val]) =>
-            Number(val) > 0 && (
-              <S.VolumeCard key={key}>
-                <span className="size">{key.replace("v", "")}</span>
-                <span className="count">{val} szt.</span>
-              </S.VolumeCard>
-            ),
-        )}
-      </S.VolumeGrid>
-      {data.additionalNotes && (
-        <S.NotesSection>
-          <S.Label>Uwagi produkcyjne</S.Label>
-          <S.LongText>{data.additionalNotes}</S.LongText>
-        </S.NotesSection>
+      {/* SEKCJA 2: LISTA POZYCJI ZAMÓWIENIA */}
+      <S.SectionTitle>2. Specyfikacja pozycji zamówienia</S.SectionTitle>
+
+      {lines.length === 0 ? (
+        <S.Value>Brak zdefiniowanych pozycji zamówienia.</S.Value>
+      ) : (
+        lines.map((line, index) => {
+          const chitosan = Number(line.chitosanMatrix) || 0;
+          const filler = Number(line.fillerPercent) || 0;
+          const totalPercent = chitosan + filler;
+
+          return (
+            <div
+              key={index}
+              style={{
+                border: "1px solid #e0e0e0",
+                borderRadius: "8px",
+                padding: "15px",
+                marginBottom: "15px",
+                backgroundColor: "#ffffff",
+              }}>
+              <h4
+                style={{
+                  margin: "0 0 12px 0",
+                  color: "#6c5ce7",
+                  fontSize: "14px",
+                }}>
+                POZYCJA #{index + 1}
+              </h4>
+
+              <S.GridSection>
+                <S.InfoGroup>
+                  <S.Label>Objętość (ml)</S.Label>
+                  <S.Value>{line.volumeMl} ml</S.Value>
+                </S.InfoGroup>
+                <S.InfoGroup>
+                  <S.Label>Liczba sztuk</S.Label>
+                  <S.Value>{line.count} szt.</S.Value>
+                </S.InfoGroup>
+                <S.InfoGroup>
+                  <S.Label>Matryca Chitozanowa</S.Label>
+                  <S.Value>{chitosan}%</S.Value>
+                </S.InfoGroup>
+                <S.InfoGroup>
+                  <S.Label>Napełniacz</S.Label>
+                  <S.Value>
+                    {filler}% ({line.fillerType})
+                  </S.Value>
+                </S.InfoGroup>
+                <S.InfoGroup>
+                  <S.Label>Gęstość wyrobu</S.Label>
+                  <S.Value>{line.density}</S.Value>
+                </S.InfoGroup>
+              </S.GridSection>
+
+              {totalPercent !== 100 && (
+                <S.WarningBox
+                  style={{ marginTop: "12px", borderLeft: "4px solid orange" }}>
+                  ⚠️ Uwaga: Suma składników (matryca + napełniacz) wynosi{" "}
+                  {totalPercent}%
+                </S.WarningBox>
+              )}
+            </div>
+          );
+        })
       )}
+
+      {/* SEKCJA 3: UWAGI */}
+      {data.additionalNotes && (
+        <>
+          <S.Divider />
+          <S.NotesSection>
+            <S.Label>Dodatkowe uwagi do produkcji</S.Label>
+            <S.LongText>{data.additionalNotes}</S.LongText>
+          </S.NotesSection>
+        </>
+      )}
+
+      {/* STOPKA INFORMACYJNA */}
+      <div
+        style={{
+          marginTop: "30px",
+          fontSize: "10px",
+          color: "#999",
+          fontStyle: "italic",
+        }}>
+        Dokument wygenerowany automatycznie na podstawie wytycznych klinicznych
+        NovaOss.
+      </div>
     </S.PreviewWrapper>
   );
 };
