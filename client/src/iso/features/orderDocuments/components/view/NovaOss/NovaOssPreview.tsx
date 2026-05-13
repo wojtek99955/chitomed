@@ -145,7 +145,7 @@ const NovaOssPreview = ({ data }: NovaOssPreviewProps) => {
           color: "#999",
           fontStyle: "italic",
         }}>
-        Dokument wygenerowany automatycznie na podstawie wytycznych klinicznych
+        Dokument wygenerowany automatycznie na formularza wytycznych
         NovaOss.
       </div>
     </S.PreviewWrapper>
