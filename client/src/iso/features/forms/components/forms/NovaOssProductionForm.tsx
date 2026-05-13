@@ -131,11 +131,10 @@ const ComboWrapper = styled.div`
   gap: 5px;
   select,
   input {
-    width: 100%;
-    font-size: 13px;
-    padding: 8px;
+    padding: 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 14px;
   }
   select:disabled {
     background: #eeeeee;
@@ -144,34 +143,9 @@ const ComboWrapper = styled.div`
 `;
 
 // --- Combo options ---
-const CHITOSAN_PRESETS = [
-  "10",
-  "20",
-  "30",
-  "40",
-  "50",
-  "60",
-  "70",
-  "80",
-  "90",
-  "100",
-];
-const FILLER_PERCENT_PRESETS = [
-  "0",
-  "10",
-  "20",
-  "30",
-  "40",
-  "50",
-  "60",
-  "70",
-  "80",
-  "90",
-  "100",
-];
 const DENSITY_PRESETS = ["Niska", "Średnia", "Wysoka"];
 
-// --- Combo select component ---
+// --- Combo select component (retained for density and fillerType) ---
 type ComboProps = {
   presets: string[];
   value: string;
@@ -457,12 +431,20 @@ const NovaOssProductionForm = () => {
                             />
                           </S.FormGroup>
 
+                          {/* Matryca chitozanowa — plain input, auto-fills fillerPercent */}
                           <S.FormGroup>
                             <label>Matryca chitozanowa (%)</label>
-                            <ComboSelect
-                              presets={CHITOSAN_PRESETS}
-                              value={line.chitosanMatrix}
-                              onChange={(val) => {
+                            <Field
+                              name={`${prefix}.chitosanMatrix`}
+                              type="number"
+                              min="0"
+                              max="100"
+                              step="1"
+                              placeholder="0–100"
+                              onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>,
+                              ) => {
+                                const val = e.target.value;
                                 setFieldValue(`${prefix}.chitosanMatrix`, val);
                                 const num = Number(val);
                                 if (!isNaN(num) && val !== "") {
@@ -472,7 +454,6 @@ const NovaOssProductionForm = () => {
                                   );
                                 }
                               }}
-                              isNumber
                             />
                             <ErrorMessage
                               name={`${prefix}.chitosanMatrix`}
@@ -495,12 +476,20 @@ const NovaOssProductionForm = () => {
                             />
                           </S.FormGroup>
 
+                          {/* Napełniacz — plain input, auto-fills chitosanMatrix */}
                           <S.FormGroup>
                             <label>Napełniacz (%)</label>
-                            <ComboSelect
-                              presets={FILLER_PERCENT_PRESETS}
-                              value={line.fillerPercent}
-                              onChange={(val) => {
+                            <Field
+                              name={`${prefix}.fillerPercent`}
+                              type="number"
+                              min="0"
+                              max="100"
+                              step="1"
+                              placeholder="0–100"
+                              onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>,
+                              ) => {
+                                const val = e.target.value;
                                 setFieldValue(`${prefix}.fillerPercent`, val);
                                 const num = Number(val);
                                 if (!isNaN(num) && val !== "") {
@@ -510,7 +499,6 @@ const NovaOssProductionForm = () => {
                                   );
                                 }
                               }}
-                              isNumber
                             />
                             <ErrorMessage
                               name={`${prefix}.fillerPercent`}
@@ -556,9 +544,16 @@ const NovaOssProductionForm = () => {
             </S.FormGroup>
 
             <PrivacyBox>
-              Syntplant sp. z o.o. przetwarza dane w celu realizacji zamówienia.
-              Kontakt: office@syntplant.com.
+              <strong>KLAUZULA DANYCH OSOBOWYCH:</strong>
+              <br />
+              Syntplant sp. z o.o. wdraża przetwarzanie danych mające na celu
+              zarządzanie relacjami z klientem oraz poprawę monitorowania stanu
+              implantów. Zgodnie z RODO (2016/679), masz prawo do dostępu,
+              skorygowania, usunięcia lub ograniczenia przetwarzania swoich
+              danych. Kontakt z Inspektorem Ochrony Danych:{" "}
+              <strong>office@syntplant.com</strong>.
             </PrivacyBox>
+
             <S.SubmitButton type="submit">Prześlij wytyczne</S.SubmitButton>
             <ValidationSummary />
           </Form>
