@@ -486,7 +486,7 @@ const NovaOssProductionForm = () => {
                               presets={["Hydroksyapatyt"]}
                               value={line.fillerType}
                               onChange={() => {}}
-                              disabled={true}
+                              // disabled={true}
                               hideCustom={true}
                             />
                             <ErrorMessage
