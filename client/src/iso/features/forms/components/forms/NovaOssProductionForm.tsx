@@ -101,9 +101,7 @@ const RemoveButton = styled.button`
 `;
 
 const AddButton = styled.button`
-  background: #2d50dc;
-  color: #fff;
-  border: none;
+  background: white;
   border-radius: 4px;
   padding: 10px 22px;
   font-size: 1rem;
@@ -111,7 +109,10 @@ const AddButton = styled.button`
   cursor: pointer;
   width: 100%;
   margin-top: 8px;
-  &:hover {
+  color:#2d50dc;
+  border:1px solid #2d50dc;
+  transition: all 200ms;
+   &:hover {
     background: #2d50dc;
   }
 `;
