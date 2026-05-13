@@ -126,9 +126,9 @@ export const SubmitButton = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 1rem;
   width: 100%;
+  font-weight: 600;
   &:hover {
     background-color: #2c50dc;
   }

@@ -101,19 +101,20 @@ const RemoveButton = styled.button`
 `;
 
 const AddButton = styled.button`
-  background: white;
+  background: #f4f7f9;
   border-radius: 4px;
-  padding: 10px 22px;
+  padding: 15px 30px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   width: 100%;
   margin-top: 8px;
-  color:#2d50dc;
-  border:1px solid #2d50dc;
+  color: #2d50dc;
+  border: 1px solid #2d50dc;
   transition: all 200ms;
-   &:hover {
+  &:hover {
     background: #2d50dc;
+    color: white;
   }
 `;
 
