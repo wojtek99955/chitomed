@@ -101,7 +101,7 @@ const RemoveButton = styled.button`
 `;
 
 const AddButton = styled.button`
-  background: #f4f7f9;
+  background: #eceffc;
   border-radius: 4px;
   padding: 15px 30px;
   font-size: 1rem;
