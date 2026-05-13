@@ -155,6 +155,7 @@ const CHITOSAN_PRESETS = [
 ];
 const FILLER_TYPE_PRESETS = ["Hydroksyapatyt"];
 const FILLER_PERCENT_PRESETS = [
+  "0",
   "10",
   "20",
   "30",
@@ -168,7 +169,7 @@ const FILLER_PERCENT_PRESETS = [
 ];
 const DENSITY_PRESETS = ["Niska", "Średnia", "Wysoka"];
 
-// --- Combo select component (FIXED) ---
+// --- Combo select component ---
 
 type ComboProps = {
   presets: string[];
@@ -185,7 +186,6 @@ const ComboSelect = ({
   placeholder,
   isNumber,
 }: ComboProps) => {
-  // Inicjalizujemy tryb "Custom" jeśli wartość nie pasuje do żadnego presetu i nie jest pusta
   const [isCustomMode, setIsCustomMode] = useState(
     value !== "" && !presets.includes(value),
   );
@@ -194,7 +194,7 @@ const ComboSelect = ({
     const selectedValue = e.target.value;
     if (selectedValue === "__custom__") {
       setIsCustomMode(true);
-      onChange(""); // Czyścimy wartość, aby wymusić wpisanie nowej
+      onChange("");
     } else {
       setIsCustomMode(false);
       onChange(selectedValue);
@@ -253,7 +253,7 @@ const emptyLine = (): OrderLine => ({
   volumeMl: "",
   count: 1,
   chitosanMatrix: "",
-  fillerType: "",
+  fillerType: "Hydroksyapatyt",
   fillerPercent: "",
   density: "",
 });
@@ -295,7 +295,7 @@ const FIELD_LABELS: Record<string, string> = {
 };
 
 const ValidationSummary = () => {
-  const { errors, submitCount } = useFormikContext<any>();
+  const { errors, submitCount } = useFormContext<any>();
   if (submitCount === 0) return null;
 
   const flatErrors: { label: string; message: string }[] = [];
@@ -334,6 +334,8 @@ const ValidationSummary = () => {
     </ValidationSummaryBox>
   );
 };
+
+const useFormContext = useFormikContext;
 
 // --- Main Component ---
 
@@ -430,10 +432,10 @@ const NovaOssProductionForm = () => {
               {({ push, remove }) => (
                 <>
                   {values.orderLines.map((line, idx) => {
-                    const sum =
-                      (Number(line.chitosanMatrix) || 0) +
-                      (Number(line.fillerPercent) || 0);
                     const prefix = `orderLines[${idx}]`;
+                    const matrixVal = Number(line.chitosanMatrix) || 0;
+                    const fillerVal = Number(line.fillerPercent) || 0;
+                    const sum = matrixVal + fillerVal;
 
                     return (
                       <OrderItemCard key={idx}>
@@ -482,9 +484,17 @@ const NovaOssProductionForm = () => {
                             <ComboSelect
                               presets={CHITOSAN_PRESETS}
                               value={line.chitosanMatrix}
-                              onChange={(val) =>
-                                setFieldValue(`${prefix}.chitosanMatrix`, val)
-                              }
+                              onChange={(val) => {
+                                setFieldValue(`${prefix}.chitosanMatrix`, val);
+                                // Automatyczne dostosowanie napełniacza
+                                const num = Number(val);
+                                if (!isNaN(num) && val !== "") {
+                                  setFieldValue(
+                                    `${prefix}.fillerPercent`,
+                                    String(Math.max(0, 100 - num)),
+                                  );
+                                }
+                              }}
                               placeholder="Wpisz %…"
                               isNumber
                             />
@@ -515,9 +525,17 @@ const NovaOssProductionForm = () => {
                             <ComboSelect
                               presets={FILLER_PERCENT_PRESETS}
                               value={line.fillerPercent}
-                              onChange={(val) =>
-                                setFieldValue(`${prefix}.fillerPercent`, val)
-                              }
+                              onChange={(val) => {
+                                setFieldValue(`${prefix}.fillerPercent`, val);
+                                // Automatyczne dostosowanie matrycy
+                                const num = Number(val);
+                                if (!isNaN(num) && val !== "") {
+                                  setFieldValue(
+                                    `${prefix}.chitosanMatrix`,
+                                    String(Math.max(0, 100 - num)),
+                                  );
+                                }
+                              }}
                               placeholder="Wpisz %…"
                               isNumber
                             />
@@ -544,9 +562,9 @@ const NovaOssProductionForm = () => {
                           </S.FormGroup>
                         </Grid>
 
-                        {(line.chitosanMatrix !== "" ||
-                          line.fillerPercent !== "") &&
-                          sum !== 100 && (
+                        {sum !== 100 &&
+                          (line.chitosanMatrix !== "" ||
+                            line.fillerPercent !== "") && (
                             <SumWarning>
                               Uwaga: Suma składników wynosi {sum}% (powinna
                               100%).
