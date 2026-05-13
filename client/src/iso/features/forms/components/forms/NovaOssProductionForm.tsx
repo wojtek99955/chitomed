@@ -137,10 +137,13 @@ const ComboWrapper = styled.div`
     border: 1px solid #ccc;
     border-radius: 4px;
   }
+  select:disabled {
+    background: #eeeeee;
+    cursor: not-allowed;
+  }
 `;
 
 // --- Combo options ---
-
 const CHITOSAN_PRESETS = [
   "10",
   "20",
@@ -153,7 +156,6 @@ const CHITOSAN_PRESETS = [
   "90",
   "100",
 ];
-const FILLER_TYPE_PRESETS = ["Hydroksyapatyt"];
 const FILLER_PERCENT_PRESETS = [
   "0",
   "10",
@@ -170,13 +172,14 @@ const FILLER_PERCENT_PRESETS = [
 const DENSITY_PRESETS = ["Niska", "Średnia", "Wysoka"];
 
 // --- Combo select component ---
-
 type ComboProps = {
   presets: string[];
   value: string;
   onChange: (val: string) => void;
   placeholder?: string;
   isNumber?: boolean;
+  disabled?: boolean;
+  hideCustom?: boolean;
 };
 
 const ComboSelect = ({
@@ -185,9 +188,11 @@ const ComboSelect = ({
   onChange,
   placeholder,
   isNumber,
+  disabled,
+  hideCustom,
 }: ComboProps) => {
   const [isCustomMode, setIsCustomMode] = useState(
-    value !== "" && !presets.includes(value),
+    value !== "" && !presets.includes(value) && !hideCustom,
   );
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -205,17 +210,18 @@ const ComboSelect = ({
     <ComboWrapper>
       <select
         value={isCustomMode ? "__custom__" : value}
-        onChange={handleSelectChange}>
+        onChange={handleSelectChange}
+        disabled={disabled}>
         <option value="">— wybierz —</option>
         {presets.map((p) => (
           <option key={p} value={p}>
             {p}
           </option>
         ))}
-        <option value="__custom__">Inne (wpisz)…</option>
+        {!hideCustom && <option value="__custom__">Inne (wpisz)…</option>}
       </select>
 
-      {isCustomMode && (
+      {isCustomMode && !hideCustom && (
         <input
           type={isNumber ? "number" : "text"}
           autoFocus
@@ -228,8 +234,7 @@ const ComboSelect = ({
   );
 };
 
-// --- Types ---
-
+// --- Form Logic ---
 type OrderLine = {
   volumeMl: string;
   count: number;
@@ -258,12 +263,10 @@ const emptyLine = (): OrderLine => ({
   density: "",
 });
 
-// --- Validation ---
-
 const orderLineSchema = Yup.object().shape({
   volumeMl: Yup.number()
-    .typeError("Podaj objętość (liczba)")
-    .positive("Wartość musi być > 0")
+    .typeError("Podaj liczbę")
+    .positive("Musi być > 0")
     .required("Wymagane"),
   count: Yup.number().min(1, "Min. 1 szt.").required("Wymagane"),
   chitosanMatrix: Yup.string().required("Wymagane"),
@@ -278,39 +281,32 @@ const validationSchema = Yup.object().shape({
   facilityData: Yup.string().required("Wymagane"),
   phone: Yup.string().required("Wymagane"),
   email: Yup.string().email("Błędny e-mail").required("Wymagane"),
-  orderLines: Yup.array()
-    .of(orderLineSchema)
-    .min(1, "Dodaj przynajmniej jedną pozycję zamówienia"),
+  orderLines: Yup.array().of(orderLineSchema).min(1, "Dodaj pozycję"),
 });
 
-// --- Validation Summary ---
-
 const FIELD_LABELS: Record<string, string> = {
-  creationDate: "Data utworzenia",
-  doctorName: "Imię i Nazwisko lekarza",
-  facilityData: "Miejsce zabiegu",
-  phone: "Telefon kontaktowy",
+  creationDate: "Data",
+  doctorName: "Lekarz",
+  facilityData: "Miejsce",
+  phone: "Telefon",
   email: "E-mail",
-  orderLines: "Pozycje zamówienia",
+  orderLines: "Pozycje",
 };
 
 const ValidationSummary = () => {
-  const { errors, submitCount } = useFormContext<any>();
+  const { errors, submitCount } = useFormikContext<any>();
   if (submitCount === 0) return null;
-
   const flatErrors: { label: string; message: string }[] = [];
-
   Object.entries(errors).forEach(([key, value]) => {
     if (key === "orderLines" && Array.isArray(value)) {
       value.forEach((lineErr: any, idx: number) => {
         if (lineErr && typeof lineErr === "object") {
           Object.entries(lineErr).forEach(([field, msg]) => {
-            if (typeof msg === "string") {
+            if (typeof msg === "string")
               flatErrors.push({
-                label: `Pozycja ${idx + 1} — ${field}`,
+                label: `Poz. ${idx + 1} — ${field}`,
                 message: msg,
               });
-            }
           });
         }
       });
@@ -318,12 +314,10 @@ const ValidationSummary = () => {
       flatErrors.push({ label: FIELD_LABELS[key] ?? key, message: value });
     }
   });
-
   if (flatErrors.length === 0) return null;
-
   return (
     <ValidationSummaryBox>
-      <h4>⚠ Popraw następujące błędy przed wysłaniem:</h4>
+      <h4>⚠ Popraw błędy przed wysłaniem:</h4>
       <ul>
         {flatErrors.map(({ label, message }, i) => (
           <li key={i}>
@@ -335,35 +329,18 @@ const ValidationSummary = () => {
   );
 };
 
-const useFormContext = useFormikContext;
-
-// --- Main Component ---
-
 const NovaOssProductionForm = () => {
   const { mutateAsync, isSuccess } = useSaveOrderDocument();
 
-  const initialValues: FormValues = {
-    creationDate: new Date().toISOString().substr(0, 10),
-    doctorName: "",
-    facilityData: "",
-    phone: "",
-    email: "",
-    orderLines: [emptyLine()],
-    additionalNotes: "",
-  };
-
   const handleSubmit = async (values: FormValues, { setSubmitting }: any) => {
     try {
-      const { doctorName, email, ...rest } = values;
       await mutateAsync({
         documentType: "NovaOssOrderForm",
-        doctorName,
-        doctorEmail: email,
-        ...rest,
+        doctorEmail: values.email,
+        ...values,
       });
-    } catch (error: any) {
-      console.error("Błąd wysyłki:", error);
-      alert("Wystąpił błąd podczas przesyłania wytycznych.");
+    } catch (error) {
+      alert("Wystąpił błąd podczas przesyłania.");
     } finally {
       setSubmitting(false);
     }
@@ -374,8 +351,8 @@ const NovaOssProductionForm = () => {
       <S.FormContainer>
         <S.SuccessWrapper>
           <S.SuccessIcon>🚀</S.SuccessIcon>
-          <h2>Wytyczne wysłane do produkcji!</h2>
-          <p>Zlecenie zostało zarejestrowane w systemie.</p>
+          <h2>Wytyczne wysłane!</h2>
+          <p>Zlecenie zostało zarejestrowane.</p>
         </S.SuccessWrapper>
       </S.FormContainer>
     );
@@ -386,9 +363,16 @@ const NovaOssProductionForm = () => {
       <S.Header>
         <h1>Wytyczne do produkcji NovaOss</h1>
       </S.Header>
-
       <Formik
-        initialValues={initialValues}
+        initialValues={{
+          creationDate: new Date().toISOString().substr(0, 10),
+          doctorName: "",
+          facilityData: "",
+          phone: "",
+          email: "",
+          orderLines: [emptyLine()],
+          additionalNotes: "",
+        }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}>
         {({ values, setFieldValue }) => (
@@ -406,16 +390,14 @@ const NovaOssProductionForm = () => {
                 <ErrorMessage name="doctorName" component={FieldError} />
               </S.FormGroup>
             </Grid>
-
             <S.FormGroup>
-              <label>Miejsce zabiegu (Nazwa i adres placówki)</label>
+              <label>Miejsce zabiegu</label>
               <Field name="facilityData" component="textarea" rows="2" />
               <ErrorMessage name="facilityData" component={FieldError} />
             </S.FormGroup>
-
             <Grid>
               <S.FormGroup>
-                <label>Telefon kontaktowy</label>
+                <label>Telefon</label>
                 <Field name="phone" type="tel" />
                 <ErrorMessage name="phone" component={FieldError} />
               </S.FormGroup>
@@ -427,15 +409,14 @@ const NovaOssProductionForm = () => {
             </Grid>
 
             <S.SectionTitle>2. Pozycje zamówienia</S.SectionTitle>
-
             <FieldArray name="orderLines">
               {({ push, remove }) => (
                 <>
                   {values.orderLines.map((line, idx) => {
                     const prefix = `orderLines[${idx}]`;
-                    const matrixVal = Number(line.chitosanMatrix) || 0;
-                    const fillerVal = Number(line.fillerPercent) || 0;
-                    const sum = matrixVal + fillerVal;
+                    const sum =
+                      (Number(line.chitosanMatrix) || 0) +
+                      (Number(line.fillerPercent) || 0);
 
                     return (
                       <OrderItemCard key={idx}>
@@ -449,7 +430,6 @@ const NovaOssProductionForm = () => {
                             </RemoveButton>
                           )}
                         </OrderItemHeader>
-
                         <Grid>
                           <S.FormGroup>
                             <label>Liczba sztuk</label>
@@ -470,8 +450,6 @@ const NovaOssProductionForm = () => {
                               name={`${prefix}.volumeMl`}
                               type="number"
                               step="0.1"
-                              min="0"
-                              placeholder="np. 2"
                             />
                             <ErrorMessage
                               name={`${prefix}.volumeMl`}
@@ -486,7 +464,6 @@ const NovaOssProductionForm = () => {
                               value={line.chitosanMatrix}
                               onChange={(val) => {
                                 setFieldValue(`${prefix}.chitosanMatrix`, val);
-                                // Automatyczne dostosowanie napełniacza
                                 const num = Number(val);
                                 if (!isNaN(num) && val !== "") {
                                   setFieldValue(
@@ -495,7 +472,6 @@ const NovaOssProductionForm = () => {
                                   );
                                 }
                               }}
-                              placeholder="Wpisz %…"
                               isNumber
                             />
                             <ErrorMessage
@@ -507,12 +483,11 @@ const NovaOssProductionForm = () => {
                           <S.FormGroup>
                             <label>Rodzaj napełniacza</label>
                             <ComboSelect
-                              presets={FILLER_TYPE_PRESETS}
+                              presets={["Hydroksyapatyt"]}
                               value={line.fillerType}
-                              onChange={(val) =>
-                                setFieldValue(`${prefix}.fillerType`, val)
-                              }
-                              placeholder="Wpisz rodzaj…"
+                              onChange={() => {}}
+                              disabled={true}
+                              hideCustom={true}
                             />
                             <ErrorMessage
                               name={`${prefix}.fillerType`}
@@ -527,7 +502,6 @@ const NovaOssProductionForm = () => {
                               value={line.fillerPercent}
                               onChange={(val) => {
                                 setFieldValue(`${prefix}.fillerPercent`, val);
-                                // Automatyczne dostosowanie matrycy
                                 const num = Number(val);
                                 if (!isNaN(num) && val !== "") {
                                   setFieldValue(
@@ -536,7 +510,6 @@ const NovaOssProductionForm = () => {
                                   );
                                 }
                               }}
-                              placeholder="Wpisz %…"
                               isNumber
                             />
                             <ErrorMessage
@@ -546,14 +519,13 @@ const NovaOssProductionForm = () => {
                           </S.FormGroup>
 
                           <S.FormGroup>
-                            <label>Gęstość wyrobu</label>
+                            <label>Gęstość</label>
                             <ComboSelect
                               presets={DENSITY_PRESETS}
                               value={line.density}
                               onChange={(val) =>
                                 setFieldValue(`${prefix}.density`, val)
                               }
-                              placeholder="Określ gęstość…"
                             />
                             <ErrorMessage
                               name={`${prefix}.density`}
@@ -561,19 +533,16 @@ const NovaOssProductionForm = () => {
                             />
                           </S.FormGroup>
                         </Grid>
-
                         {sum !== 100 &&
                           (line.chitosanMatrix !== "" ||
                             line.fillerPercent !== "") && (
                             <SumWarning>
-                              Uwaga: Suma składników wynosi {sum}% (powinna
-                              100%).
+                              Suma składników: {sum}% (wymagane 100%).
                             </SumWarning>
                           )}
                       </OrderItemCard>
                     );
                   })}
-
                   <AddButton type="button" onClick={() => push(emptyLine())}>
                     + Dodaj pozycję
                   </AddButton>
@@ -582,25 +551,15 @@ const NovaOssProductionForm = () => {
             </FieldArray>
 
             <S.FormGroup style={{ marginTop: "24px" }}>
-              <label>Dodatkowe uwagi do produkcji</label>
+              <label>Dodatkowe uwagi</label>
               <Field name="additionalNotes" component="textarea" rows="3" />
             </S.FormGroup>
 
             <PrivacyBox>
-              <strong>KLAUZULA DANYCH OSOBOWYCH:</strong>
-              <br />
-              Syntplant sp. z o.o. wdraża przetwarzanie danych mające na celu
-              zarządzanie relacjami z klientem oraz poprawę monitorowania stanu
-              implantów. Zgodnie z RODO (2016/679), masz prawo do dostępu,
-              skorygowania, usunięcia lub ograniczenia przetwarzania swoich
-              danych. Kontakt z Inspektorem Ochrony Danych:{" "}
-              <strong>office@syntplant.com</strong>.
+              Syntplant sp. z o.o. przetwarza dane w celu realizacji zamówienia.
+              Kontakt: office@syntplant.com.
             </PrivacyBox>
-
-            <S.SubmitButton type="submit">
-              Prześlij wytyczne do produkcji
-            </S.SubmitButton>
-
+            <S.SubmitButton type="submit">Prześlij wytyczne</S.SubmitButton>
             <ValidationSummary />
           </Form>
         )}
