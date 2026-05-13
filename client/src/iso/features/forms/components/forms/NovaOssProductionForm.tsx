@@ -448,6 +448,19 @@ const NovaOssProductionForm = () => {
 
                         <Grid>
                           <S.FormGroup>
+                            <label>Liczba sztuk</label>
+                            <Field
+                              name={`${prefix}.count`}
+                              type="number"
+                              min="1"
+                            />
+                            <ErrorMessage
+                              name={`${prefix}.count`}
+                              component={FieldError}
+                            />
+                          </S.FormGroup>
+                          
+                          <S.FormGroup>
                             <label>Objętość (ml)</label>
                             <Field
                               name={`${prefix}.volumeMl`}
@@ -458,19 +471,6 @@ const NovaOssProductionForm = () => {
                             />
                             <ErrorMessage
                               name={`${prefix}.volumeMl`}
-                              component={FieldError}
-                            />
-                          </S.FormGroup>
-
-                          <S.FormGroup>
-                            <label>Liczba sztuk</label>
-                            <Field
-                              name={`${prefix}.count`}
-                              type="number"
-                              min="1"
-                            />
-                            <ErrorMessage
-                              name={`${prefix}.count`}
                               component={FieldError}
                             />
                           </S.FormGroup>
