@@ -104,7 +104,7 @@ const AddButton = styled.button`
   background: #2d50dc;
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 4px;
   padding: 10px 22px;
   font-size: 1rem;
   font-weight: 600;
@@ -459,7 +459,7 @@ const NovaOssProductionForm = () => {
                               component={FieldError}
                             />
                           </S.FormGroup>
-                          
+
                           <S.FormGroup>
                             <label>Objętość (ml)</label>
                             <Field
