@@ -2,7 +2,6 @@ import { createGlobalStyle } from "styled-components";
 import { device } from "./device";
 
 import Regular from "../assets/fonts/telegraf/PPTelegraf-Regular.otf";
-import Ultralight from "../assets/fonts/telegraf/PPTelegraf-Ultralight.otf";
 import Medium from "../assets/fonts/telegraf/PPTelegraf-Medium.otf";
 
 const GlobalStyle = createGlobalStyle`
@@ -14,13 +13,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   /* Deklaracje @font-face – MUSZĄ być na najwyższym poziomie! */
-  @font-face {
-    font-family: 'PP Telegraf';
-    src: url(${Ultralight}) format('opentype');
-    font-weight: 200; /* Ultralight – dostosuj jeśli potrzeba */
-    font-style: normal;
-    font-display: swap;
-  }
 
   @font-face {
     font-family: 'PP Telegraf';
