@@ -31,8 +31,10 @@ import {
 // API / Hooki
 import { useAddMaterial } from "../../api/useAddMaterial";
 import { useGetCategories } from "../../../categories/api/useGetCategories";
+import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BUNNY_KEY = import.meta.env.VITE_BUNNY_ACCESS_KEY;
 
 const initialValues = {
   title: "",
@@ -57,15 +59,68 @@ const AddMaterialModal = () => {
   const editor = useCreateBlockNote({
     dictionary: pl,
     uploadFile: async (file: File) => {
+      // -------------------------------------------------------
+      // LOGIKA DLA WIDEO (KOPIUJEMY SPRAWDZONY PATTERN Z AXIOS)
+      // -------------------------------------------------------
+      if (file.type.startsWith("video/")) {
+        const apiBase = "https://video.bunnycdn.com";
+        const ext = file.name.split(".").pop()?.toLowerCase() || "mp4";
+        const safeName = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}.${ext}`;
+
+        try {
+          // Krok 1: Tworzenie obiektu wideo w Bunny (używamy axios)
+          const createVideoResponse = await axios.post(
+            `${apiBase}/library/561988/videos`,
+            { title: safeName },
+            {
+              headers: {
+                accept: "application/json",
+                "content-type": "application/json",
+                AccessKey: BUNNY_KEY,
+              },
+            },
+          );
+
+          const videoId = createVideoResponse.data.guid;
+          console.log("New video created with ID: " + videoId);
+
+          // Krok 2: Dokładnie taki sam upload dużego pliku za pomocą axios.put
+          const uploadVideoUrl = `${apiBase}/library/561988/videos/${videoId}`;
+
+          const uploadResponse = await axios.put(uploadVideoUrl, file, {
+            headers: {
+              accept: "application/json",
+              AccessKey: BUNNY_KEY,
+              "Content-Type": "application/octet-stream",
+            },
+            onUploadProgress: (progressEvent: any) => {
+              const percentCompleted = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total,
+              );
+              console.log(`Upload progress: ${percentCompleted}%`);
+            },
+          });
+
+          if (uploadResponse.status !== 200) {
+            throw new Error("Video upload failed");
+          }
+
+          // Zwracamy gotowy url embed dla BlockNote
+          return `https://iframe.mediadelivery.net/embed/561988/${videoId}`;
+        } catch (error) {
+          console.error("Error during video upload: ", error);
+          throw new Error("Nie udało się przesłać pliku wideo przez Axios.");
+        }
+      }
+
+      // -------------------------------------------------------
+      // LOGIKA DLA INNYCH PLIKÓW (OBRAZY, PDF - PRZEZ BACKEND)
+      // -------------------------------------------------------
       const formData = new FormData();
       formData.append("file", file);
 
       let uploadEndpoint = `${BASE_URL}/upload/upload-image`;
-
-      // Logika wyboru endpointu na podstawie typu pliku
-      if (file.type.startsWith("video/")) {
-        uploadEndpoint = `${BASE_URL}/upload/upload-video`;
-      } else if (file.type === "application/pdf") {
+      if (file.type === "application/pdf") {
         uploadEndpoint = `${BASE_URL}/upload/upload-pdf`;
       } else if (!file.type.startsWith("image/")) {
         throw new Error("Obsługiwane są tylko obrazy, filmy oraz pliki PDF");
@@ -276,6 +331,6 @@ const AddMaterialModal = () => {
       </ModalContent>
     </ModalOverlay>
   );
-};
+};;
 
 export default AddMaterialModal;

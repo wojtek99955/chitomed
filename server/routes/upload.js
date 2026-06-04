@@ -27,47 +27,20 @@ console.log("file", req.file);
   }
 });
 
-
-
-router.post("/upload-video", upload.single("file"), async (req, res) => {
+router.post("/prepare-video-upload", async (req, res) => {
   try {
-    if (!req.file) return res.status(400).json({ error: "Brak pliku" });
+    const { originalName } = req.body;
+    if (!originalName)
+      return res.status(400).json({ error: "Brak nazwy pliku" });
 
-    const file = req.file;
-    if (!file.mimetype.startsWith("video/")) {
-      return res.status(400).json({ error: "Plik musi być filmem" });
-    }
+    const libraryId = 561988;
+    const apiKey = process.env.BUNNY_STREAM_API_KEY;
+    const apiBase = "https://video.bunnycdn.com";
 
-    const result = await uploadVideoToBunnyStream(
-      file.buffer,
-      file.originalname,
-    );
+    const ext = originalName.split(".").pop()?.toLowerCase() || "mp4";
+    const safeName = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}.${ext}`;
 
-    res.json({
-      url: result.embedUrl, // lub inny format, który potrzebujesz
-      videoId: result.videoId,
-      libraryId: result.libraryId,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Błąd uploadu filmu do Bunny Stream" });
-  }
-});
-
-async function uploadVideoToBunnyStream(buffer, originalName) {
-  const libraryId = 561988;
-  const apiKey = process.env.BUNNY_STREAM_API_KEY;
-  const apiBase = "https://video.bunnycdn.com";
-
-  if (!libraryId || !apiKey) {
-    throw new Error("Brak konfiguracji Bunny Stream (LIBRARY_ID lub API_KEY)");
-  }
-
-  const ext = originalName.split(".").pop()?.toLowerCase() || "mp4";
-  const safeName = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}.${ext}`;
-
-  try {
-    // Krok 1: Utwórz obiekt wideo w bibliotece
+    // Krok 1: Tworzymy obiekt wideo w Bunny Stream
     const createRes = await fetch(`${apiBase}/library/${libraryId}/videos`, {
       method: "POST",
       headers: {
@@ -75,61 +48,32 @@ async function uploadVideoToBunnyStream(buffer, originalName) {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify({
-        title: safeName, // lub możesz przekazać tytuł z frontendu
-        collectionId: null, // opcjonalnie ID kolekcji
-        // Możesz dodać więcej pól: description, tags, etc.
-      }),
+      body: JSON.stringify({ title: safeName }),
     });
 
     if (!createRes.ok) {
       const errText = await createRes.text();
       throw new Error(
-        `Błąd tworzenia obiektu wideo: ${createRes.status} - ${errText}`,
+        `Błąd tworzenia wideo w Bunny: ${createRes.status} - ${errText}`,
       );
     }
 
     const createData = await createRes.json();
-    const videoId = createData.guid; // lub createData.id – sprawdź w docs, najczęściej guid
+    const videoId = createData.guid; // ID wygenerowane przez Bunny
 
-    if (!videoId) {
-      throw new Error("Brak videoId w odpowiedzi Bunny Stream");
-    }
-
-    // Krok 2: Wrzuć plik wideo
-    const uploadUrl = `${apiBase}/library/${libraryId}/videos/${videoId}`;
-
-    const uploadRes = await fetch(uploadUrl, {
-      method: "PUT",
-      headers: {
-        AccessKey: apiKey,
-        "Content-Type": "application/octet-stream",
-      },
-      body: buffer,
-    });
-
-    if (!uploadRes.ok) {
-      const errText = await uploadRes.text();
-      throw new Error(`Błąd uploadu pliku: ${uploadRes.status} - ${errText}`);
-    }
-
-    // Po sukcesie Bunny zaczyna transkodować automatycznie
-    // Publiczny URL embed / odtwarzacz:
-    // https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}
-    // lub direct: https://${libraryId}.mediadelivery.net/video/${libraryId}/${videoId}/...
-
-    return {
+    // Zwracamy ID oraz gotowy link embed do frontendu
+    res.json({
       videoId,
       libraryId,
       embedUrl: `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}`,
-      // Możesz zwrócić też thumbnailUrl, previewUrl itp. po jakimś czasie
-    };
+    });
   } catch (err) {
-    console.error("Błąd uploadu do Bunny Stream:", err);
-    throw err;
+    console.error(err);
+    res
+      .status(500)
+      .json({ error: "Błąd podczas przygotowywania uploadu wideo" });
   }
-}
-
+});
 
 
 async function uploadToBunny(buffer, originalName, folder = "lms") {
